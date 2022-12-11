@@ -5,7 +5,7 @@ export function Menu() {
     $menu.innerHTML =`            
     <h1> THINGY:52</h1>
     <ul>
-        <a href="enlaceMenu"> 1 </a>
+        <a href="#/1"> 1 </a>
         <a href="enlaceMenu"> 2 </a>
         <a href="enlaceMenu"> 3 </a>
         <a href="enlaceMenu"> 4 </a>

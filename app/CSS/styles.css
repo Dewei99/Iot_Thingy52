@@ -1,125 +1,140 @@
 html, body {
-    box-sizing: border-box; /*La caja empieza a contar desde el borde*/
-    scroll-behavior: smooth;
-    font-size: 16px;
-    height:100%;
-    margin: 0px;
+  box-sizing: border-box; /*La caja empieza a contar desde el borde*/
+  scroll-behavior: smooth;
+  font-size: 16px;
+  height:100%;
+  margin: 0px;
+  padding: 0;
 
-  }
+}
 
-
-/*el box sizing se hereda a todos los elementos de html*/
-/*,
+*,
 *:before,
 *:after {
     box-sizing: inherit;
-}*/
-
-/*quitar margenes y barra de desplazamiento al body*/
-/*body {
-    margin: 0;
-    overflow-x: hidden;
 }
 
-header {
-    position:absolute;
-    top: 0px;
-    left: 0px;
-    height: 50px;
-    width: 100%;
-    background: #3c8dbc;
-    overflow: hidden;
+body {
+  margin: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.header{
+  position: sticky;
+  top: 0;
+  background-color: aqua;
+  width: 100%;
+  height: 50px;
+  margin: 0px;
+  display: flex;
+}
+
+h2 {
+  margin: 0px;
+  width: 50%;
+  background-color: red;
+}
+
+.header img{
+  
+  /*altura del elemento contenedor o elemento padre*/
+  height:100%;
+
+}
+
+
+.header h2{
+  background-color: red;
+
+  margin: 0px;
+  padding: 10px;
+  height:100%;
+
+  
+}
+
+.panel {
+  position: fixed;
+  z-index: 998;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  background-color: aqua;
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s ease, opacity 0.5s ease;
+  /* De arriba */
+  transform: translate(0, -100%);
+  /* De abajo */
+  transform: translate(0, 100%);
+  /* De la derecha */
+  transform: translate(100%, 0);
+  /* De la izquierda */
+  transform: translate(-100%, 0);
+}
+
+.panel.is-active {
+  transform: translate(0, 0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.panel-btn {
+
+  z-index: 999;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .menu {
-    box-sizing: border-box;
-    border: 3px solid pink;
-    height: 100%;
-    width: calc(100% - 455px);
-    display: inline-block;
-    vertical-align:top;
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  
 }
 
-a {
-    color:black;
-    transition: color 0.3s ease;
+
+
+.menu a{
+  padding: 2rem;
+  width: inherit;
+  display: block;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-a:hover {
-    color:blue;
-}*/
+.menu a:hover {
+  font-weight: bold;
+  color: rgb(18, 18, 99);
+  background-color: rgb(187, 165, 165);
+}
 
-html, body {
-    height:100%;
-    margin: 0px;
-  }
-  
-  main {
-    position: relative;
-    height:100%;
-    padding: 0px;
-    margin: 0px;
-  }
-  
-  header {
-    position:absolute;
-    top: 0px;
-    left: 0px;
-    height: 50px;
-    width: 100%;
-    background: #3c8dbc;
-    overflow: hidden;
-  }
-  /*
-  #content {
-    position:absolute;
-    width: 100%;
-    border: 3px solid red;
-    top: 50px; 
-    bottom: 50px; 
-    overflow: auto;
-    box-sizing: border-box;
-  }*/
-  
-  /*footer {
-    position:fixed;
-    bottom: 0px;
-    height: 50px;
-    width: 100%;
-    background: #d2d6de;
-    overflow: hidden;
-  }*/
-  
-  /*#left-menu-bar {
-    box-sizing: border-box;
-    border: 3px solid green;
-    height: 100%;
-    width: 50px;
-    float:left;
-  }*/
-  /*
-  #main-content {
-    box-sizing: border-box;
-    border: 3px solid blue;
-    height: 100%;
-    width: auto;
-    overflow: hidden;
-  }*/
-  
-  .mainLeft {
-    box-sizing: border-box;
-    border: 3px solid pink;
-    height: 100%;
-    width: calc(100% - 455px);
-    display: inline-block;
-    vertical-align:top;
-  }
-  
-  .mainRight {
-    box-sizing: border-box;
-    border: 3px solid yellow;
-    height: 100%;
-    width: 450px;
-    display: inline-block;
-    vertical-align:top;
-  }
+
+.main{
+  background-color: antiquewhite;
+  width: 100%;
+  height: 100vh;
+  flex-grow: 1;
+}
+
+
