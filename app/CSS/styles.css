@@ -8,6 +8,7 @@ html, body {
 
 }
 
+/*Aseguramos que todos los elementos del documento html y/o de los modulos o plugins que añadamos hereden el box-sizing*/
 *,
 *:before,
 *:after {
