@@ -1,19 +1,24 @@
-import { Menu } from "./Components/Menu.js";
-import { MainLeft } from "./Components/Main_Left.js";
-import { MainRight } from "./Components/Main_Right.js";
+import { BotonMenu } from "./Components/BotonMenu.js";
 import { Title } from "./Components/Title.js";
-import { Header } from "./Components/Header.js";
 import { Logo } from "./Components/Logo.js";
+import {funcionMenu} from "./helpers/funcionMenu.js";
+import { PanelMenu } from "./Components/PanelMenu.js";
+import { Battery } from "./Components/Battery.js";
 
 
 export function App(){
-    const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"), $footer=d.querySelector(".footer");
+    const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"),
+     $footer=d.querySelector(".footer"),$aside=d.querySelector(".panelMenu");
 
    // $root.appendChild(Title());
-    $header.appendChild(Menu());
+    $header.appendChild(BotonMenu());
     $header.appendChild(Logo());
     $header.appendChild(Title());
-    //$main.appendChild(MainLeft());
+    $header.appendChild(Battery());
 
+
+    $aside.appendChild(PanelMenu())
+    //$main.appendChild(MainLeft());
+    funcionMenu(".panel-btn",".panelMenu");
 
 }
