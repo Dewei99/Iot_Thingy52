@@ -4,7 +4,7 @@ export function Humedad(){
     $humedad.innerHTML=`
         <header>Humedad</header>
     `;
-
-
+    $humedad.style.display="none";
+    $humedad.style.display="block";
     return $humedad;
 }

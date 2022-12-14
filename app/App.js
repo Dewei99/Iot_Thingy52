@@ -25,7 +25,7 @@ export function App(){
     //funciones
     funcionMenu(".panel-btn",".panelMenu");
     const thingy=conexion("#conectar");
-
+  
     $main.appendChild(Temperatura(thingy,"#btn-temperatura"));
     $main.appendChild(Humedad());
 

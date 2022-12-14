@@ -6,7 +6,11 @@ export function conexion(btnConexion){
     const thingy = new Thingy({logEnabled: true});
 
     async function start(device) {
-        await device.connect();
+        try{
+            await device.connect();
+        }catch (error) {
+            console.error(error);
+        }
        /* await device.temperature.start();
         await device.addEventListener("temperature", logData);*/
     }
