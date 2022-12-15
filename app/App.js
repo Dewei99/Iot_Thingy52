@@ -6,7 +6,8 @@ import { PanelMenu } from "./Components/PanelMenu.js";
 import { Battery } from "./Components/Battery.js";
 import { Temperatura } from "./Components/Temperatura.js";
 import { Humedad } from "./Components/Humedad.js";
-import { conexion } from "./helpers/conexion.js";
+import { Btn_Conexion } from "./Components/Boton_Conexion.js";
+import { Loader } from "./Components/Loader.js";
 
 
 export function App(){
@@ -14,21 +15,24 @@ export function App(){
      $footer=d.querySelector(".footer"),$aside=d.querySelector(".panelMenu");
 
    // $root.appendChild(Title());
+
     $header.appendChild(BotonMenu());
     $header.appendChild(Logo());
     $header.appendChild(Title());
+    $header.appendChild(Loader());
     $header.appendChild(Battery());
+    //$header.insertAdjacentElement("beforeend",Loader());
+    //console.log(d.querySelector(".loader"));
+    $aside.appendChild(PanelMenu());
+    
 
-
-    $aside.appendChild(PanelMenu())
-
-    //funciones
-    funcionMenu(".panel-btn",".panelMenu");
-    const thingy=conexion("#conectar");
+    const thingy=Btn_Conexion(".conectar");
   
-    $main.appendChild(Temperatura(thingy,"#btn-temperatura"));
+
+
+    $main.appendChild(Temperatura(thingy,".btn-temperatura"));
     $main.appendChild(Humedad());
 
-
-    
+    //funciones helpers
+    funcionMenu(".panel-btn",".panelMenu");
 }

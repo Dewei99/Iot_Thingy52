@@ -1,5 +1,5 @@
 :root{
-  --background-gradient: linear-gradient(rgb(11, 11, 221),rgb(28, 115, 230));
+  --background-gradient: linear-gradient(rgb(46, 132, 243),rgb(38, 183, 241));
   --shadow-color: 0.4rem 0.8rem 0.3rem rgb(28, 115, 230);
   --border:medium solid rgb(28, 115, 230);
 }
@@ -65,8 +65,14 @@ main h2 {
   margin: 0px;
   padding: 10px;
   height:100%;
-
+  width:18.5rem;
   
+}
+
+.loader{
+  height:100%;
+  padding:2px;
+  display: none;
 }
 
 .battery{
@@ -103,7 +109,7 @@ main h2 {
   justify-content: center;
   align-items: center;
   overflow-y: auto;
-  background-color: rgba(89,190,242,0.9);
+  background-image: linear-gradient(rgba(19, 178, 241, 0.98),rgba(165, 226, 250, 0.90),rgba(210, 232, 241, 0.85));
   opacity: 0;
   visibility: hidden;
   transition: transform 0.3s ease, opacity 0.5s ease;
@@ -136,11 +142,10 @@ main h2 {
   
 }
 
-#conectar{
-  margin-bottom: 8rem;
-}
 
 .menu button{
+  height:4rem;
+  border-radius: 1rem;
   padding: 1rem;
   width: 80%;
   display: block;
@@ -148,16 +153,33 @@ main h2 {
   text-decoration: none;
   transition: all 0.3s ease;
   border-color: black;
+  background-color: rgb(69, 178, 241);
   margin-bottom: 0.2rem;
 }
 
 .menu button:hover {
   font-weight: bold;
   color: rgb(18, 18, 99);
-  background-color: rgb(187, 165, 165);
+  background-color: rgb(225, 241, 130);
 }
 
 
+button.conectar{
+  margin-bottom: 8rem;
+  position: relative;
+}
+
+.conectar .loader{
+  position: absolute;
+  height: 8px;
+  right: 3%;
+  bottom: 15%;
+  height: 70%;
+}
+
+button.conectar.is-active{
+  background-color: red;
+}
 
 .main{
   background-color: antiquewhite;
