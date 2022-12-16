@@ -37,6 +37,10 @@ export function Btn_Conexion(btnConexion){
             $btn_conectar.appendChild(Loader());
             const $loader=d.querySelectorAll(".loader");
             $loader.forEach((el)=>{el.style.display="block"});
+
+            //apagar todos los sensores
+            //await device.temperature.stop();
+
             const state=await device.disconnect();
             if(state===true){            
                 $loader.forEach((el)=>{el.style.display="none"});
@@ -44,6 +48,9 @@ export function Btn_Conexion(btnConexion){
                 estado_conexion=false;
                 $btn_conectar.classList.toggle("is-active");
                 $title.innerHTML='Thingy:52 - Desconectado';
+                location.reload();
+                //apagar todos los sensores
+                //await device.temperature.stop();
             }else{
 
                 $loader.forEach((el)=>{el.style.display="none"});
