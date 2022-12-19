@@ -1,6 +1,6 @@
 :root{
   --background-gradient: linear-gradient(rgb(46, 132, 243),rgb(38, 183, 241));
-  --shadow-color: 0.4rem 0.8rem 0.3rem rgb(28, 115, 230);
+  --shadow-color: 0.4rem 0.66rem 0.3rem rgb(28, 115, 230);
   --box-shadow-color: 0.2rem 0.4rem 0.2rem rgb(21, 90, 180);
   --shadow-text:0.15rem 0.15rem 0.06rem rgb(3, 44, 97);
   --border:medium solid rgb(28, 115, 230);
@@ -188,13 +188,22 @@ button.conectar.is-active{
   background-color: red;
 }
 
-
+/*
 button.btn-temperatura{
-  margin-bottom: 8rem;
+  margin-bottom: 2rem;
   position: relative;
-}
+}*/
 
 button.btn-temperatura.is-active{
+  background-color: red;
+}
+/*
+button.btn-humedad{
+  margin-bottom: 2rem;
+  position: relative;
+}*/
+
+button.btn-humedad.is-active{
   background-color: red;
 }
 
@@ -222,21 +231,24 @@ article header{
   box-shadow: var(--shadow-color);
   border-radius: 1rem;
   background-color:white;
-  margin-top: 1.5rem;
+  margin-top: 1.7rem;
 }
 
 .temperatura{
   display: block;
   opacity: 0;
+  padding:0;
+  margin:0;
   visibility: hidden;
   height: 0vh;
-  transition: opacity 1s ease, height 1.2s ease, visibility 1s ease;
+  transition: opacity 0.5s ease, height 0.6s ease, visibility 0.5s ease;
 }
 
 .temperatura.is-active{
   opacity: 1;
   visibility:visible;
-  height: 75vh;
+  height: 650px;
+  margin-top: 1rem;
   /*display: none;*/
 }
 
@@ -244,19 +256,31 @@ article header{
   max-width: 100%;
   height:auto;
   max-height: 90%;
-  /*width:90%;*/
+  width:90%;
 }
+
 .humedad{
   display: block;
   opacity: 0;
   visibility: hidden;
   height: 0vh;
+  padding:0;
+  margin:0;
   transition: opacity 1s ease, height 1.2s ease, visibility 1s ease;
 }
 
 .humedad.is-active{
   opacity: 1;
   visibility:visible;
-  height: 75vh;
+  height: 650px;
+  margin-top: 1rem;
   /*display: none;*/
+}
+
+#chart-humedad{
+  max-width: 100%;
+  /*height:auto;*/
+  max-height: 90%;
+  height:auto;
+  width:90%;
 }

@@ -32,7 +32,7 @@ export function App(){
 
 
     $main.appendChild(Temperatura(thingy,".btn-temperatura"));
-    $main.appendChild(Humedad());
+    $main.appendChild(Humedad(thingy,".btn-humedad"));
 
     //funciones helpers
     funcionMenu(".panel-btn",".panelMenu");

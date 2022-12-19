@@ -5,8 +5,6 @@ export function Temperatura(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0;
-    let datas=[10,20,30,40];
-    let labels=[1,2,3,4];
     let $chart;
 
     $article.classList.add("temperatura");                            
@@ -64,7 +62,7 @@ export function Temperatura(thingy, boton){
         if(e.target.matches(boton)||e.target.matches(`${boton} *`)){
 
             if(estado===0){
-                $chart=CreateChart("chart-temperatura");
+                $chart=CreateChart("chart-temperatura","Temperatura (ºC)");
                 console.log($chart);
 
                 console.log(`existe chart: ${$chart}`);

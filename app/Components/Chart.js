@@ -1,4 +1,4 @@
-export function CreateChart(contenedor){
+export function CreateChart(contenedor,tipo){
 
 let $grafica;
 
@@ -12,7 +12,7 @@ return new Chart(document.getElementById(contenedor),{
         labels: [],
         datasets: [{ 
             data: [],
-            label: "Temperatura (ºC)",
+            label: tipo,
             borderColor: "#3e95cd",
             fill: false
             }
@@ -21,7 +21,7 @@ return new Chart(document.getElementById(contenedor),{
     options: {
         title: {
           display: false,
-          text: 'Temperatura (ºC)'
+          text: tipo
         },
         scales: {
             yAxes: [{
