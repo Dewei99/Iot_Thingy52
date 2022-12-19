@@ -69,7 +69,8 @@ main h2 {
   margin: 0px;
   padding: 10px;
   height:100%;
-  width:18.5rem;
+  overflow: hidden; 
+  /*width:18.5rem;*/
   
 }
 
@@ -214,6 +215,7 @@ article header{
 .main article{
   width: 95%;
   /*height: 75vh;*/
+  padding: 1rem;
   margin-right: auto;
   margin-left: auto;
   border: var(--border);
@@ -228,7 +230,7 @@ article header{
   opacity: 0;
   visibility: hidden;
   height: 0vh;
-  transition: opacity 1.2s ease, height 1.2s ease, visibility 1.2s ease;
+  transition: opacity 1s ease, height 1.2s ease, visibility 1s ease;
 }
 
 .temperatura.is-active{
@@ -238,12 +240,18 @@ article header{
   /*display: none;*/
 }
 
+#chart-temperatura{
+  max-width: 100%;
+  height:auto;
+  max-height: 90%;
+  /*width:90%;*/
+}
 .humedad{
   display: block;
   opacity: 0;
   visibility: hidden;
   height: 0vh;
-  transition: opacity 1.2s ease, height 1.2s ease, visibility 1.2s ease;
+  transition: opacity 1s ease, height 1.2s ease, visibility 1s ease;
 }
 
 .humedad.is-active{
