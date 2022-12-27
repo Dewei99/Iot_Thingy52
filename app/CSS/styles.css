@@ -81,12 +81,33 @@ main h2 {
 }
 
 .battery{
+  display: flex;
+  align-items: center;
   height:100%;
-  width:50%;
-  max-width: 100%;
+  max-width:100%;
+  width:auto;
 }
 
 
+.fa{
+  max-height:100%;
+  height: auto;
+  max-width:100%;
+  margin: 0rem 2rem;
+  margin-right: 1rem;
+  font-size: 2.2rem;
+  text-shadow: 0.1rem 0.1rem 0.06rem rgb(3, 44, 97);;
+  /*max-width: 100%;*/
+}
+.fa.fa-battery{font-size: 2.2rem;}
+.fa.fa-battery-4{font-size: 2.2rem;}
+.fa.fa-battery-3{font-size: 2.2rem;}
+.fa.fa-battery-2{font-size: 2.2rem;}
+.fa.fa-battery-1{font-size: 2.2rem;}
+.fa.fa-battery-0{font-size: 2.2rem;}
+header span{
+  font-size: 1.6rem;
+}
 
 .panel-btn {
 
@@ -207,6 +228,10 @@ button.btn-humedad.is-active{
   background-color: red;
 }
 
+button.btn-gas.is-active{
+  background-color: red;
+}
+
 .main{
   background-color: antiquewhite;
   width: 100%;
@@ -266,7 +291,7 @@ article header{
   height: 0vh;
   padding:0;
   margin:0;
-  transition: opacity 1s ease, height 1.2s ease, visibility 1s ease;
+  transition:  opacity 0.5s ease, height 0.6s ease, visibility 0.5s ease;
 }
 
 .humedad.is-active{
@@ -283,4 +308,60 @@ article header{
   max-height: 90%;
   height:auto;
   width:90%;
+}
+
+.gas{
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  height: 0vh;
+  padding:0;
+  margin:0;
+  transition:  opacity 0.4s ease, height 0.6s ease, visibility 0.4s ease;
+}
+
+.gas.is-active{
+  opacity: 1;
+  visibility:visible;
+  height: 1200px;
+  margin-top: 1rem;
+  /*display: none;*/
+}
+
+#chart-C02{
+  max-width: 100%;
+  /*height:auto;*/
+  /*max-height: 90%;*/
+  height:500px;
+  width:90%;
+}
+#chart-C0V{
+  max-width: 100%;
+  /*height:auto;*/
+  /*max-height: 90%;*/
+  height:500px;
+  width:90%;
+}
+
+
+/*Para baterias*/
+
+.blue-color {
+  color:blue;
+}
+
+.green-color {
+  color:green;
+}
+
+.teal-color {
+  color:teal;
+}
+
+.yellow-color {
+color:yellow;
+}
+
+.red-color {
+  color:red;
 }

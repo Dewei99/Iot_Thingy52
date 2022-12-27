@@ -1,4 +1,6 @@
 
+import { led } from "../helpers/led.js";
+import  greenLed  from "../helpers/ledColors.js";
 import Thingy from "../lib/Thingy.js";
 import { Loader } from "./Loader.js";
 
@@ -8,19 +10,47 @@ export function Btn_Conexion(btnConexion){
     const thingy = new Thingy({logEnabled: true});
     let estado_conexion=false;
 
+    /*const blueLed = {
+        mode: "breathe",
+        color: "blue",
+        intensity: 80,
+        delay: 1000,
+    }
+
+    const greenLed = {
+        mode: "breathe",
+        color: "green",
+        intensity: 80,
+        delay: 1000,
+    }
+
+    const yellowLed = {
+        mode: "breathe",
+        color: "yellow",
+        intensity: 80,
+        delay: 1000,
+    }*/
+
+
     async function start(device) {
         try{
             $btn_conectar.appendChild(Loader());
+            //seleccionar todos los loaders
             const $loader=d.querySelectorAll(".loader");
             $loader.forEach((el)=>{el.style.display="block"});
 
             const state=await device.connect();
-            if(state===true){            
+            if(state===true){
+                //quitar visivilidad a los loaders            
                 $loader.forEach((el)=>{el.style.display="none"});
                 $btn_conectar.innerHTML="Desconectar";
                 estado_conexion=true;
                 $btn_conectar.classList.toggle("is-active");
                 $title.innerHTML='Thingy:52 - Conectado';
+
+                //configurar led
+                led(thingy,greenLed);
+
             }else{
 
                 $loader.forEach((el)=>{el.style.display="none"});
@@ -40,7 +70,7 @@ export function Btn_Conexion(btnConexion){
 
             //apagar todos los sensores
             //await device.temperature.stop();
-
+            led(thingy,yellowLed);
             const state=await device.disconnect();
             if(state===true){            
                 $loader.forEach((el)=>{el.style.display="none"});

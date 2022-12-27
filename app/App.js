@@ -8,8 +8,7 @@ import { Temperatura } from "./Components/Temperatura.js";
 import { Humedad } from "./Components/Humedad.js";
 import { Btn_Conexion } from "./Components/Boton_Conexion.js";
 import { Loader } from "./Components/Loader.js";
-
-
+import {GasSensor} from "./Components/GasSensor.js";
 
 export function App(){
     const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"),
@@ -17,22 +16,28 @@ export function App(){
 
    // $root.appendChild(Title());
 
+
+
     $header.appendChild(BotonMenu());
     $header.appendChild(Logo());
     $header.appendChild(Title());
     $header.appendChild(Loader());
-    $header.appendChild(Battery());
+    //$header.appendChild(Battery(thingy));
     //$header.insertAdjacentElement("beforeend",Loader());
     //console.log(d.querySelector(".loader"));
     $aside.appendChild(PanelMenu());
     
 
     const thingy=Btn_Conexion(".conectar");
-  
+    
+    $header.appendChild(Battery(thingy));
 
+
+    console.log(thingy);
 
     $main.appendChild(Temperatura(thingy,".btn-temperatura"));
     $main.appendChild(Humedad(thingy,".btn-humedad"));
+    $main.appendChild(GasSensor(thingy,".btn-gas"));
 
     //funciones helpers
     funcionMenu(".panel-btn",".panelMenu");

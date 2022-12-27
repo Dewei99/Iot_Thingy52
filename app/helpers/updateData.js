@@ -11,7 +11,7 @@ export function updateData(chart, data){
     let time = h + ":" + m + ":" + s;
         //chart.data.labels.push(time);
     chart.data.datasets.forEach((dataset) => {
-        console.log(dataset.data.length);
+        //console.log(dataset.data.length);
         if(dataset.data.length===15){
             dataset.data=dataset.data.slice(1);
             chart.data.labels=chart.data.labels.slice(1);

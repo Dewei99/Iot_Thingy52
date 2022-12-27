@@ -32,7 +32,7 @@ export function Temperatura(thingy, boton){
             console.log(`solicitud de servicio: ${servicio}`);
             $article.classList.add("is-active");
             estado=1;
-            console.log(`encender temperatura, estado:${estado}, display ${$temperatura.style.display}`);
+            console.log(`encender temperatura, estado:${estado}, display ${$article.style.display}`);
         
         } catch(error){
             console.error(error);
