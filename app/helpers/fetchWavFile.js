@@ -1,4 +1,4 @@
-export function buscarWavFile(device, ruta){
+export function buscarWavFile( ruta){
     fetch(ruta)
     .then(response => {
       if (!response.ok) {

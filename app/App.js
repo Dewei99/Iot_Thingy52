@@ -10,6 +10,7 @@ import { Btn_Conexion } from "./Components/Boton_Conexion.js";
 import { Loader } from "./Components/Loader.js";
 import {GasSensor} from "./Components/GasSensor.js";
 import { PantallaAlarma } from "./Components/AlarmScreen.js";
+import { Btn_Alarma } from "./Components/Boton_Alarma.js";
 
 export function App(){
     const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"),
@@ -30,7 +31,8 @@ export function App(){
     
 
     const thingy=Btn_Conexion(".conectar");
-    
+    //Btn_Alarma(thingy,"/Iot_Thingy52/app/assets/pcm0808m.wav");
+
     $header.appendChild(Battery(thingy));
 
 
@@ -39,6 +41,7 @@ export function App(){
     $main.appendChild(Temperatura(thingy,".btn-temperatura"));
     $main.appendChild(Humedad(thingy,".btn-humedad"));
     $main.appendChild(GasSensor(thingy,".btn-gas"));
+    Btn_Alarma(thingy,".btn-alarm1","/Iot_Thingy52/app/assets/pcm0808m.wav");
 
     //funciones helpers
     funcionMenu(".panel-btn",".panelMenu");

@@ -1,6 +1,6 @@
 import { motionSensors } from "../helpers/motionSensors.js";
 
-export function Temperatura(thingy, boton){
+export function Btn_Alarma(thingy, boton, wavFile){
     /*const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);*/
     const d=document,$boton=d.querySelector(boton), $screen=d.querySelector("alarm");
@@ -19,8 +19,9 @@ export function Temperatura(thingy, boton){
     async function start_Alarm(device) {
         try{
             //activar sensores de movimiento
-            motionSensors(device);
+            motionSensors(device, wavFile);
             $boton.classList.add("is-active");
+            //motionSensors(device);
             /*console.log("estoy en la función start");
             console.log(bool);
             console.log(`solicitud de servicio: ${servicio}`);*/
@@ -39,6 +40,7 @@ export function Temperatura(thingy, boton){
         //await thingy.connect();
         try{
             let bool=await device.rawdata.stop();
+            //await device.rawdata.start();
             /*$article.classList.remove("is-active");
             console.log("estoy en la función stop");
             console.log(bool);*/

@@ -27,7 +27,7 @@ export function Btn_Conexion(btnConexion){
                 estado_conexion=true;
                 $btn_conectar.classList.toggle("is-active");
                 $title.innerHTML='Thingy:52 - Conectado';
-                motionSensors(thingy);
+                //motionSensors(thingy);
                 //configurar led
                 led(thingy,greenLed);
 

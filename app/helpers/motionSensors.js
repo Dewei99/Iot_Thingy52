@@ -1,5 +1,8 @@
-export async function motionSensors(device){
+import { buscarWavFile } from "./fetchWavFile.js";
 
+export async function motionSensors(device,wavFile){
+    const $screen=d.querySelector("alarm");
+    const wav=buscarWavFile(wavFile);
     const declinationAngle=0.00319977;
     function logRawData(data) {
         //console.log(data);
