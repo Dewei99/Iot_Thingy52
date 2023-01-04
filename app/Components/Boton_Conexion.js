@@ -1,6 +1,8 @@
 
 import { led } from "../helpers/led.js";
-import  greenLed  from "../helpers/ledColors.js";
+import  greenLed from "../helpers/ledColors.js";
+import  blueLed from "../helpers/ledColors.js";
+import { motionSensors } from "../helpers/motionSensors.js";
 import Thingy from "../lib/Thingy.js";
 import { Loader } from "./Loader.js";
 
@@ -25,7 +27,7 @@ export function Btn_Conexion(btnConexion){
                 estado_conexion=true;
                 $btn_conectar.classList.toggle("is-active");
                 $title.innerHTML='Thingy:52 - Conectado';
-
+                motionSensors(thingy);
                 //configurar led
                 led(thingy,greenLed);
 
@@ -48,7 +50,7 @@ export function Btn_Conexion(btnConexion){
 
             //apagar todos los sensores
             //await device.temperature.stop();
-            led(thingy,yellowLed);
+            led(thingy,blueLed);
             const state=await device.disconnect();
             if(state===true){            
                 $loader.forEach((el)=>{el.style.display="none"});

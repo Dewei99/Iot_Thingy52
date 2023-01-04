@@ -9,6 +9,7 @@ import { Humedad } from "./Components/Humididy.js";
 import { Btn_Conexion } from "./Components/Boton_Conexion.js";
 import { Loader } from "./Components/Loader.js";
 import {GasSensor} from "./Components/GasSensor.js";
+import { PantallaAlarma } from "./Components/AlarmScreen.js";
 
 export function App(){
     const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"),
@@ -34,7 +35,7 @@ export function App(){
 
 
     console.log(thingy);
-
+    $main.appendChild(PantallaAlarma());
     $main.appendChild(Temperatura(thingy,".btn-temperatura"));
     $main.appendChild(Humedad(thingy,".btn-humedad"));
     $main.appendChild(GasSensor(thingy,".btn-gas"));
