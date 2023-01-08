@@ -1,7 +1,7 @@
 import { updateData } from "../helpers/updateData.js";
 import { CreateChart } from "./Chart.js";
 
-export function Temperatura(thingy, boton){
+export function Temperature(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0;
@@ -9,6 +9,8 @@ export function Temperatura(thingy, boton){
 
     $article.classList.add("temperatura");                            
     $temperatura.id="chart-temperatura";
+
+    $title.classList.add("title"); 
 
     $article.appendChild($title);
     $article.appendChild($temperatura);

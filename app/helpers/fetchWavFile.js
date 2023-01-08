@@ -1,5 +1,5 @@
-export function buscarWavFile( ruta){
-    fetch(ruta)
+export async function fetchWavFile( ruta){
+    /*return await fetch(ruta)
     .then(response => {
       if (!response.ok) {
         throw new Error('La respuesta de la red no fue correcta');
@@ -15,14 +15,16 @@ export function buscarWavFile( ruta){
       const reader = new FileReader();
 
       reader.readAsArrayBuffer(myBlob);
-
-      reader.onload = e => {
+      
+      reader.onload = (e) => {
         var file = reader.result;
         console.log(file);
         const arrayFile = new Uint8Array(file);
         //console.log(e.target.result);
         console.log(arrayFile);
+        console.log(arrayFile.length);
         return arrayFile;
+
       };
       //reader.readAsDataURL(myBlob);
     })
@@ -31,7 +33,24 @@ export function buscarWavFile( ruta){
         'Ha habido un problema con su operación de búsqueda:',
         error
       );
-    });
+    });*/
+    let buscarWav=await fetch(ruta);
+    let datos= await buscarWav.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.readAsArrayBuffer(datos);
+
+      reader.onload = () => {
+        let file = reader.result;
+        const arrayFile = new Uint8Array(file);
+        resolve(arrayFile);
+      };
+  
+      reader.onerror = reject;
+  
+      //reader.readAsArrayBuffer(file);
+    })
 }
 
 // /Nordic-Thingy52-Thingyjs-master/examples/pcm0808m.wav

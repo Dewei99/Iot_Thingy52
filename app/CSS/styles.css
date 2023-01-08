@@ -64,7 +64,7 @@ main h2 {
 
 .header h2{
   /*background-color: rgb(48, 131, 106);*/
-  border: 2px solid black;
+  /*border: 2px solid black;*/
   display: inline-block;
   margin: 0px;
   padding: 10px;
@@ -215,7 +215,7 @@ button.btn-temperatura{
   position: relative;
 }*/
 
-button.btn-temperatura.is-active{
+button.btn-temperature.is-active{
   background-color: red;
 }
 /*
@@ -224,7 +224,7 @@ button.btn-humedad{
   position: relative;
 }*/
 
-button.btn-humedad.is-active{
+button.btn-humidity.is-active{
   background-color: red;
 }
 
@@ -271,6 +271,7 @@ article header{
   visibility: hidden;
   height: 0vh;
   transition: opacity 0.5s ease, height 0.6s ease, visibility 0.5s ease;
+  /*color:red;*/
 }
 
 .temperatura.is-active{
@@ -280,6 +281,11 @@ article header{
   margin-top: 1rem;
   /*display: none;*/
 }
+
+.temperatura .title{
+  color: inherit;
+}
+
 
 #chart-temperatura{
   max-width: 100%;

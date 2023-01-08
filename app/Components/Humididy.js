@@ -1,7 +1,7 @@
 import { updateData } from "../helpers/updateData.js";
 import { CreateChart } from "./Chart.js";
 
-export function Humedad(thingy, boton){
+export function Humidity(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $humedad = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0;

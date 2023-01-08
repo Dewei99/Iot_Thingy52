@@ -48,11 +48,11 @@ export function Battery(device) {
     //funcion para actualizar los datos renderizados
     async function logData(data) {
 
-        console.log("hola estoy en el eventlistenner");
+        //console.log("hola estoy en el eventlistenner");
         //espera de obtención de datos
         data=await device.battery.read();
-        console.log(`data battery ${data}`);
-        console.log(data.status);
+        //console.log(`data battery ${data}`);
+        //console.log(data.status);
         $span.innerHTML = `${data.status}%`;
         render(data.status);
     }
@@ -81,7 +81,7 @@ export function Battery(device) {
                         leerData();
                     },3000);
                 }
-            },6000);
+            },5500);
 
             console.log("estoy en la función start bateria");
         
@@ -106,7 +106,7 @@ export function Battery(device) {
         }
     }
 
-
+    //llama a la función cada segundo, dependiendo si el valor de device.connected es true(conectado) o false(desconectado) se ejecuta start_Bateria o stop_Bateria
     setInterval(function(){
 
         if((device.connected)&&(estado===false)){
