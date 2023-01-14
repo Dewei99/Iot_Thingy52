@@ -4,6 +4,8 @@
   --box-shadow-color: 0.2rem 0.4rem 0.2rem rgb(21, 90, 180);
   --shadow-text:0.15rem 0.15rem 0.06rem rgb(3, 44, 97);
   --border:medium solid rgb(28, 115, 230);
+  --warning-shadow-color: 0.2rem 0.4rem 0.2rem rgb(233, 128, 7);
+  --warning-border:medium solid rgb(233, 128, 7);
 }
 
 
@@ -45,8 +47,10 @@ body {
   margin: 0px;
   display: flex;
   align-items: center;
+  /*flex: 1 1 auto;*/
 
 }
+
 
 main h2 {
   margin: 0px;
@@ -81,6 +85,7 @@ main h2 {
 }
 
 .battery{
+  
   display: flex;
   align-items: center;
   height:100%;
@@ -282,6 +287,12 @@ article header{
   /*display: none;*/
 }
 
+.temperatura.warning{
+  box-shadow: var(--warning-shadow-color);
+  border: var(--warning-border);
+}
+
+
 .temperatura .title{
   color: inherit;
 }
@@ -312,6 +323,11 @@ article header{
   /*display: none;*/
 }
 
+.humedad.warning{
+  box-shadow: var(--warning-shadow-color);
+  border: var(--warning-border);
+}
+
 #chart-humedad{
   max-width: 100%;
   /*height:auto;*/
@@ -336,6 +352,11 @@ article header{
   height: 1200px;
   margin-top: 1rem;
   /*display: none;*/
+}
+
+.gas.warning{
+  box-shadow: var(--warning-shadow-color);
+  border: var(--warning-border);
 }
 
 #chart-C02{

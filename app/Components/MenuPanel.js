@@ -1,4 +1,4 @@
-export function PanelMenu(){
+export function MenuPanel(){
     const $panelMenu = document.createElement("div");
     $panelMenu.classList.add("menu");
     $panelMenu.innerHTML=`

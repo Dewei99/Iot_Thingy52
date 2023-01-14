@@ -2,15 +2,19 @@
 import { led } from "../helpers/led.js";
 import  greenLed from "../helpers/ledColors.js";
 import  blueLed from "../helpers/ledColors.js";
+import  redLed from "../helpers/ledColors.js";
+import { ledController } from "../helpers/ledController.js";
 import { motionSensors } from "../helpers/motionSensors.js";
 import Thingy from "../lib/Thingy.js";
 import { Loader } from "./Loader.js";
 
-export function Btn_Conexion(btnConexion){
+export function ConectionButton(btnConexion){
     
     const d=document, $btn_conectar=d.querySelector(btnConexion), $title=d.querySelector(".title");
-    const thingy = new Thingy({logEnabled: true});
-    let estado_conexion=false;
+    const thingy = new Thingy({logEnabled: false});
+    let estado_conexion=false, info;
+    localStorage.setItem('conexion', 'off');
+    
 
     async function start(device) {
         try{
@@ -29,10 +33,24 @@ export function Btn_Conexion(btnConexion){
                 $title.innerHTML='Thingy:52 - Conectado';
                 //motionSensors(thingy);
                 //configurar led
-                led(thingy,greenLed);
+                //ledController(device);
+                /*info=await led(device,greenLed);
+                console.log(info);
+                if(info==undefined||false){
+                    let inf=await led(device,greenLed);
+                    console.log(inf);
+                }*/
+                //await led(device,redLed);
+                info = await device.led.read();
+                console.log(info);
+                localStorage.setItem('conexion', 'on');
+
+                await ledController(device);
+             
+                //ledController(device);
 
             }else{
-
+                start(device);
                 $loader.forEach((el)=>{el.style.display="none"});
             }
 
@@ -50,7 +68,7 @@ export function Btn_Conexion(btnConexion){
 
             //apagar todos los sensores
             //await device.temperature.stop();
-            led(thingy,blueLed);
+            await led(device,blueLed);
             const state=await device.disconnect();
             if(state===true){            
                 $loader.forEach((el)=>{el.style.display="none"});
@@ -58,6 +76,7 @@ export function Btn_Conexion(btnConexion){
                 estado_conexion=false;
                 $btn_conectar.classList.toggle("is-active");
                 $title.innerHTML='Thingy:52 - Desconectado';
+                localStorage.setItem('conexion', 'off');
                 location.reload();
                 //apagar todos los sensores
                 //await device.temperature.stop();

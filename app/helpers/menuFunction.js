@@ -1,4 +1,4 @@
-export function funcionMenu(panelBtn, panel){
+export function menuFunction(panelBtn, panel){
     const d=document;
     
     d.addEventListener("click", e=>{

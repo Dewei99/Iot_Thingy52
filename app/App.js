@@ -1,16 +1,17 @@
-import { BotonMenu } from "./Components/BotonMenu.js";
+import { MenuButton } from "./Components/MenuButton.js";
 import { Title } from "./Components/Title.js";
 import { Logo } from "./Components/Logo.js";
-import {funcionMenu} from "./helpers/funcionMenu.js";
-import { PanelMenu } from "./Components/PanelMenu.js";
+import {menuFunction} from "./helpers/menuFunction.js";
+import { MenuPanel } from "./Components/MenuPanel.js";
 import { Battery } from "./Components/Battery.js";
 import { Temperature } from "./Components/Temperature.js";
 import { Humidity } from "./Components/Humididy.js";
-import { Btn_Conexion } from "./Components/Boton_Conexion.js";
+import { ConectionButton } from "./Components/ConectionButton.js";
 import { Loader } from "./Components/Loader.js";
 import {GasSensor} from "./Components/GasSensor.js";
 import { AlarmScreen } from "./Components/AlarmScreen.js";
-import { Btn_Alarma } from "./Components/Boton_Alarma.js";
+import { AlarmButton } from "./Components/AlarmButton.js";
+import { ledController } from "./helpers/ledController.js";
 
 export function App(){
     const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"),
@@ -20,18 +21,18 @@ export function App(){
 
 
 
-    $header.appendChild(BotonMenu());
+    $header.appendChild(MenuButton());
     $header.appendChild(Logo());
     $header.appendChild(Title());
     $header.appendChild(Loader());
     //$header.appendChild(Battery(thingy));
     //$header.insertAdjacentElement("beforeend",Loader());
     //console.log(d.querySelector(".loader"));
-    $aside.appendChild(PanelMenu());
+    $aside.appendChild(MenuPanel());
     
 
-    const thingy=Btn_Conexion(".conectar");
-    //Btn_Alarma(thingy,"/Iot_Thingy52/app/assets/pcm0808m.wav");
+    const thingy=ConectionButton(".conectar");
+    //Alarm_Btn(thingy,"/Iot_Thingy52/app/assets/pcm0808m.wav");
 
     $header.appendChild(Battery(thingy));
 
@@ -42,10 +43,12 @@ export function App(){
     $main.appendChild(Humidity(thingy,".btn-humidity"));
     $main.appendChild(GasSensor(thingy,".btn-gas"));
     //Btn_Alarma(thingy,".btn-alarm1","/Iot_Thingy52/app/assets/pcm0808m.wav");
-    Btn_Alarma(thingy,".btn-alarm1","/Iot_Thingy52/app/assets/alarm.wav");
+    AlarmButton(thingy,".btn-alarm1","/Iot_Thingy52/app/assets/alarma.wav");
 
     //funciones helpers
-    funcionMenu(".panel-btn",".panelMenu");
+    menuFunction(".panel-btn",".panelMenu");
+    //ledController(thingy);
+
     /*audioState=true;
     console.log(`audioState: ${audioState}`);*/
 }

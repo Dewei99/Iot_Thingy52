@@ -1,4 +1,5 @@
 import { fetchWavFile } from "./fetchWavFile.js";
+import { ledController } from "./ledController.js";
 import { playAudio } from "./playAudio.js";
 
 export async function motionSensors(device,wavFile){
@@ -48,6 +49,7 @@ export async function motionSensors(device,wavFile){
                     //localStorage.setItem('audioState', 'on');
                     console.log(`ejecuto audio y bool:${bool}`);
                     await playAudio(device,arrayFile);
+                    await ledController(device);
                     $screen.classList.add("is-active");
                 //}
                 }

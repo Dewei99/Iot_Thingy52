@@ -1,5 +1,5 @@
 
-export function BotonMenu() {
+export function MenuButton() {
     const d=document, $menu = d.createElement("div");
     $menu.classList.add("panel-btn");
     $menu.innerHTML =`            

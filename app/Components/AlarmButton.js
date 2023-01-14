@@ -1,6 +1,6 @@
 import { motionSensors } from "../helpers/motionSensors.js";
 
-export function Btn_Alarma(thingy, boton, wavFile){
+export function AlarmButton(thingy, boton, wavFile){
 
     const d=document,$boton=d.querySelector(boton), $screen=d.querySelector("alarm");
     let estado=0;

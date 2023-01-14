@@ -1,3 +1,5 @@
+import { ledController } from "./ledController.js";
+
 export async function playAudio(thingy, wav8Array) {
     try {
       let speakerStatusReady = true;
@@ -97,6 +99,7 @@ export async function playAudio(thingy, wav8Array) {
                    localStorage.setItem('audioState', 'off');      
                    console.log(audioState);    
                    resolve;
+                   ledController(thingy);
                    //return true;
                    
                   })
@@ -105,6 +108,7 @@ export async function playAudio(thingy, wav8Array) {
                 else {
                   localStorage.setItem('audioState', 'off');
                   console.log(audioState);
+                  ledController(thingy);
                   resolve;
    
                 }
@@ -113,6 +117,7 @@ export async function playAudio(thingy, wav8Array) {
        }else{
         localStorage.setItem('audioState', 'off');
         console.log(audioState);
+        ledController(thingy);
         //resolve(true);
         return false;
   

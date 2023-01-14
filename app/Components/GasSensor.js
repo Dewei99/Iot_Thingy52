@@ -1,10 +1,10 @@
 import { updateData } from "../helpers/updateData.js";
-import { CreateChart } from "./Chart.js";
+import { CreateChart } from "./CreateChart.js";
 
 export function GasSensor(thingy, boton){
     const d=document,$article=d.createElement("article"),$titleCO2 = d.createElement("div"),
     $titleCOV = d.createElement("div"),$CO2 = d.createElement("canvas"),$COV = d.createElement("canvas"),$boton=d.querySelector(boton);
-    let estado=0;
+    let estado=0,high=true,normal=true;
     let $chartCO2, $chartCOV;
 
     $article.classList.add("gas");
@@ -17,6 +17,8 @@ export function GasSensor(thingy, boton){
     $article.appendChild($CO2);
     $article.appendChild($titleCOV);
     $article.appendChild($COV);
+
+    localStorage.setItem('gasWarning', 'off');
 
     //funcion para actualizar los datos de las gráficas
     function logData(data) {
@@ -31,6 +33,28 @@ export function GasSensor(thingy, boton){
 
         updateData($chartCO2, data.detail.eCO2.value);
         updateData($chartCOV, data.detail.TVOC.value);
+
+        if(data.detail.eCO2.value>=800){
+            $titleCO2.innerHTML = `
+            <header>CO2</header>
+            CO2: ${data.detail.eCO2.value} ${data.detail.eCO2.unit} (Alto)`;
+            localStorage.setItem('gasWarning', 'on');
+            $article.classList.add("warning");
+            if(high===true){
+                ledController(thingy);
+                high=false;
+                normal=true;
+            }
+            
+        }else{
+            localStorage.setItem('gasWarning', 'off');
+            $article.classList.remove("warning");
+            if(normal===true){
+                ledController(thingy);
+                high=true;
+                normal=false;
+            }
+        }
     }
 
 

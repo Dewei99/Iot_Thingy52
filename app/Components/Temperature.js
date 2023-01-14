@@ -1,11 +1,12 @@
+import { ledController } from "../helpers/ledController.js";
 import { updateData } from "../helpers/updateData.js";
-import { CreateChart } from "./Chart.js";
+import { CreateChart } from "./CreateChart.js";
 
 export function Temperature(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0;
-    let $chart;
+    let $chart, high=true,low=true,normal=true;
 
     $article.classList.add("temperatura");                            
     $temperatura.id="chart-temperatura";
@@ -14,13 +15,47 @@ export function Temperature(thingy, boton){
 
     $article.appendChild($title);
     $article.appendChild($temperatura);
+    localStorage.setItem('temperatureWarning', 'off');
     
     function logData(data) {
 
         $title.innerHTML = `
         <header>Temperatura</header>
         Temperature: ${data.detail.value} ${data.detail.unit}`;
+        //actualizar gráfica
         updateData($chart, data.detail.value);
+        if(data.detail.value>=38){
+            $title.innerHTML = `
+            <header>Temperatura</header>
+            Temperature: ${data.detail.value} ${data.detail.unit} (Warning: Calor)`;
+            localStorage.setItem('temperatureWarning', 'on');
+            $article.classList.add("warning");
+            if(high===true){
+                ledController(thingy);
+                high=false;
+                normal=true;
+            }
+        }else if (data.detail.value<=10){
+            $title.innerHTML = `
+            <header>Temperatura</header>
+            Temperature: ${data.detail.value} ${data.detail.unit} (Warning: Frío)`;
+            localStorage.setItem('temperatureWarning', 'on');
+            $article.classList.add("warning");
+            if(low===true){
+                ledController(thingy);
+                low=false;
+                normal=true;
+            }
+        }else{
+            localStorage.setItem('temperatureWarning', 'off');
+            $article.classList.remove("warning");
+            if(normal===true){
+                ledController(thingy);
+                high=true;
+                low=true;
+                normal=false;
+            }
+        }
     }
 
 

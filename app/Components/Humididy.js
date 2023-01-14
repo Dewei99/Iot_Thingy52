@@ -1,11 +1,11 @@
 import { updateData } from "../helpers/updateData.js";
-import { CreateChart } from "./Chart.js";
-
+import { CreateChart } from "./CreateChart.js";
+import { ledController } from "../helpers/ledController.js";
 export function Humidity(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $humedad = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0;
-    let $chart;
+    let $chart,high=true,normal=true;
 
     $article.classList.add("humedad");                            
     $humedad.id="chart-humedad";
@@ -13,12 +13,36 @@ export function Humidity(thingy, boton){
     $article.appendChild($title);
     $article.appendChild($humedad);
     
+    localStorage.setItem('humidityWarning', 'off');
+
     function logData(data) {
 
         $title.innerHTML = `
         <header>Humedad</header>
         Humedad: ${data.detail.value} ${data.detail.unit}`;
         updateData($chart, data.detail.value);
+        //console.log(data);
+        if(data.detail.value>=65){
+            $title.innerHTML = `
+            <header>Humedad</header>
+            Humedad: ${data.detail.value} ${data.detail.unit} (Alto)`;
+            updateData($chart, data.detail.value);
+            localStorage.setItem('humidityWarning', 'on');
+            $article.classList.add("warning");
+            if(high===true){
+                ledController(thingy);
+                high=false;
+                normal=true;
+            }
+        }else{
+            localStorage.setItem('humidityWarning', 'off');
+            $article.classList.remove("warning");
+            if(normal===true){
+                ledController(thingy);
+                high=true;
+                normal=false;
+            }
+        }
     }
 
 
