@@ -44,13 +44,13 @@ export function ConectionButton(btnConexion){
                 info = await device.led.read();
                 console.log(info);
                 localStorage.setItem('conexion', 'on');
-
+                localStorage.setItem('alarm', 'off');
                 await ledController(device);
              
                 //ledController(device);
 
             }else{
-                start(device);
+                //start(device);
                 $loader.forEach((el)=>{el.style.display="none"});
             }
 

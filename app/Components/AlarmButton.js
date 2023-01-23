@@ -34,11 +34,11 @@ export function AlarmButton(thingy, boton, wavFile){
 
     d.addEventListener("click", async function(e){
         if(e.target.matches(boton)||e.target.matches(`${boton} *`)){
-
+            let alarm=localStorage.getItem('alarm');
             if((estado===0)&&(thingy.connected===true)){
                 start_Alarm(thingy);
                 console.log("pulsado btn de alarma");
-            }else if(estado===1){
+            }else if((estado===1)&&(alarm=='off')){
                 stop_Alarm(thingy);
                 localStorage.setItem('audioState', 'false');
 

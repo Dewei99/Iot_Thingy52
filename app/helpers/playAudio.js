@@ -3,7 +3,7 @@ import { ledController } from "./ledController.js";
 export async function playAudio(thingy, wav8Array) {
     try {
       let speakerStatusReady = true;
-      //console.log(wav8Array);
+      console.log(wav8Array);
       await thingy.mtu.write(273);
       const myLogger = data => {
         const speakerStatus = data.detail.status;

@@ -45,12 +45,28 @@ body {
   width: 100%;
   height: 50px;
   margin: 0px;
-  display: flex;
+  display:flex;
+  justify-content: space-between;
   align-items: center;
   /*flex: 1 1 auto;*/
-
 }
 
+.thingyHeader{
+  display:flex;
+  align-items: center;
+  height:100%;
+}
+
+.profileHeader{
+  display:flex;
+  align-items: center;
+  height:100%;
+}
+
+.sensores{
+  width: 100%;
+  height: 100%;
+}
 
 main h2 {
   margin: 0px;
@@ -58,11 +74,15 @@ main h2 {
   background-color: red;
 }
 
-.header img{
+.thingyHeader img{
   
   /*altura del elemento contenedor o elemento padre*/
   height:90%;
 
+}
+
+.profileHeader img{
+  height:90%;
 }
 
 
@@ -397,6 +417,11 @@ color:yellow;
   color:red;
 }
 
+.panelAlarm{
+  height:100%;
+  width:100%;
+}
+
 div.alarm{
   position: fixed;
   display: flex;
@@ -435,4 +460,20 @@ div.alarm{
   background-color: inherit;
 }
 
+.loginIn{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  z-index: 1010;
+  top: 20%;
+  left: 30%;
+  height:50%;
+  width: 40vw;
+  border:medium solid rgb(17, 0, 255);
+  border-radius: 1.2rem;
+  background-image: linear-gradient(rgb(46, 132, 243),rgb(188, 227, 243));
+}
 

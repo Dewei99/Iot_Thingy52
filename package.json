@@ -1,0 +1,60 @@
+{
+
+  "scripts": {
+
+    "start": "node server.js"
+
+  },
+
+  "name": "iot_thingy52",
+
+  "description": "Realizado por estudiante de la UPM",
+
+  "version": "1.0.0",
+
+  "main": "server.js",
+
+  "repository": {
+
+    "type": "git",
+
+    "url": "git+https://github.com/Dewei99/Iot_Thingy52.git"
+
+  },
+
+  "keywords": [],
+
+  "author": "",
+
+  "license": "ISC",
+
+  "bugs": {
+
+    "url": "https://github.com/Dewei99/Iot_Thingy52/issues"
+
+  },
+
+  "homepage": "https://github.com/Dewei99/Iot_Thingy52#readme",
+
+  "dependencies": {
+
+    "cookie-parser": "^1.4.6",
+
+    "ejs": "^3.1.8",
+
+    "express": "^4.18.2",
+
+    "express-session": "^1.17.3",
+
+    "hbs": "^4.2.0",
+
+    "mongoose": "^6.8.3",
+
+    "passport": "^0.6.0",
+
+    "passport-local": "^1.0.0"
+
+  }
+
+}
+

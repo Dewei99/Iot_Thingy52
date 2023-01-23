@@ -29,7 +29,7 @@ export async function motionSensors(device,wavFile){
 
         let bool=true,audioState;
         localStorage.setItem('audioState', 'off');
-        localStorage.setItem('alarm', 'on');
+       // localStorage.setItem('alarm', 'on');
         //audioState=true;
         //await playAudio(device,arrayFile);
         async function logRawData(data) {
