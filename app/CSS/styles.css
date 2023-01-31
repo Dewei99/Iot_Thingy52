@@ -469,11 +469,19 @@ div.alarm{
   overflow-y: auto;
   z-index: 1010;
   top: 20%;
-  left: 30%;
-  height:50%;
+  left: 26%;
+  height:40%;
   width: 40vw;
   border:medium solid rgb(17, 0, 255);
   border-radius: 1.2rem;
   background-image: linear-gradient(rgb(46, 132, 243),rgb(188, 227, 243));
 }
 
+.loginButton{
+  border:medium solid rgb(17, 0, 255);
+  background-color: white;
+  border-radius: 0.5rem;
+  text-shadow: none;
+  padding: 0.2rem;
+  /*color:white;*/
+}

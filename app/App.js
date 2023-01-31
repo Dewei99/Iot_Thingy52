@@ -16,16 +16,17 @@ import { router } from "./helpers/router.js";
 import { navigateTo } from "./helpers/navigateTo.js";
 import { LoginIn } from "./Components/LoginIn.js";
 import { ProfilePicture } from "./Components/ProfilePicture.js";
+import { ProfileHeader } from "./Components/ProfileHeader.js";
 
 export function App(){
     const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"),
     $footer=d.querySelector(".footer"),$aside=d.querySelector(".panelMenu"),$asideAlarm=d.querySelector(".panelAlarm"), 
-    $sensores = d.createElement("div"),$thingyHeader = d.createElement("div"),$profileHeader= d.createElement("div"),
-    $dataBase = d.createElement("div");
+    $sensores = d.createElement("div"),$thingyHeader = d.createElement("div"),$dataBase = d.createElement("div");;
+    //const $profileHeader= d.createElement("div"),
     $sensores.classList.add("sensores");
     $dataBase.classList.add("dataBase");
     $thingyHeader.classList.add("thingyHeader");
-    $profileHeader.classList.add("profileHeader");
+    //$profileHeader.classList.add("profileHeader");
     $dataBase.innerHTML=`base de dato`;
      //let audioState=false;//esta variable se va a utilizar para activar o desactivar el envio de datos de audio al dispositivo
    // $root.appendChild(Title());
@@ -35,7 +36,7 @@ export function App(){
     $thingyHeader.appendChild(Title());
     $thingyHeader.appendChild(Loader());
 
-    $profileHeader.appendChild(ProfilePicture());
+    //$profileHeader.appendChild(ProfilePicture());
 
     /*$header.appendChild(MenuButton());
     $header.appendChild(Logo());
@@ -76,7 +77,7 @@ export function App(){
     //ledController(thingy);
 
     $header.appendChild($thingyHeader);
-    $header.appendChild($profileHeader);
+    $header.appendChild(ProfileHeader());
     /*audioState=true;
     console.log(`audioState: ${audioState}`);*/
     /*let content = $main.innerHTML;
@@ -90,7 +91,8 @@ export function App(){
 
     document.body.addEventListener("click", e => {
       if (e.target.matches("[data-link]")) {
-          e.preventDefault();
+          //e.preventDefault();
+          //e.stopImmediatePropagation();
           navigateTo(e.target.href);
       }
     });

@@ -29,6 +29,7 @@ export async function router(){
             $loginIn.style.display="none";
             console.log("estoy en /database");
             console.log($loginIn.style.display);
+            
         } }
     ];
 
