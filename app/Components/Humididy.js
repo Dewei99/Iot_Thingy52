@@ -1,10 +1,14 @@
 import { updateData } from "../helpers/updateData.js";
 import { CreateChart } from "./CreateChart.js";
 import { ledController } from "../helpers/ledController.js";
+import { SaveButton } from "./SaveButton.js";
+import { postAjax } from "../helpers/postAjax.js";
+import { time } from "../helpers/time.js";
+import { date } from "../helpers/date.js";
 export function Humidity(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $humedad = d.createElement("canvas"),$boton=d.querySelector(boton);
-    let estado=0;
+    let estado=0,data_x=[],data_y=[];
     let $chart,high=true,normal=true;
 
     $article.classList.add("humedad");                            
@@ -12,7 +16,8 @@ export function Humidity(thingy, boton){
 
     $article.appendChild($title);
     $article.appendChild($humedad);
-    
+    $article.appendChild(SaveButton("save-humidity"));
+
     localStorage.setItem('humidityWarning', 'off');
 
     function logData(data) {
@@ -21,6 +26,8 @@ export function Humidity(thingy, boton){
         <header>Humedad</header>
         Humedad: ${data.detail.value} ${data.detail.unit}`;
         updateData($chart, data.detail.value);
+        data_y.push(data.detail.value);
+        data_x.push(time());
         //console.log(data);
         if(data.detail.value>=65){
             $title.innerHTML = `
@@ -102,6 +109,37 @@ export function Humidity(thingy, boton){
                 console.log("error");
             }          
         }   
+        if(e.target.getAttribute("class")=="save-humidity"){
+            let objeto={
+                sensor: "Humedad (%)",
+                date:date(),
+                data_x: data_x,
+                data_y: data_y};
+            console.log(date());
+            postAjax("/save", JSON.stringify(objeto), 
+                function(data){
+                    const d=document,$panel=d.querySelector(".save-humidity"),
+                    $message=$panel.parentElement.querySelector(".message");
+                    $message.innerHTML=`${data.message}`;
+                    $message.classList.add("success"); 
+                    setTimeout(function(){
+                        $message.classList.remove("success"); 
+                    },3000);
+            },  function(error){
+                    const d=document,$panel=d.querySelector(".save-humidity"),
+                    $newMessage=$panel.parentElement.querySelector(".message");
+                    let errorMessage= error.statusText||error.message || "Ocurrió un error";
+                    console.log(error.status);
+                    $newMessage.innerHTML=`<b>Error ${error.status}: ${errorMessage}</b>`;
+                    $newMessage.classList.add("error"); 
+                    setTimeout(function(){
+                        $newMessage.classList.remove("error"); 
+                    },3000);
+                    
+            }
+            )
+        }
+        e.stopPropagation();
     });
     
     return $article;

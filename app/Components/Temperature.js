@@ -1,11 +1,15 @@
+import { date } from "../helpers/date.js";
 import { ledController } from "../helpers/ledController.js";
+import { postAjax } from "../helpers/postAjax.js";
+import { time } from "../helpers/time.js";
 import { updateData } from "../helpers/updateData.js";
 import { CreateChart } from "./CreateChart.js";
+import { SaveButton } from "./SaveButton.js";
 
 export function Temperature(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
-    let estado=0;
+    let estado=0,data_x=[],data_y=[];
     let $chart, high=true,low=true,normal=true;
 
     $article.classList.add("temperatura");                            
@@ -15,6 +19,7 @@ export function Temperature(thingy, boton){
 
     $article.appendChild($title);
     $article.appendChild($temperatura);
+    $article.appendChild(SaveButton("save-temperature"));
     localStorage.setItem('temperatureWarning', 'off');
     
     function logData(data) {
@@ -24,6 +29,8 @@ export function Temperature(thingy, boton){
         Temperature: ${data.detail.value} ${data.detail.unit}`;
         //actualizar gráfica
         updateData($chart, data.detail.value);
+        data_y.push(data.detail.value);
+        data_x.push(time());
         if(data.detail.value>=38){
             $title.innerHTML = `
             <header>Temperatura</header>
@@ -115,6 +122,38 @@ export function Temperature(thingy, boton){
                 console.log("error");
             }          
         }   
+
+        if(e.target.getAttribute("class")=="save-temperature"){
+            let objeto={
+                sensor: "Temperature (ºC)",
+                date:date(),
+                data_x: data_x,
+                data_y: data_y};
+            console.log(date());
+            postAjax("/save", JSON.stringify(objeto), 
+                function(data){
+                    const d=document,$panel=d.querySelector(".save-temperature"),
+                    $message=$panel.parentElement.querySelector(".message");
+                    $message.innerHTML=`${data.message}`;
+                    $message.classList.add("success"); 
+                    setTimeout(function(){
+                        $message.classList.remove("success"); 
+                    },3000);
+            },  function(error){
+                    const d=document,$panel=d.querySelector(".save-temperature"),
+                    $newMessage=$panel.parentElement.querySelector(".message");
+                    let errorMessage= error.statusText||error.message || "Ocurrió un error";
+                    console.log(error.status);
+                    $newMessage.innerHTML=`<b>Error ${error.status}: ${errorMessage}</b>`;
+                    $newMessage.classList.add("error"); 
+                    setTimeout(function(){
+                        $newMessage.classList.remove("error"); 
+                    },3000);
+                    
+            }
+            )
+        }
+        e.stopPropagation();
     });
     
     return $article;

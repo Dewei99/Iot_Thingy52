@@ -1,4 +1,4 @@
-export function CreateChart(contenedor,tipo){
+export function CreateChart(contenedor,tipo,data_x=[],data_y=[]){
 
 let $grafica;
 
@@ -9,9 +9,9 @@ const crear=()=>{
 return new Chart(document.getElementById(contenedor),{
     type: 'line',
     data: {
-        labels: [],
+        labels: data_x,//[],
         datasets: [{ 
-            data: [],
+            data: data_y,//[],
             label: tipo,
             borderColor: "#3e95cd",
             fill: false

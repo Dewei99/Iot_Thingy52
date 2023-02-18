@@ -4,7 +4,7 @@ import { playAudio } from "./playAudio.js";
 
 export async function motionSensors(device,wavFile){
     try{
-        const d=document,$screen=d.querySelector(".alarm");
+        const d=document,$screen=d.querySelector(".alarm"),$panelAlarm=d.querySelector(".panelAlarm");
         let arrayFile;
 
         arrayFile = await fetchWavFile(wavFile);
@@ -50,6 +50,7 @@ export async function motionSensors(device,wavFile){
                     console.log(`ejecuto audio y bool:${bool}`);
                     await playAudio(device,arrayFile);
                     await ledController(device);
+                    $panelAlarm.classList.add("is-active");
                     $screen.classList.add("is-active");
                 //}
                 }
@@ -92,10 +93,6 @@ export async function motionSensors(device,wavFile){
                 } */   
             //}
         }
-
-    /*function logRotationData(data) {
-        console.log(data);
-    }*/
 
     
         await device.rawdata.start();

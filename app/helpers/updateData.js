@@ -1,5 +1,7 @@
+import { time } from "./time.js";
+
 export function updateData(chart, data){
-    function addZero(i) {
+    /*function addZero(i) {
         if (i < 10) {i = "0" + i}
         return i;
     }
@@ -8,7 +10,8 @@ export function updateData(chart, data){
     let h = addZero(d.getHours());
     let m = addZero(d.getMinutes());
     let s = addZero(d.getSeconds());
-    let time = h + ":" + m + ":" + s;
+    let time = h + ":" + m + ":" + s;*/
+    let t=time();
         //chart.data.labels.push(time);
     chart.data.datasets.forEach((dataset) => {
         //console.log(dataset.data.length);
@@ -19,7 +22,7 @@ export function updateData(chart, data){
         }
         dataset.data.push(data);
     });
-    chart.data.labels.push(time);
+    chart.data.labels.push(t);
     chart.update();
 
 

@@ -12,6 +12,9 @@ const mongoose = require('mongoose');
 //const fileURLToPath=require('url');
 const app = express();
 
+//para poder recibir correctamente los datos enviado en el lado del cliente 
+app.use(express.json());
+
 // static files
 app.use("/app",express.static(path.resolve(__dirname,"app")));
 
@@ -25,6 +28,7 @@ const uri=`mongodb+srv://${user}:${password}@cluster0.ftd5eru.mongodb.net/${dbNa
 .catch(e=>console.log(e));*/
 
 const Sensor = require('./models/sensor');
+const sensorController = require('./controllers/sensorController')
 
 //middleware, permite leer los datos enviado por un formulariowq2
 app.use(express.urlencoded({extended:true}));
@@ -112,9 +116,11 @@ passport.deserializeUser(function(id,done){
 });*/
 app.get("/",(req,res,next)=>{
     console.log("hola /");
-    res.sendFile(path.resolve(__dirname,"views","index.html"));
+    //res.sendFile(path.resolve(__dirname,"views","index.html"));
     if(req.isAuthenticated()){
         console.log("conectado usuario");
+        res.sendFile(path.resolve(__dirname,"views","index.html"));
+        console.log(req.user);
     }else{
         res.redirect("/login");
     }
@@ -135,7 +141,7 @@ app.get("/login",(request,response)=>{
 app.get("/database",async (request,response)=>{
     try {
         console.log("hola /databases");
-        response.sendFile(path.resolve(__dirname,"views","index.html"));
+        //response.sendFile(path.resolve(__dirname,"views","index.html"));
         if(request.isAuthenticated()){
             console.log("conectado usuario");
         }else{
@@ -144,10 +150,11 @@ app.get("/database",async (request,response)=>{
         
         if(request.isAuthenticated()){
             const arraySensores = await Sensor.find();
-            console.log("DataBase:");
+            /*console.log("DataBase:");
             console.log(arraySensores);
             console.log(arraySensores[0]._id);
-            console.log(arraySensores[0]._id.toString());
+            console.log(arraySensores[0]._id.toString());*/
+            response.json(arraySensores);
         }
 
     } catch (error) {
@@ -179,16 +186,39 @@ app.post("/login",
     //response.redirect("/");
 );
 
-////cerrar sesión
-app.get('/borrar/:id',  function(req, res) {
+//borrar datos de la base de datos
+app.get('/delete/:id',
+    sensorController.borrar
+    /* console.log(req.params.id);
+    res.json({success:true});*/
+);
 
+//guardar datos a la base de datos
+app.post('/save',  sensorController.crear/*function(req, res) {
+    //res.json({ message: 'hey' });
+    console.log(req);
+    res.status(400).end();
+    console.log("estoy en /save");
+    
+}*/);
+
+//enviar información de usuario al cliente
+app.get('/user',  function(req, res) {
+    if(req.isAuthenticated()){
+        res.json(req.user);
+    }
+});
+
+app.get('/sensors',  function(req, res) {
+    console.log(req.params.id);
 });
 
 //cerrar sesión
 app.get('/signout',  function(req, res, next) {
     req.logout(function(err) {
-    if (err) { return next(err); }
-    res.redirect('/')
+        console.log("estoy en logOut");
+        if (err) { return next(err); }
+        res.redirect('/')
     })
 });
 

@@ -1,5 +1,5 @@
 export function Battery(device) {
-    const $battery = document.createElement("div"), $icon=document.createElement("i"),$span=document.createElement("span");
+    const $battery = document.createElement("div"), $icon=document.createElement("i"),$span=document.createElement("span"), $title=document.querySelector(".title");
     let estado=false, data;
     $battery.classList.add("battery");
     $icon.classList.add("fa");
@@ -112,10 +112,12 @@ export function Battery(device) {
         if((device.connected)&&(estado===false)){
             start_Bateria(device);
             estado=true;
+            //$title.innerHTML='Thingy:52 - Conectado';
             console.log(device.connected);
         }
         if((device.connected===false)&&(estado===true)){
             stop_Bateria(device);
+            //$title.innerHTML='Thingy:52 - Desconectado';
             estado=false;
         }
     }, 1000);
