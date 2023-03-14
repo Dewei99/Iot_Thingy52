@@ -125,7 +125,9 @@ export function GasSensor(thingy, boton){
             }else if(estado===1){
                 $article.classList.toggle("is-active");
                 stop_Gas(thingy);
-                dato={};
+                localStorage.setItem('gasWarning', 'off');
+                ledController(thingy);
+                //dato={};
 
             }else{
                 console.log("error");

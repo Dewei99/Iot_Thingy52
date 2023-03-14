@@ -15,8 +15,8 @@ const greenLed = {
 const yellowLed = {
     mode: "breathe",
     color: 3,//yellow
-    intensity: 80,
-    delay: 700,
+    intensity: 100,
+    delay: 500,
 }
 
 const redLed = {
@@ -26,9 +26,17 @@ const redLed = {
     delay: 200,
 }
 
+const purpleLed = {
+    mode: "breathe",
+    color: 5,//purple
+    intensity: 90,
+    delay: 400,
+}
+
 export default{
     blueLed,
     greenLed,
     yellowLed,
-    redLed
+    redLed,
+    purpleLed
 };

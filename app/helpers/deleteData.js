@@ -50,7 +50,7 @@ export function deleteData(){
                                 }
                                 )
                             }); 
-                        },3000);
+                        },2500);
                         console.log("volver a renderizar datos");
 
                     }

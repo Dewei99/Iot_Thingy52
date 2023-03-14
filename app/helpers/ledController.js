@@ -20,7 +20,7 @@ export async function ledController(device){
         if(alarm=='on'){
             bool=await led(device,color.redLed);
         }else if((alarm=='off')&&(temperatureWarning=='on'||humidityWarning=='on'||gasWarning=='on')){
-            bool=await led(device,color.yellowLed);
+            bool=await led(device,color.purpleLed);
         }else if((alarm=='off')&&(temperatureWarning=='off'||humidityWarning=='off'||gasWarning=='off')){
             bool=await led(device,color.greenLed);
             console.log("ejecutando");

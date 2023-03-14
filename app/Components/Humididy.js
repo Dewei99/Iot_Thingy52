@@ -104,6 +104,8 @@ export function Humidity(thingy, boton){
             }else if(estado===1){
                 $article.classList.toggle("is-active");
                 stop_Humedad(thingy);
+                localStorage.setItem('humidityWarning', 'off');
+                ledController(thingy);
 
             }else{
                 console.log("error");

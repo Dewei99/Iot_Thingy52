@@ -22,6 +22,7 @@ import { getAjax } from "./helpers/getAjax.js";
 import { RenderData } from "./Components/RenderData.js";
 import { deleteData } from "./helpers/deleteData.js";
 import { DeleteMessage } from "./Components/DeleteMessage.js";
+import { Microphone } from "./Components/Microphone.js";
 
 export function App(){
     const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"),
@@ -69,6 +70,8 @@ export function App(){
     $sensores.appendChild(Temperature(thingy,".btn-temperature"));
     $sensores.appendChild(Humidity(thingy,".btn-humidity"));
     $sensores.appendChild(GasSensor(thingy,".btn-gas"));
+    //$sensores.appendChild(Microphone(thingy,".btn-microphone"));
+
 
     $main.appendChild(LogIn());
     $main.appendChild($sensores);

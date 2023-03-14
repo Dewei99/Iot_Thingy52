@@ -261,6 +261,11 @@ button.btn-gas.is-active{
   background-color: red;
 }
 
+button.btn-microphone.is-active{
+  background-color: red;
+}
+
+
 button.btn-alarm1.is-active{
   background-color: red;
 }
@@ -325,8 +330,44 @@ article header{
   color: inherit;
 }
 
-
 #chart-temperatura{
+  max-width: 100%;
+  height:auto;
+  max-height: 90%;
+  width:90%;
+}
+.microphone{
+  display: block;
+  position: relative;
+  opacity: 0;
+  padding:0;
+  margin:0;
+  visibility: hidden;
+  height: 0vh;
+  transition: opacity 0.5s ease, height 0.6s ease, visibility 0.5s ease;
+  /*color:red;*/
+}
+
+.microphone.is-active{
+  opacity: 1;
+  visibility:visible;
+  height: 650px;
+  margin-top: 1rem;
+  /*display: none;*/
+}
+
+.microphone.warning{
+  box-shadow: var(--warning-shadow-color);
+  border: var(--warning-border);
+}
+
+
+.microphone.title{
+  color: inherit;
+}
+
+
+#chart-microphone{
   max-width: 100%;
   height:auto;
   max-height: 90%;

@@ -6,29 +6,29 @@ import { updateData } from "../helpers/updateData.js";
 import { CreateChart } from "./CreateChart.js";
 import { SaveButton } from "./SaveButton.js";
 
-export function Temperature(thingy, boton){
+export function Microphone(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
-    $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
+    $microphone = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,data_x=[],data_y=[];
     let $chart, high=true,low=true,normal=true;
 
-    $article.classList.add("temperatura");                            
-    $temperatura.id="chart-temperatura";
+    $article.classList.add("microphone");                            
+    $microphone.id="chart-microphone";
 
     $title.classList.add("title"); 
 
     $article.appendChild($title);
-    $article.appendChild($temperatura);
-    $article.appendChild(SaveButton("save-temperature"));
-    localStorage.setItem('temperatureWarning', 'off');
+    $article.appendChild($microphone);
+    $article.appendChild(SaveButton("save-microphone"));
+    localStorage.setItem('noiseWarning', 'off');
     
     function logData(data) {
-
-        $title.innerHTML = `
-        <header>Temperatura</header>
-        Temperature: ${data.detail.value} ${data.detail.unit}`;
+        console.log(data.detail);
+       /* $title.innerHTML = `
+        <header>Nivel de ruido</header>
+        Ruido (dB): ${data.detail.value} ${data.detail.unit}`;*/
         //actualizar gráfica
-        updateData($chart, data.detail.value);
+        /*updateData($chart, data.detail.value);
         data_y.push(data.detail.value);
         data_x.push(time());
         if(data.detail.value>=38){
@@ -37,7 +37,6 @@ export function Temperature(thingy, boton){
             Temperature: ${data.detail.value} ${data.detail.unit} (Warning: Calor)`;
             localStorage.setItem('temperatureWarning', 'on');
             $article.classList.add("warning");
-            //evitar que se ejecute la funcion ledController constantemente
             if(high===true){
                 ledController(thingy);
                 high=false;
@@ -63,14 +62,14 @@ export function Temperature(thingy, boton){
                 low=true;
                 normal=false;
             }
-        }
+        }*/
     }
 
 
-    async function start_Temperatura(device) {
+    async function start_Microphone(device) {
         try{
-            let bool=await device.temperature.start();
-            let servicio=await device.addEventListener("temperature", logData);
+            let bool=await device.microphone.start();
+            let servicio=await device.addEventListener("microphone", logData);
             $boton.classList.add("is-active");
             console.log("estoy en la función start");
             console.log(bool);
@@ -86,10 +85,10 @@ export function Temperature(thingy, boton){
         }
     }
 
-    async function stop_Temperatura(device) {
+    async function stop_Microphone(device) {
         //await thingy.connect();
         try{
-            let bool=await device.temperature.stop();
+            let bool=await device.microphone.stop();
             $article.classList.remove("is-active");
             console.log("estoy en la función stop");
             console.log(bool);
@@ -107,35 +106,33 @@ export function Temperature(thingy, boton){
         if(e.target.matches(boton)||e.target.matches(`${boton} *`)){
 
             if(estado===0){
-                $chart=CreateChart("chart-temperatura","Temperatura (ºC)");
+                $chart=CreateChart("chart-microphone","microphone (dB)");
                 console.log($chart);
 
                 console.log(`existe chart: ${$chart}`);
                 $article.classList.toggle("is-active");
-                start_Temperatura(thingy);
+                start_Microphone(thingy);
 
                 
             }else if(estado===1){
                 $article.classList.toggle("is-active");
-                stop_Temperatura(thingy);
-                localStorage.setItem('temperatureWarning', 'off');
-                ledController(thingy);
+                stop_Microphone(thingy);
 
             }else{
                 console.log("error");
             }          
         }   
 
-        if(e.target.getAttribute("class")=="save-temperature"){
+        if(e.target.getAttribute("class")=="save-microphone"){
             let objeto={
-                sensor: "Temperature (ºC)",
+                sensor: "Microphone (dB)",
                 date:date(),
                 data_x: data_x,
                 data_y: data_y};
             console.log(date());
             postAjax("/save", JSON.stringify(objeto), 
                 function(data){
-                    const d=document,$panel=d.querySelector(".save-temperature"),
+                    const d=document,$panel=d.querySelector(".save-microphone"),
                     $message=$panel.parentElement.querySelector(".message");
                     $message.innerHTML=`${data.message}`;
                     $message.classList.add("success"); 
@@ -143,7 +140,7 @@ export function Temperature(thingy, boton){
                         $message.classList.remove("success"); 
                     },3000);
             },  function(error){
-                    const d=document,$panel=d.querySelector(".save-temperature"),
+                    const d=document,$panel=d.querySelector(".save-microphone"),
                     $newMessage=$panel.parentElement.querySelector(".message");
                     let errorMessage= error.statusText||error.message || "Ocurrió un error";
                     console.log(error.status);

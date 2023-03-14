@@ -9,6 +9,9 @@ const session=require('express-session');
 const PassportLocal= require('passport-local').Strategy;
 const mongoose = require('mongoose');
 
+//dotenv es un módulo de dependencia cero que carga variables de entorno de un archivo en process.env.
+require('dotenv').config();
+
 //const fileURLToPath=require('url');
 const app = express();
 
@@ -19,8 +22,7 @@ app.use(express.json());
 app.use("/app",express.static(path.resolve(__dirname,"app")));
 
 //Conexion a base de datos
-
-const uri=`mongodb+srv://${user}:${password}@cluster0.ftd5eru.mongodb.net/${dbName}?retryWrites=true&w=majority`;//url de conexion
+const uri=`mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.ftd5eru.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;//url de conexion
 
 /*mongoose.connect(uri,
     {useNewUrlParser:true, useUnifiedTopology:true}
@@ -57,7 +59,7 @@ app.use(passport.session());
 passport.use(new PassportLocal(function(username,passWord,done){
     
     //si se cumple las condiciones, se inicia la sesión
-    if(username===user&& passWord===password){
+    if(username===process.env.USER&& passWord===process.env.PASSWORD){
 
         mongoose.connect(uri,
             {useNewUrlParser:true, useUnifiedTopology:true}
@@ -116,6 +118,8 @@ passport.deserializeUser(function(id,done){
 });*/
 app.get("/",(req,res,next)=>{
     console.log("hola /");
+    console.log('Cookies: ', req.cookies);
+    //console.log(document.cookie);
     //res.sendFile(path.resolve(__dirname,"views","index.html"));
     if(req.isAuthenticated()){
         console.log("conectado usuario");
