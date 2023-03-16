@@ -20,7 +20,7 @@ app.use(express.json());
 
 // static files
 //app.use("/app",express.static(path.resolve(__dirname,"app")));
-app.use("/app",express.static(path.join(__dirname, "/app")));
+app.use("/app",express.static(path.join(__dirname, "app")));
 
 //Conexion a base de datos
 const uri=`mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.ftd5eru.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;//url de conexion
@@ -124,7 +124,8 @@ app.get("/",(req,res,next)=>{
     //res.sendFile(path.resolve(__dirname,"views","index.html"));
     if(req.isAuthenticated()){
         console.log("conectado usuario");
-        res.sendFile(path.resolve(__dirname,"views","index.html"));
+        //res.sendFile(path.resolve(__dirname,"views","index.html"));
+        res.sendFile(path.resolve(__dirname,"index.html"));
         console.log(req.user);
     }else{
         res.redirect("/login");
@@ -134,10 +135,11 @@ app.get("/",(req,res,next)=>{
     //console.log("server a /.fail");
 }
 );
-app.get("/login",(request,response)=>{
+app.get("/login",(req,res)=>{
     console.log("hola /login");
-    //response.send("hola");
-    response.sendFile(path.resolve(__dirname,"views","index.html"));
+    //res.send("hola");
+    //ressendFile(path.resolve(__dirname,"views","index.html"));
+    res.sendFile(path.resolve(__dirname,"index.html"));
     //Mostrar el formulario de login
     //console.log("hola /login");
 
