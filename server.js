@@ -21,6 +21,7 @@ app.use(express.json());
 // static files
 app.use("/app",express.static(path.resolve(__dirname,"app")));
 
+
 //Conexion a base de datos
 const uri=`mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.ftd5eru.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;//url de conexion
 
