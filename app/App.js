@@ -114,7 +114,7 @@ export function App(){
     });
 
     //comprobar inicio de sesión
-    const $error=d.querySelector(".error"),$form=d.querySelector(".login");;
+    const $error=d.querySelector(".error"),$form=d.querySelector(".login");
     let error=localStorage.getItem('error');
     console.log(error);
     if(error=='on'){
