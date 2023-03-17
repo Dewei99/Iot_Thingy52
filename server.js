@@ -127,7 +127,8 @@ app.get("/",(req,res,next)=>{
     if(req.isAuthenticated()){
         console.log("conectado usuario");
         //res.sendFile(path.resolve(__dirname,"views","index.html"));
-        res.sendFile(path.resolve(__dirname,"index.html"));
+        //res.sendFile(path.resolve(__dirname,"index.html"));
+        res.sendFile(path.resolve(__dirname,"app","index.html"));
         console.log(req.user);
     }else{
         res.redirect("/login");
@@ -141,7 +142,8 @@ app.get("/login",(req,res)=>{
     console.log("hola /login");
     //res.send("hola");
     //ressendFile(path.resolve(__dirname,"views","index.html"));
-    res.sendFile(path.resolve(__dirname,"index.html"));
+    //res.sendFile(path.resolve(__dirname,"index.html"));
+    res.sendFile(path.resolve(__dirname,"app","index.html"));
     //Mostrar el formulario de login
     //console.log("hola /login");
 
