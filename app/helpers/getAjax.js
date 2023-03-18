@@ -8,6 +8,9 @@ export function getAjax(url='',callback){
         }
       })
         .then(function (response) {
+          if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+          }
           return response.json();
         })
         .then(function (data) {
@@ -18,7 +21,9 @@ export function getAjax(url='',callback){
         .catch(function (error) {
           localStorage.setItem('error', 'on');
           //$error.classList.add("is-active");
+          console.error(`Fetch problem: ${err.message}`);
           console.log(error);
+
         });
 
 

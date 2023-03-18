@@ -8,7 +8,7 @@ export function RenderData(){
     const d=document,$dataBase=d.querySelector(".dataBase"),$userMenu=d.querySelector(".userMenu");
     $userMenu.addEventListener("click", e => {
         if (e.target.matches(".databaseLink")) {
-            
+            console.log("estoy en database");
             getAjax("/database",function(data){
                 let html=``;
                 data.forEach(el => {
