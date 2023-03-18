@@ -82,7 +82,8 @@ export function App(){
     $main.appendChild(Humidity(thingy,".btn-humidity"));
     $main.appendChild(GasSensor(thingy,".btn-gas"));*/
     //Btn_Alarma(thdingy,".btn-alarm1","/Iot_Thingy52/app/assets/pcm0808m.wav");
-    AlarmButton(thingy,".btn-alarm1","/app/assets/alarma.wav");
+    //AlarmButton(thingy,".btn-alarm1","/app/assets/alarma.wav");
+    AlarmButton(thingy,".btn-alarm1","/assets/alarma.wav");
 
     //funciones helpers
     menuFunction(".panel-btn",".panelMenu");
