@@ -28,7 +28,7 @@ export function deleteData(){
                                     html+=`
                                     <div class="dataPanel">
                                         <div class="panelHeader">
-                                            <img src="../app/assets/flecha.png" alt="flecha" data-class="arrow" data-id="${el._id}"/>
+                                            <img src="/assets/flecha.png" alt="flecha" data-class="arrow" data-id="${el._id}"/>
                                             <h2>${el.sensor} &nbsp;&nbsp;&nbsp;&nbsp; ${el.date}<h2>
                                             <button type="button" class="deleteBtn" data-delete="${el._id}">Delete</button>
                                         </div>

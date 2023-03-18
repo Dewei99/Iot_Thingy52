@@ -139,17 +139,25 @@ header span{
 }
 
 .panel-btn {
-
+ 
   z-index: 999;
   /*width: 4rem;
   height: 4rem;*/
+  /*height: 100%;
+  border-radius: 50%;
+  padding: 0.5rem;*/
+
+  margin-right: 0.3rem;
+  width: 4rem;
   height: 100%;
   border-radius: 50%;
-  padding: 0.5rem;
+  padding: 0;
+  display: flex;
   justify-content: center;
   align-items: center;
 
 }
+
 
 .panelMenu {
   position: fixed;
