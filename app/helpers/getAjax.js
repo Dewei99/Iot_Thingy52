@@ -21,7 +21,7 @@ export function getAjax(url='',callback){
         .catch(function (error) {
           localStorage.setItem('error', 'on');
           //$error.classList.add("is-active");
-          console.error(`Fetch problem: ${err.message}`);
+          console.error(`Fetch problem: ${error.message}`);
           console.log(error);
 
         });
