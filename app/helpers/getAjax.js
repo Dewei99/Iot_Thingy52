@@ -23,9 +23,5 @@ export function getAjax(url='',callback){
           //$error.classList.add("is-active");
           console.error(`Fetch problem: ${error.message}`);
           console.log(error);
-
         });
-
-
-
 }
