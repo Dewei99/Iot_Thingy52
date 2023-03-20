@@ -9,7 +9,7 @@ export function Humidity(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $humedad = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,data_x=[],data_y=[];
-    let $chart,high=true,normal=true;
+    let $chart,high=true,normal=true,ifttt=true;
 
     $article.classList.add("humedad");                            
     $humedad.id="chart-humedad";
@@ -41,6 +41,26 @@ export function Humidity(thingy, boton){
                 high=false;
                 normal=true;
             }
+            //enviar un correo de alerta
+            if(ifttt===true){
+                ifttt=false;
+                let objeto={event: "Humedad",
+                    alert:"elevada",
+                    value:"más de 65%"    
+                };
+                postAjax("/ifttt",
+                    JSON.stringify(objeto),
+                        function(data){
+                        console.log(data.message);
+                    },  function(error){
+                      console.log(error);
+                    }
+                    );
+                setTimeout(async function(){
+                    ifttt=true;
+                },60000);
+            }
+
         }else{
             localStorage.setItem('humidityWarning', 'off');
             $article.classList.remove("warning");

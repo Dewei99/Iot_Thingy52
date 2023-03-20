@@ -16,7 +16,7 @@ module.exports.crear = (req, res)=>{
                 status:501
             })
         }else{
-            res.json({ message: 'guardado correctamente' });
+            return res.json({ message: 'guardado correctamente' });
         }
     })
 }

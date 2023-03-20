@@ -10,7 +10,7 @@ export function Temperature(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,data_x=[],data_y=[];
-    let $chart, high=true,low=true,normal=true;
+    let $chart, high=true,low=true,normal=true,ifttt=true;
 
     $article.classList.add("temperatura");                            
     $temperatura.id="chart-temperatura";
@@ -43,6 +43,26 @@ export function Temperature(thingy, boton){
                 high=false;
                 normal=true;
             }
+            //enviar un correo de alerta
+            if(ifttt===true){
+                ifttt=false;
+                let objeto={event: "Temperatura",
+                    alert:"elevada",
+                    value:"más de 38º"    
+                };
+                postAjax("/ifttt",
+                    JSON.stringify(objeto),
+                    function(data){
+                        console.log(data.message);
+                    },  function(error){
+                         console.log(error);
+                    }
+                );
+                setTimeout(async function(){
+                    ifttt=true;
+                },60000);
+            }
+
         }else if (data.detail.value<=10){
             $title.innerHTML = `
             <header>Temperatura</header>
@@ -53,6 +73,25 @@ export function Temperature(thingy, boton){
                 ledController(thingy);
                 low=false;
                 normal=true;
+            }
+            //enviar un correo de alerta
+            if(ifttt===true){
+                ifttt=false;
+                let objeto={event: "Temperatura",
+                    alert:"baja",
+                    value:"menos de 10º"    
+                };
+                postAjax("/ifttt",
+                    JSON.stringify(objeto),
+                        function(data){
+                        console.log(data.message);
+                    },  function(error){
+                      console.log(error);
+                    }
+                    );
+                setTimeout(async function(){
+                    ifttt=true;
+                },60000);
             }
         }else{
             localStorage.setItem('temperatureWarning', 'off');

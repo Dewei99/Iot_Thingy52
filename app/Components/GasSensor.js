@@ -10,7 +10,7 @@ export function GasSensor(thingy, boton){
     const d=document,$article=d.createElement("article"),$titleCO2 = d.createElement("div"),
     $titleCOV = d.createElement("div"),$CO2 = d.createElement("canvas"),$COV = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,high=true,normal=true,dataCO2_x=[],dataCO2_y=[],dataCOV_x=[],dataCOV_y=[];
-    let $chartCO2, $chartCOV;
+    let $chartCO2, $chartCOV,iftttCO2=true,iftttCOV=true;
 
     $article.classList.add("gas");
 
@@ -55,7 +55,64 @@ export function GasSensor(thingy, boton){
                 high=false;
                 normal=true;
             }
-            
+            //enviar un correo de alerta
+            if(iftttCO2===true){
+                iftttCO2=false;
+                let objeto={event: "CO2",
+                    alert:"elevada",
+                    value:"más de 800 ppm"    
+                };
+                postAjax("/ifttt",
+                    JSON.stringify(objeto),
+                    function(data){
+                        console.log(data.message);
+                    },  function(error){
+                         console.log(error);
+                    }
+                );
+                setTimeout(async function(){
+                    iftttCO2=true;
+                },60000);
+            }
+        }else{
+            localStorage.setItem('gasWarning', 'off');
+            $article.classList.remove("warning");
+            if(normal===true){
+                ledController(thingy);
+                high=true;
+                normal=false;
+            }
+        }
+
+        if(data.detail.TVOC.value>=500){
+            $titleCOV.innerHTML = `
+            <header>COV</header>
+            COV: ${data.detail.TVOC.value} ${data.detail.TVOC.unit} (Alto)`;
+            localStorage.setItem('gasWarning', 'on');
+            $article.classList.add("warning");
+            if(high===true){
+                ledController(thingy);
+                high=false;
+                normal=true;
+            }
+            if(iftttCOV===true){
+                iftttCOV=false;
+                let objeto={event: "COV",
+                    alert:"elevada",
+                    value:"más de 500 ppb"    
+                };
+                postAjax("/ifttt",
+                    JSON.stringify(objeto),
+                    function(data){
+                        console.log(data.message);
+                    },  function(error){
+                         console.log(error);
+                    }
+                );
+                setTimeout(async function(){
+                    iftttCOV=true;
+                },60000);
+            }  
         }else{
             localStorage.setItem('gasWarning', 'off');
             $article.classList.remove("warning");

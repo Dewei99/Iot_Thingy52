@@ -8,6 +8,10 @@ const cookieParser=require('cookie-parser');
 const session=require('express-session');
 const PassportLocal= require('passport-local').Strategy;
 const mongoose = require('mongoose');
+const IFTTT = require('ifttt-webhooks-channel')
+
+// Crear una nueva instancia de IFTTT
+const ifttt = new IFTTT('_WmoQXPVccGJBhNnFNOiR');// la clave de mi canal de webhooks
 
 //dotenv es un módulo de dependencia cero que carga variables de entorno de un archivo en process.env.
 require('dotenv').config();
@@ -232,5 +236,35 @@ app.get('/signout',  function(req, res, next) {
         res.redirect('/')
     })
 });
+
+app.post('/ifttt',(req, response)=>{
+    //console.log(req.body)
+    //console.log(req);
+
+    //IFTTT
+    ifttt.post(req.body.event, [
+        req.body.event,
+        req.body.alert,
+        req.body.value
+    ])
+    .then(res => {
+        console.log(res);
+        response.json({ message: 'enviado aviso correctamente' }); })
+    .catch(err => {console.error(err);
+        response.status(500).json({
+            message: 'Error al enviar aviso',
+            status:501
+        })
+    });
+
+});
+
+/*ifttt.post('alarma', [
+    'thingy:52',
+    'alarma',
+    'activado'
+])
+.then(res => console.log(res))
+.catch(err => console.error(err));*/
 
 app.listen(process.env.PORT||3000,()=>console.log("Server started"));
