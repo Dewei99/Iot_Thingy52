@@ -43,7 +43,7 @@ export function deleteData(){
                                     `;
                                     
                                 });
-                                d.querySelector(".dataBase").innerHTML=html;
+                                d.querySelector(".dataBaseContent").innerHTML=html;
                 
                                 data.forEach(el =>{
                                     CreateChart(`${el._id}`,`${el.sensor}`,el.data_x,el.data_y);

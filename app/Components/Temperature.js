@@ -1,16 +1,18 @@
 import { date } from "../helpers/date.js";
+import { getAjax } from "../helpers/getAjax.js";
 import { ledController } from "../helpers/ledController.js";
 import { postAjax } from "../helpers/postAjax.js";
 import { time } from "../helpers/time.js";
 import { updateData } from "../helpers/updateData.js";
 import { CreateChart } from "./CreateChart.js";
+import { RealTimeDataButton } from "./RealTimeDataButton.js";
 import { SaveButton } from "./SaveButton.js";
 
 export function Temperature(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,data_x=[],data_y=[];
-    let $chart, high=true,low=true,normal=true,ifttt=true;
+    let $chart, high=true,low=true,normal=true,ifttt=true,shareButton=false,share=false,id;
 
     $article.classList.add("temperatura");                            
     $temperatura.id="chart-temperatura";
@@ -20,6 +22,7 @@ export function Temperature(thingy, boton){
     $article.appendChild($title);
     $article.appendChild($temperatura);
     $article.appendChild(SaveButton("save-temperature"));
+    $article.appendChild(RealTimeDataButton("share-temperature"));
     localStorage.setItem('temperatureWarning', 'off');
     
     function logData(data) {
@@ -31,6 +34,26 @@ export function Temperature(thingy, boton){
         updateData($chart, data.detail.value);
         data_y.push(data.detail.value);
         data_x.push(time());
+
+        //actualizar datos compartidos
+        if(shareButton===true){
+            console.log("actualizando datos temperatura");
+            console.log(id);
+            let objeto={
+                id:id,
+                sensor: "Temperature (ºC)",
+                date:date(),
+                data_x: data_x,
+                data_y: data_y};
+            postAjax("/update", JSON.stringify(objeto), 
+                function(data){
+                    console.log(data.message);
+                }, function(error){
+                    let errorMessage= error.statusText||error.message || "Ocurrió un error";
+                    console.log(errorMessage);
+            });
+        }
+
         if(data.detail.value>=38){
             $title.innerHTML = `
             <header>Temperatura</header>
@@ -143,8 +166,11 @@ export function Temperature(thingy, boton){
     }
 
     d.addEventListener("click", async function(e){
-        if(e.target.matches(boton)||e.target.matches(`${boton} *`)){
+        const $shareButton=d.querySelector(".share-temperature");
 
+        //activar sensor de temperatura
+        if(e.target.matches(boton)||e.target.matches(`${boton} *`)){
+           
             if(estado===0){
                 $chart=CreateChart("chart-temperatura","Temperatura (ºC)");
                 console.log($chart);
@@ -159,12 +185,92 @@ export function Temperature(thingy, boton){
                 stop_Temperatura(thingy);
                 localStorage.setItem('temperatureWarning', 'off');
                 ledController(thingy);
-
+                $shareButton.removeAttribute("data-active");
+                getAjax("/realTimeData",function(data){
+                    data.forEach(el => {
+                        if(el.sensor==="Temperature (ºC)"){
+                            getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir temperatura");
+                                }
+                            });
+                        }
+                    });
+                });
+                localStorage.setItem('shareTemperature', 'off');
             }else{
                 console.log("error");
             }          
         }   
 
+        //modo real time data
+        if(e.target.getAttribute("class")==="share-temperature"){
+            console.log(shareButton);
+            if(shareButton===false){
+                
+                console.log(`shareButton: ${shareButton}`);
+                $shareButton.setAttribute("data-active", "true");
+
+                let objeto={
+                    sensor: "Temperature (ºC)",
+                    date:date(),
+                    data_x: data_x,
+                    data_y: data_y};
+                postAjax("/share", JSON.stringify(objeto), 
+                function(data){
+                    const d=document,$panel=d.querySelector(".share-temperature"),
+                    $message=$panel.parentElement.querySelector(".message");
+                    $message.innerHTML=`${data.message}`;
+                    $message.classList.add("success"); 
+                    setTimeout(function(){
+                        $message.classList.remove("success"); 
+                    },3000);
+                    },  function(error){
+                    const d=document,$panel=d.querySelector(".share-temperature"),
+                    $newMessage=$panel.parentElement.querySelector(".message");
+                    let errorMessage= error.statusText||error.message || "Ocurrió un error";
+                    console.log(error.status);
+                    $newMessage.innerHTML=`<b>Error ${error.status}: ${errorMessage}</b>`;
+                    $newMessage.classList.add("error"); 
+                    setTimeout(function(){
+                        $newMessage.classList.remove("error"); 
+                    },3000);
+                });
+                setTimeout(function(){
+                    getAjax("/realTimeData",function(data){
+                        data.forEach(el => {
+                            if(el.sensor==="Temperature (ºC)"){
+                                id=el._id;
+                            }
+                        });
+                    })
+                    setTimeout(function(){
+                        shareButton=true;
+                        localStorage.setItem('shareTemperature', 'on');
+                    },500);
+                },1000);
+                    
+            }else if(shareButton===true){
+                shareButton=false;
+                $shareButton.removeAttribute("data-active");
+                getAjax("/realTimeData",function(data){
+                    data.forEach(el => {
+                        if(el.sensor==="Temperature (ºC)"){
+                            getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir temperatura");
+                                }
+                            });
+                        }
+                    });
+                });
+                localStorage.setItem('shareTemperature', 'off');
+            }
+        }
+
+        //guardar datos en la base de datos
         if(e.target.getAttribute("class")=="save-temperature"){
             let objeto={
                 sensor: "Temperature (ºC)",

@@ -1,4 +1,5 @@
 
+import { getAjax } from "../helpers/getAjax.js";
 import { led } from "../helpers/led.js";
 import  greenLed from "../helpers/ledColors.js";
 import  blueLed from "../helpers/ledColors.js";
@@ -11,7 +12,7 @@ import { Loader } from "./Loader.js";
 export function ConectionButton(btnConexion){
     
     const d=document, $btn_conectar=d.querySelector(btnConexion), $title=d.querySelector(".title");
-    const thingy = new Thingy({logEnabled: false});
+    const thingy = new Thingy({logEnabled: false}),$error=d.querySelector(".error");
     let estado_conexion=false, info;
     localStorage.setItem('conexion', 'off');
     
@@ -46,7 +47,16 @@ export function ConectionButton(btnConexion){
                 localStorage.setItem('conexion', 'on');
                 localStorage.setItem('alarm', 'off');
                 await ledController(device);
-             
+                getAjax("/realTimeData",function(data){
+                    data.forEach(el => {
+                        getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir datos");
+                                }
+                        });
+                    });
+                });
                 //ledController(device);
 
             }else{
@@ -70,7 +80,22 @@ export function ConectionButton(btnConexion){
             //await device.temperature.stop();
             await led(device,blueLed);
             const state=await device.disconnect();
-            if(state===true){            
+            if(state===true){
+                //eliminar datos compartidos
+                getAjax("/realTimeData",function(data){
+                    data.forEach(el => {
+                        getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir datos");
+                                }
+                        });
+                        
+                    });
+                });
+                
+                localStorage.setItem('error', 'off');
+                $error.classList.remove("is-active");
                 $loader.forEach((el)=>{el.style.display="none"});
                 $btn_conectar.innerHTML="Conectar";
                 estado_conexion=false;

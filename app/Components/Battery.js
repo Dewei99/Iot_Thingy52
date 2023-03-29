@@ -109,7 +109,7 @@ export function Battery(device) {
     //llama a la función cada segundo, dependiendo si el valor de device.connected es true(conectado) o false(desconectado) se ejecuta start_Bateria o stop_Bateria
     setInterval(function(){
 
-        if((device.connected)&&(estado===false)){
+        if((device.connected===true)&&(estado===false)){
             start_Bateria(device);
             estado=true;
             //$title.innerHTML='Thingy:52 - Conectado';

@@ -10,11 +10,12 @@ const PassportLocal= require('passport-local').Strategy;
 const mongoose = require('mongoose');
 const IFTTT = require('ifttt-webhooks-channel')
 
-// Crear una nueva instancia de IFTTT
-const ifttt = new IFTTT('_WmoQXPVccGJBhNnFNOiR');// la clave de mi canal de webhooks
 
 //dotenv es un módulo de dependencia cero que carga variables de entorno de un archivo en process.env.
 require('dotenv').config();
+
+// Crear una nueva instancia de IFTTT
+const ifttt = new IFTTT(`${process.env.KEY}`);// la clave de mi canal de webhooks
 
 //const fileURLToPath=require('url');
 const app = express();
@@ -37,7 +38,10 @@ const uri=`mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.ft
 .catch(e=>console.log(e));*/
 
 const Sensor = require('./models/sensor');
-const sensorController = require('./controllers/sensorController')
+const sensorController = require('./controllers/sensorController');
+
+const RealTimeData = require('./models/realTimeData');
+const realTimeDataController = require('./controllers/realTimeDataController');
 
 //middleware, permite leer los datos enviado por un formulariowq2
 app.use(express.urlencoded({extended:true}));
@@ -100,29 +104,7 @@ passport.deserializeUser(function(id,done){
     response.sendFile(path.resolve(__dirname,"views","index.html"));
 });*/
 
-/*app.get("/",(req,res,next)=>{
-        if(req.isAuthenticated()) return next();
-        res.redirect("/login");
-        console.log("server a /.fail");
-    },(request,response)=>{
-    response.redirect("/");
-    console.log("server a /.");
-    //response.sendFile(path.resolve(__dirname,"views","index.html"));
- });*/
 
-/*app.get("/",(request,response)=>{
-    //Si ya iniciamos mostrar bienvenida
-    //console.log(__dirname);
-    //Si no hemos iniciado sesión redireccionar a /login
-    response.sendFile(path.resolve(__dirname,"views","index.html"));
-    console.log("hola /");
-    if(request.isAuthenticated()){
-        console.log("server a /");
-        response.redirect("/login");
-    }else{
-        response.redirect("/login");
-    }
-});*/
 app.get("/",(req,res,next)=>{
     console.log("hola /");
     console.log('Cookies: ', req.cookies);
@@ -137,9 +119,7 @@ app.get("/",(req,res,next)=>{
     }else{
         res.redirect("/login");
     }
-    //res.redirect("/login");
-    //next();
-    //console.log("server a /.fail");
+
 }
 );
 app.get("/login",(req,res)=>{
@@ -148,9 +128,6 @@ app.get("/login",(req,res)=>{
     //ressendFile(path.resolve(__dirname,"views","index.html"));
     res.sendFile(path.resolve(__dirname,"index.html"));
     //res.sendFile(path.resolve(__dirname,"app","index.html"));
-    //Mostrar el formulario de login
-    //console.log("hola /login");
-
 });
 
 app.get("/database",async (request,response)=>{
@@ -178,9 +155,35 @@ app.get("/database",async (request,response)=>{
 
 });
 
-/*app.get("/*",(request,response)=>{
-    response.sendFile(path.resolve(__dirname,"views","index.html"));
- });*/
+app.get("/realTimeData",async (request,response)=>{
+    try {
+        console.log("hola /databases");
+        //response.sendFile(path.resolve(__dirname,"views","index.html"));
+        if(request.isAuthenticated()){
+            console.log("conectado usuario");
+        }else{
+            response.redirect("/login");
+        }
+        
+        if(request.isAuthenticated()){
+            const arraySensores = await RealTimeData.find();
+            response.json(arraySensores);
+           /* RealTimeData.findById('6424331a869da38302988e6f',function (err, result) {
+                if (err) return console.error(err)
+                try {
+                    console.log(result);           
+                } catch (error) {
+                    console.log("error getting results");
+                    console.log(error);
+                } 
+            });*/
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+
+});
 
 app.post("/login",
     //Recibir credenciales e iniciar seseón
@@ -189,16 +192,12 @@ app.post("/login",
         //successRedirect:"/",
         failureRedirect:"/login"
     }),function(req, res) {
-        // If this function gets called, authentication was successful.
-        // `req.user` contains the authenticated user.
+            // Si se llama a esta función,y la autenticación fue exitosa.
+          // `req.user` contiene el usuario autenticado.
         console.log(req.user);
         res.redirect("/");
       }
-    /*if(request.isAuthenticated()){
-        console.log("server a /");
-        response.redirect("/login");
-    }*/
-    //response.redirect("/");
+
 );
 
 //borrar datos de la base de datos
@@ -214,8 +213,16 @@ app.post('/save',  sensorController.crear/*function(req, res) {
     console.log(req);
     res.status(400).end();
     console.log("estoy en /save");
-    
 }*/);
+
+//compartir datos
+app.post('/share',  realTimeDataController.crearRTD);
+//actualizar datos compartidos
+app.post('/update',  realTimeDataController.editarRTD);
+//buscar dato
+app.get('/findOne/:id', realTimeDataController.findOne);
+//eliminar datos compartidos
+app.get('/deleteShare/:id',realTimeDataController.borrarRTD);
 
 //enviar información de usuario al cliente
 app.get('/user',  function(req, res) {
@@ -226,6 +233,7 @@ app.get('/user',  function(req, res) {
 
 app.get('/sensors',  function(req, res) {
     console.log(req.params.id);
+
 });
 
 //cerrar sesión
@@ -238,9 +246,6 @@ app.get('/signout',  function(req, res, next) {
 });
 
 app.post('/ifttt',(req, response)=>{
-    //console.log(req.body)
-    //console.log(req);
-
     //IFTTT
     ifttt.post(req.body.event, [
         req.body.event,
@@ -258,13 +263,5 @@ app.post('/ifttt',(req, response)=>{
     });
 
 });
-
-/*ifttt.post('alarma', [
-    'thingy:52',
-    'alarma',
-    'activado'
-])
-.then(res => console.log(res))
-.catch(err => console.error(err));*/
 
 app.listen(process.env.PORT||3000,()=>console.log("Server started"));

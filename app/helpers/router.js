@@ -1,4 +1,5 @@
 
+import { getAjax } from "./getAjax.js";
 import { userData } from "./userData.js";
 
 export async function router(){
@@ -7,12 +8,14 @@ export async function router(){
     $loginPanel=d.querySelector(".loginPanel"),$panelAlarm=d.querySelector(".panelAlarm"),
     $dataBase=d.querySelector(".dataBase"),$userMenu=d.querySelector(".userMenu"),
     $panel_btn=d.querySelector(".panel-btn"),$username=d.querySelector(".username"),
-    $logIn=d.querySelector(".logInButton"),$logOut=d.querySelector(".logOutButton");
+    $logIn=d.querySelector(".logInButton"),$logOut=d.querySelector(".logOutButton"),
+    $realTimeData=d.querySelector(".realTimeData");
     const routes = [
         { path: "/", view: /*`/`*/ ()=>{
             $sensores.style.display="block";
             $panel_btn.style.visibility="visible";
             $dataBase.style.display="none";
+            $realTimeData.style.display="none";
             $loginPanel.style.display="none";
             $username.style.display="block";
             $panelAlarm.style.display="block";
@@ -29,6 +32,7 @@ export async function router(){
             $sensores.style.display="none";
             $panel_btn.style.visibility="hidden";
             $dataBase.style.display="none";
+            $realTimeData.style.display="none";
             $loginPanel.style.display="flex";
             $username.style.display="none";
             $panelAlarm.style.display="none";
@@ -43,6 +47,7 @@ export async function router(){
             $sensores.style.display="none";
             $panel_btn.style.visibility="hidden";
             $dataBase.style.display="block";
+            $realTimeData.style.display="none";
             $loginPanel.style.display="none";
             $username.style.display="block";
             $panelAlarm.style.display="none";
@@ -60,6 +65,7 @@ export async function router(){
             $sensores.style.display="none";
             $panel_btn.style.visibility="hidden";
             $dataBase.style.display="none";
+            $realTimeData.style.display="none";
             $loginPanel.style.display="none";
             $username.style.display="none";
             $panelAlarm.style.display="none";
@@ -71,12 +77,24 @@ export async function router(){
             userData();
             localStorage.setItem('error', 'off');
             $error.classList.remove("is-active");
+            //eliminar datos compartidos
+            getAjax("/realTimeData",function(data){
+                data.forEach(el => {
+                    getAjax(`/deleteShare/${el._id}`,
+                        function(data){
+                            if(data.success==true){
+                                console.log("dejar de compartir datos");
+                            }
+                    });            
+                });
+            });
             location.reload();
         } },
         { path: "/sensors", view: /*`/`*/ ()=>{
             $sensores.style.display="block";
             $panel_btn.style.visibility="visible";
             $dataBase.style.display="none";
+            $realTimeData.style.display="none";
             $loginPanel.style.display="none";
             $username.style.display="block";
             $panelAlarm.style.display="block";
@@ -88,7 +106,25 @@ export async function router(){
             userData();
             localStorage.setItem('error', 'off');
             $error.classList.remove("is-active");
-        }}
+        }},
+        { path: "/realTimeData", view:/*`/realTimeData`*/ ()=>{
+            $sensores.style.display="none";
+            $panel_btn.style.visibility="hidden";
+            $dataBase.style.display="none";
+            $realTimeData.style.display="block";
+            $loginPanel.style.display="none";
+            $username.style.display="block";
+            $panelAlarm.style.display="none";
+            $logIn.classList.remove("is-active");
+            $logOut.classList.add("is-active");
+            $userMenu.classList.add("is-active");
+            d.querySelector(".panelMenu").classList.remove("is-active");
+            console.log("estoy en /realTimeData");
+            console.log($loginPanel.style.display);
+            //userData();
+            localStorage.setItem('error', 'off');
+            $error.classList.remove("is-active");
+        } }
     ];
 
     const potentialMatches = routes.map(route => {

@@ -11,6 +11,6 @@ export function date(){
     let day = addZero(d.getDate());
     let m = addZero(d.getMonth()+1);
     let y = addZero(d.getFullYear());
-    let date = day + ":" + m + ":" + y+" -- "+ time();
+    let date = day + "/" + m + "/" + y+" -- "+ time();
     return date;
 }

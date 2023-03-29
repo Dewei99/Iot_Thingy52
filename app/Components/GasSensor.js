@@ -5,12 +5,14 @@ import { SaveButton } from "./SaveButton.js";
 import { date } from "../helpers/date.js";
 import { ledController } from "../helpers/ledController.js";
 import { postAjax } from "../helpers/postAjax.js";
+import { RealTimeDataButton } from "./RealTimeDataButton.js";
+import { getAjax } from "../helpers/getAjax.js";
 
 export function GasSensor(thingy, boton){
     const d=document,$article=d.createElement("article"),$titleCO2 = d.createElement("div"),
     $titleCOV = d.createElement("div"),$CO2 = d.createElement("canvas"),$COV = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,high=true,normal=true,dataCO2_x=[],dataCO2_y=[],dataCOV_x=[],dataCOV_y=[];
-    let $chartCO2, $chartCOV,iftttCO2=true,iftttCOV=true;
+    let $chartCO2, $chartCOV,iftttCO2=true,iftttCOV=true,shareButton=false,id_CO2,id_COV;
 
     $article.classList.add("gas");
 
@@ -23,7 +25,7 @@ export function GasSensor(thingy, boton){
     $article.appendChild($titleCOV);
     $article.appendChild($COV);
     $article.appendChild(SaveButton("save-gas"));
-
+    $article.appendChild(RealTimeDataButton("share-gas"));
     localStorage.setItem('gasWarning', 'off');
 
     //funcion para actualizar los datos de las gráficas
@@ -43,7 +45,38 @@ export function GasSensor(thingy, boton){
 
         updateData($chartCO2, data.detail.eCO2.value);
         updateData($chartCOV, data.detail.TVOC.value);
-
+        
+        
+        //actualizar datos compartidos
+        if(shareButton===true){
+            console.log("actualizando datos gas");
+            let objeto_CO2={
+                id:id_CO2,
+                sensor: "CO2 (ppm)",
+                date:date(),
+                data_x: dataCO2_x,
+                data_y: dataCO2_y};
+            let objeto_COV={
+                id:id_COV,
+                sensor: "COV (ppb)",
+                date:date(),
+                data_x: dataCOV_x,
+                data_y: dataCOV_y};
+            postAjax("/update", JSON.stringify(objeto_CO2), 
+                function(data){
+                    console.log(data.message);
+                }, function(error){
+                    let errorMessage= error.statusText||error.message || "Ocurrió un error";
+                    console.log(errorMessage);
+            });
+            postAjax("/update", JSON.stringify(objeto_COV), 
+            function(data){
+                console.log(data.message);
+            }, function(error){
+                let errorMessage= error.statusText||error.message || "Ocurrió un error";
+                console.log(errorMessage);
+        });
+        }
         if(data.detail.eCO2.value>=800){
             $titleCO2.innerHTML = `
             <header>CO2</header>
@@ -162,6 +195,8 @@ export function GasSensor(thingy, boton){
     }
 
     d.addEventListener("click", async function(e){
+        const $shareButton=d.querySelector(".share-gas");
+          //activar sensor de gas
         if(e.target.matches(boton)||e.target.matches(`${boton} *`)){
 
             if(estado===0){
@@ -182,15 +217,122 @@ export function GasSensor(thingy, boton){
             }else if(estado===1){
                 $article.classList.toggle("is-active");
                 stop_Gas(thingy);
-                localStorage.setItem('gasWarning', 'off');
+                localStorage.setItem('shareGas', 'off');
                 ledController(thingy);
-                //dato={};
-
+                $shareButton.removeAttribute("data-active");
+                getAjax("/realTimeData",function(data){
+                    data.forEach(el => {
+                        if(el.sensor==="CO2 (ppm)"){
+                            getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir CO2");
+                                }
+                            });
+                        }
+                        if(el.sensor==="COV (ppb)"){
+                            getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir COV");
+                                }
+                            });
+                        }
+                    });
+                });
+                localStorage.setItem('shareGas', 'off');
+                
             }else{
                 console.log("error");
             }          
         }
         
+        if(e.target.getAttribute("class")==="share-gas"){
+            console.log(shareButton);
+            if(shareButton===false){
+                shareButton=true;
+                console.log(`shareButton: ${shareButton}`);
+                $shareButton.setAttribute("data-active", "true");
+
+                let objeto_CO2={
+                    id:id_CO2,
+                    sensor: "CO2 (ppm)",
+                    date:date(),
+                    data_x: dataCO2_x,
+                    data_y: dataCO2_y};
+                let objeto_COV={
+                    id:id_COV,
+                    sensor: "COV (ppb)",
+                    date:date(),
+                    data_x: dataCOV_x,
+                    data_y: dataCOV_y};
+                postAjax("/share", JSON.stringify(objeto_CO2), 
+                function(data){
+                    const d=document,$panel=d.querySelector(".share-gas"),
+                    $message=$panel.parentElement.querySelector(".message");
+                    $message.innerHTML=`${data.message}`;
+                    $message.classList.add("success"); 
+                    setTimeout(function(){
+                        $message.classList.remove("success"); 
+                    },3000);
+                    },  function(error){
+                    const d=document,$panel=d.querySelector(".share-gas"),
+                    $newMessage=$panel.parentElement.querySelector(".message");
+                    let errorMessage= error.statusText||error.message || "Ocurrió un error";
+                    console.log(error.status);
+                    $newMessage.innerHTML=`<b>Error ${error.status}: ${errorMessage}</b>`;
+                    $newMessage.classList.add("error"); 
+                    setTimeout(function(){
+                        $newMessage.classList.remove("error"); 
+                    },3000);
+                });
+                postAjax("/share", JSON.stringify(objeto_COV), 
+                function(data){ console.log(data);
+                },  function(error){ console.log(error); });
+                setTimeout(function(){
+                    getAjax("/realTimeData",function(data){
+                        data.forEach(el => {
+                            if(el.sensor==="CO2 (ppm)"){
+                                id_CO2=el._id;
+                            }else if(el.sensor==="COV (ppb)"){
+                                id_COV=el._id;
+                            }
+                        });
+                    })
+                    setTimeout(function(){
+                        shareButton=true;
+                        localStorage.setItem('shareGas', 'on');
+                    },500);
+                },1000);
+                    
+            }else if(shareButton===true){
+                shareButton=false;
+                $shareButton.removeAttribute("data-active");
+                getAjax("/realTimeData",function(data){
+                    data.forEach(el => {
+                        if(el.sensor==="CO2 (ppm)"){
+                            getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir CO2");
+                                }
+                            });
+                        }
+
+                        if(el.sensor==="COV (ppb)"){
+                            getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir COV");
+                                }
+                            });
+                        }
+                    });
+                });
+                localStorage.setItem('shareGas', 'off');
+            }
+        }
+
         if(e.target.getAttribute("class")=="save-gas"){
             let objetoCO2={
                 sensor: "CO2 (ppm)",

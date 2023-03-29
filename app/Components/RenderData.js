@@ -5,7 +5,13 @@ import { CreateChart } from "./CreateChart.js";
 
 export function RenderData(){
     
-    const d=document,$dataBase=d.querySelector(".dataBase"),$userMenu=d.querySelector(".userMenu");
+    const d=document,$dataBase=d.querySelector(".dataBase"),$userMenu=d.querySelector(".userMenu"),
+    $dataBaseTitle= d.createElement("div"),$dataBaseContent= d.createElement("div");
+    $dataBaseContent.classList.add("dataBaseContent");
+    $dataBaseTitle.classList.add("dataBaseTitle");
+    $dataBaseTitle.innerHTML=`<u><b>Base de Datos</b></u>`;
+    $dataBase.appendChild($dataBaseTitle);
+    $dataBase.appendChild($dataBaseContent);
     $userMenu.addEventListener("click", e => {
         if (e.target.matches(".databaseLink")) {
             console.log("estoy en database");
@@ -33,7 +39,7 @@ export function RenderData(){
                     `;
                     
                 });
-                d.querySelector(".dataBase").innerHTML=html;
+                d.querySelector(".dataBaseContent").innerHTML=html;
 
                 data.forEach(el =>{
                     let $chart=CreateChart(`${el._id}`,`${el.sensor}`,el.data_x,el.data_y);
@@ -42,9 +48,6 @@ export function RenderData(){
                 )
             });
         }
-
-
-    
     });
 
     /*$dataBase.addEventListener("mouseup",(e)=>{

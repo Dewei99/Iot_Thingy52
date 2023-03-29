@@ -15,6 +15,8 @@ export function ProfileHeader(){
         <a href="/sensors" class="sensorsLink" data-link>Sensores</a>
         <div class="vertical"></div>
         <a href="/database" class="databaseLink" data-link>Base de datos</a>
+        <div class="vertical"></div>
+        <a href="/realTimeData" class="realTimeDataLink" data-link>Datos tiempo real</a>
     `;
     $loginButton.innerHTML=`<a href="/login" class="nav__link" data-link>logIn</a>`;
     $logOutButton.innerHTML=`<a href="/signout" class="nav__link" data-link>logOut</a>`;

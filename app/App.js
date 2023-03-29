@@ -23,21 +23,21 @@ import { RenderData } from "./Components/RenderData.js";
 import { deleteData } from "./helpers/deleteData.js";
 import { DeleteMessage } from "./Components/DeleteMessage.js";
 import { Microphone } from "./Components/Microphone.js";
+import { RenderRealTimeData } from "./Components/RenderRealTimeData.js";
 
 export function App(){
     const d=document, $main = d.querySelector(".main"), $header = d.querySelector(".header"),
     $footer=d.querySelector(".footer"),$aside=d.querySelector(".panelMenu"),$asideAlarm=d.querySelector(".panelAlarm"), 
-    $sensores = d.createElement("div"),$thingyHeader = d.createElement("div"),$dataBase = d.createElement("div");;
+    $sensores = d.createElement("div"),$thingyHeader = d.createElement("div"),$dataBase = d.createElement("div"),$realTimeData = d.createElement("div");
     //const $profileHeader= d.createElement("div"),
-
+    localStorage.setItem('shareTemperature', 'off');
+    localStorage.setItem('shareHumidity', 'off');
+    localStorage.setItem('shareGas', 'off');
 
     $sensores.classList.add("sensores");
     $dataBase.classList.add("dataBase");
+    $realTimeData.classList.add("realTimeData");
     $thingyHeader.classList.add("thingyHeader");
-    //$profileHeader.classList.add("profileHeader");
-    //$dataBase.innerHTML=`base de dato`;
-     //let audioState=false;//esta variable se va a utilizar para activar o desactivar el envio de datos de audio al dispositivo
-   // $root.appendChild(Title());
 
     $thingyHeader.appendChild(MenuButton());
     $thingyHeader.appendChild(Logo());
@@ -45,25 +45,15 @@ export function App(){
     $thingyHeader.appendChild(Loader());
 
     $header.appendChild($thingyHeader);
-    //$profileHeader.appendChild(ProfilePicture());
 
-    /*$header.appendChild(MenuButton());
-    $header.appendChild(Logo());
-    $header.appendChild(Title());
-    $header.appendChild(Loader());*/
-    //$header.appendChild(Battery(thingy));
-    //$header.insertAdjacentElement("beforeend",Loader());
-    //console.log(d.querySelector(".loader"));
     $aside.appendChild(MenuPanel());
-
+    $main.appendChild(LogIn());
+    
     const thingy=ConectionButton(".conectar");
-    //Alarm_Btn(thingy,"/Iot_Thingy52/app/assets/pcm0808m.wav");
 
-    //$thingyHeader.appendChild(Battery(thingy));
     $thingyHeader.insertAdjacentElement("beforeend", Battery(thingy));
     $header.appendChild(ProfileHeader());
-    //$main.appendChild(LoginIn());
-    //$main.appendChild(LoginIn());
+
 
     $asideAlarm.appendChild(AlarmScreen());
     console.log(thingy);
@@ -73,27 +63,16 @@ export function App(){
     //$sensores.appendChild(Microphone(thingy,".btn-microphone"));
 
 
-    $main.appendChild(LogIn());
+
     $main.appendChild($sensores);
     $main.appendChild($dataBase);
+    $main.appendChild( $realTimeData);
     $main.appendChild(DeleteMessage());
-    /*$main.appendChild(AlarmScreen());
-    $main.appendChild(Temperature(thingy,".btn-temperature"));
-    $main.appendChild(Humidity(thingy,".btn-humidity"));
-    $main.appendChild(GasSensor(thingy,".btn-gas"));*/
-    //Btn_Alarma(thdingy,".btn-alarm1","/Iot_Thingy52/app/assets/pcm0808m.wav");
-    //AlarmButton(thingy,".btn-alarm1","/app/assets/alarma.wav");
+
     AlarmButton(thingy,".btn-alarm1","/assets/alarma.wav");
 
     //funciones helpers
     menuFunction(".panel-btn",".panelMenu");
-    //ledController(thingy);
-
-    /*audioState=true;
-    console.log(`audioState: ${audioState}`);*/
-    /*let content = $main.innerHTML;
-    console.log(content);*/
-
 
     //funcion de rutas del navegador
     router();
@@ -101,10 +80,10 @@ export function App(){
     //renderizar datos de la base de datos
     RenderData();
 
+    //renderizar datos en tiempo real de la base de datos
+    RenderRealTimeData();
     //da funcionalidad a los botones delete
     deleteData();
-    //userData();
-    //window.addEventListener("popstate", router);
 
     document.body.addEventListener("click", e => {
       if (e.target.matches("[data-link]")) {
