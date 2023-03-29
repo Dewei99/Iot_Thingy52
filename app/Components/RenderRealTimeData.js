@@ -43,7 +43,24 @@ export function RenderRealTimeData(){
                         shareTemperature=localStorage.getItem('shareTemperature');
                         shareHumidity=localStorage.getItem('shareHumidity');
                         shareGas=localStorage.getItem('shareGas');
-                        if((shareTemperature=='on'||shareHumidity=='on'||shareGas=='on')){
+
+                        getAjax(`/findOne/${el._id}`,function(el){
+                            //let $chart=d.getElementById(el._id);
+                          //arrayCharts.forEach(el)
+                        console.log($chart);
+                        $chart.data.datasets.forEach((dataset) => {
+                            if(dataset.data.length < el.data_x.length){
+                                let resto=el.data_x.length-dataset.data.length;
+                                for (let i = el.data_x.length-resto; i < el.data_x.length; i++) {
+                                    dataset.data.push(`${el.data_y[i]}`);
+                                    $chart.data.labels.push(`${el.data_x[i]}`);
+                                    $chart.update();
+                                }
+                            }
+                        });    
+                        });
+
+                        /*if((shareTemperature=='on'||shareHumidity=='on'||shareGas=='on')){
                             getAjax(`/findOne/${el._id}`,function(el){
                                     //let $chart=d.getElementById(el._id);
                                   //arrayCharts.forEach(el)
@@ -61,7 +78,7 @@ export function RenderRealTimeData(){
                             });
                             console.log($chart.data.datasets);
                             console.log($chart.data.labels);
-                        }
+                        }*/
                     }, 2000);
                     //arrayCharts.push($chart);
                 }
