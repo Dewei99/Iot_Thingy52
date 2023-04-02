@@ -50,27 +50,4 @@ export function RenderData(){
         }
     });
 
-    /*$dataBase.addEventListener("mouseup",(e)=>{
-        console.log(e.target.getAttribute("class"));
-        if(e.target.getAttribute("class")=="deleteBtn"){
-            console.log(e.target.getAttribute("data-delete"));
-            getAjax("")
-        };
-
-        if(e.target.getAttribute("data-class")=="arrow"){
-            let element = e.target;//d.querySelector("img");
-            console.log(element);
-            element.classList.toggle("is-active");
-            //let $panelData=d.getElementsByClassName(e.target.getAttribute("data-id"));
-            let $panelData=d.getElementById(`${e.target.getAttribute("data-id")}`);
-            //let $panelData=d.querySelector(".63d57b8f5cc4c6255fdc3609");
-            console.log($panelData.parentElement);
-            $panelData.parentElement.classList.toggle("is-active");
- 
-           // $panelData.style.display="none";
-        };
-       
-        
-        e.stopPropagation();
-    })*/
 }

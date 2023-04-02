@@ -12,7 +12,7 @@ export function Temperature(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,data_x=[],data_y=[];
-    let $chart, high=true,low=true,normal=true,ifttt=true,shareButton=false,share=false,id;
+    let $chart, high=true,low=true,normal=true,ifttt=true,shareButton=false,id;
 
     $article.classList.add("temperatura");                            
     $temperatura.id="chart-temperatura";
