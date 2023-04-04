@@ -7,11 +7,15 @@ import { CreateChart } from "./CreateChart.js";
 export function RenderRealTimeData(){
     let arrayCharts=[];
     const d=document,$dataBase=d.querySelector(".realTimeData"),$userMenu=d.querySelector(".userMenu"),
-    $dataBaseTitle= d.createElement("div"),$dataBaseContent= d.createElement("div");
+    $dataBaseTitle= d.createElement("div"),$dataBaseContent= d.createElement("div"),$error= d.createElement("div");
     $dataBaseContent.classList.add("realTimeDataContent");
     $dataBaseTitle.classList.add("realTimeDataTitle");
+    $error.classList.add("realTimeDataError");
     $dataBaseTitle.innerHTML=`<u><b>Datos en Tiempo Real</b></u>`;
+    $error.innerHTML=`No se está compartiendo datos`;
+    $error.style.display="block";
     $dataBase.appendChild($dataBaseTitle);
+    $dataBase.appendChild($error);
     $dataBase.appendChild($dataBaseContent);
     let shareTemperature, shareHumidity, shareGas;
     $userMenu.addEventListener("click", e => {
@@ -19,6 +23,11 @@ export function RenderRealTimeData(){
             console.log("estoy en realTimeData");
             getAjax("/realTimeData",function(data){
                 let html=``;
+                if(!data.length){
+                    $error.style.display="block";
+                }else{
+                    $error.style.display="none";
+                }
                 arrayCharts=[];
                 data.forEach(el => {
                     /*let media=average(el.data_y),tiempo=readTime(el.data_x),

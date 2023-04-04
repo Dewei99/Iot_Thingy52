@@ -898,3 +898,10 @@ div.canvasChartRTD{
   margin-top: 0.8rem;
   margin-left: 2rem;
 }
+
+.realTimeDataError{
+  background-color: white;
+  border-radius: 0.5rem;
+  margin-left: 2rem;
+  padding: 0.4rem;
+}

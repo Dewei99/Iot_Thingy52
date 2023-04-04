@@ -26,7 +26,7 @@ export function deleteData(){
                                     let media=average(el.data_y),tiempo=readTime(el.data_x),
                                     valorMax=Math.max(...el.data_y),valorMin=Math.min(...el.data_y);
                                     html+=`
-                                    <div class="dataPanel">
+                                    <div class="dataPanel" >
                                         <div class="panelHeader">
                                             <img src="/assets/flecha.png" alt="flecha" data-class="arrow" data-id="${el._id}"/>
                                             <h2>${el.sensor} &nbsp;&nbsp;&nbsp;&nbsp; ${el.date}<h2>
