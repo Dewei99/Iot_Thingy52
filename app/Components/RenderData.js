@@ -6,9 +6,11 @@ import { CreateChart } from "./CreateChart.js";
 export function RenderData(){
     
     const d=document,$dataBase=d.querySelector(".dataBase"),$userMenu=d.querySelector(".userMenu"),
-    $dataBaseTitle= d.createElement("div"),$dataBaseContent= d.createElement("div");
+    $dataBaseTitle= d.createElement("div"),$dataBaseContent= d.createElement("div"),$error= d.createElement("div");
     $dataBaseContent.classList.add("dataBaseContent");
     $dataBaseTitle.classList.add("dataBaseTitle");
+    $error.classList.add("dataBaseError");
+    $error.innerHTML=`No hay datos guardados en mongoDB`;
     $dataBaseTitle.innerHTML=`<u><b>Base de Datos</b></u>`;
     $dataBase.appendChild($dataBaseTitle);
     $dataBase.appendChild($dataBaseContent);
@@ -17,6 +19,11 @@ export function RenderData(){
             console.log("estoy en database");
             getAjax("/database",function(data){
                 let html=``;
+                if(!data.length){
+                    $error.style.display="block";
+                }else{
+                    $error.style.display="none";
+                }
                 data.forEach(el => {
                     console.log(el.data_y);
                     let media=average(el.data_y),tiempo=readTime(el.data_x),

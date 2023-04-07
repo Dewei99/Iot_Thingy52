@@ -7,6 +7,7 @@ import { readTime } from "./readTime.js";
 export function deleteData(){
     const d=document,$dataBase=d.querySelector(".dataBase"),
     $deleteMessage=d.querySelector(".deleteMessage");
+    const $error=d.querySelector(".dataBaseError");
     //$deleteMessage.innerHTML="Eliminado correctamente";
     $dataBase.addEventListener("mouseup",(e)=>{
         console.log(e.target.getAttribute("class"));
@@ -22,6 +23,11 @@ export function deleteData(){
                             $deleteMessage.classList.remove("is-active");
                             getAjax("/database",function(data){
                                 let html=``;
+                                if(!data.length){
+                                    $error.style.display="block";
+                                }else{
+                                    $error.style.display="none";
+                                }
                                 data.forEach(el => {
                                     let media=average(el.data_y),tiempo=readTime(el.data_x),
                                     valorMax=Math.max(...el.data_y),valorMin=Math.min(...el.data_y);

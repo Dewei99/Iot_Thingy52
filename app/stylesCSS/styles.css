@@ -905,3 +905,10 @@ div.canvasChartRTD{
   margin-left: 2rem;
   padding: 0.4rem;
 }
+
+.dataBaseError{
+  background-color: white;
+  border-radius: 0.5rem;
+  margin-left: 2rem;
+  padding: 0.4rem;
+}
