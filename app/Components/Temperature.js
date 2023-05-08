@@ -41,7 +41,7 @@ export function Temperature(thingy, boton){
             console.log(id);
             let objeto={
                 id:id,
-                sensor: "Temperature (ºC)",
+                sensor: "Temperatura (ºC)",
                 date:date(),
                 data_x: data_x,
                 data_y: data_y};
@@ -114,7 +114,7 @@ export function Temperature(thingy, boton){
                     );
                 setTimeout(async function(){
                     ifttt=true;
-                },60000);
+                },300000);
             }
         }else{
             localStorage.setItem('temperatureWarning', 'off');
@@ -186,9 +186,9 @@ export function Temperature(thingy, boton){
                 localStorage.setItem('temperatureWarning', 'off');
                 ledController(thingy);
                 $shareButton.removeAttribute("data-active");
-                getAjax("/realTimeData",function(data){
+                getAjax("/remote",function(data){
                     data.forEach(el => {
-                        if(el.sensor==="Temperature (ºC)"){
+                        if(el.sensor==="Temperatura (ºC)"){
                             getAjax(`/deleteShare/${el._id}`,
                             function(data){
                                 if(data.success==true){
@@ -213,7 +213,7 @@ export function Temperature(thingy, boton){
                 $shareButton.setAttribute("data-active", "true");
 
                 let objeto={
-                    sensor: "Temperature (ºC)",
+                    sensor: "Temperatura (ºC)",
                     date:date(),
                     data_x: data_x,
                     data_y: data_y};
@@ -238,9 +238,9 @@ export function Temperature(thingy, boton){
                     },3000);
                 });
                 setTimeout(function(){
-                    getAjax("/realTimeData",function(data){
+                    getAjax("/remote",function(data){
                         data.forEach(el => {
-                            if(el.sensor==="Temperature (ºC)"){
+                            if(el.sensor==="Temperatura (ºC)"){
                                 id=el._id;
                             }
                         });
@@ -254,9 +254,9 @@ export function Temperature(thingy, boton){
             }else if(shareButton===true){
                 shareButton=false;
                 $shareButton.removeAttribute("data-active");
-                getAjax("/realTimeData",function(data){
+                getAjax("/remote",function(data){
                     data.forEach(el => {
-                        if(el.sensor==="Temperature (ºC)"){
+                        if(el.sensor==="Temperatura (ºC)"){
                             getAjax(`/deleteShare/${el._id}`,
                             function(data){
                                 if(data.success==true){
@@ -273,7 +273,7 @@ export function Temperature(thingy, boton){
         //guardar datos en la base de datos
         if(e.target.getAttribute("class")=="save-temperature"){
             let objeto={
-                sensor: "Temperature (ºC)",
+                sensor: "Temperatura (ºC)",
                 date:date(),
                 data_x: data_x,
                 data_y: data_y};

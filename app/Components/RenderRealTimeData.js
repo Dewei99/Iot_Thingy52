@@ -21,7 +21,7 @@ export function RenderRealTimeData(){
     $userMenu.addEventListener("click", e => {
         if (e.target.matches(".realTimeDataLink")) {
             console.log("estoy en realTimeData");
-            getAjax("/realTimeData",function(data){
+            getAjax("/remote",function(data){
                 let html=``;
                 if(!data.length){
                     $error.style.display="block";

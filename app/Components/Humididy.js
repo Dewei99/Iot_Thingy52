@@ -79,7 +79,7 @@ export function Humidity(thingy, boton){
                     );
                 setTimeout(async function(){
                     ifttt=true;
-                },60000);
+                },300000);
             }
 
         }else{
@@ -151,7 +151,7 @@ export function Humidity(thingy, boton){
                 localStorage.setItem('humidityWarning', 'off');
                 ledController(thingy);
                 $shareButton.removeAttribute("data-active");
-                getAjax("/realTimeData",function(data){
+                getAjax("/remote",function(data){
                     data.forEach(el => {
                         if(el.sensor==="Humedad (%)"){
                             getAjax(`/deleteShare/${el._id}`,
@@ -204,7 +204,7 @@ export function Humidity(thingy, boton){
                     },3000);
                 });
                 setTimeout(function(){
-                    getAjax("/realTimeData",function(data){
+                    getAjax("/remote",function(data){
                         data.forEach(el => {
                             if(el.sensor==="Humedad (%)"){
                                 id=el._id;
@@ -219,7 +219,7 @@ export function Humidity(thingy, boton){
             }else if(shareButton===true){
                 shareButton=false;
                 $shareButton.removeAttribute("data-active");
-                getAjax("/realTimeData",function(data){
+                getAjax("/remote",function(data){
                     data.forEach(el => {
                         if(el.sensor==="Humedad (%)"){
                             getAjax(`/deleteShare/${el._id}`,

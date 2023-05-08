@@ -78,16 +78,21 @@ export async function router(){
             localStorage.setItem('error', 'off');
             $error.classList.remove("is-active");
             //eliminar datos compartidos
-            getAjax("/realTimeData",function(data){
-                data.forEach(el => {
-                    getAjax(`/deleteShare/${el._id}`,
-                        function(data){
-                            if(data.success==true){
-                                console.log("dejar de compartir datos");
-                            }
-                    });            
+            let conexion=localStorage.getItem('conexion');
+            if(conexion=="on"){
+                getAjax("/remote",function(data){
+                    data.forEach(el => {
+                        getAjax(`/deleteShare/${el._id}`,
+                            function(data){
+                                if(data.success==true){
+                                    console.log("dejar de compartir datos");
+                                }
+                        });
+                        localStorage.setItem('error', 'off');            
+                    });
                 });
-            });
+            }
+            localStorage.setItem('error', 'off');
             location.reload();
         } },
         { path: "/sensors", view: /*`/`*/ ()=>{
@@ -107,7 +112,7 @@ export async function router(){
             localStorage.setItem('error', 'off');
             $error.classList.remove("is-active");
         }},
-        { path: "/realTimeData", view:/*`/realTimeData`*/ ()=>{
+        { path: "/remote", view:/*`/realTimeData`*/ ()=>{
             $sensores.style.display="none";
             $panel_btn.style.visibility="hidden";
             $dataBase.style.display="none";

@@ -6,6 +6,7 @@ import  blueLed from "../helpers/ledColors.js";
 import  redLed from "../helpers/ledColors.js";
 import { ledController } from "../helpers/ledController.js";
 import { motionSensors } from "../helpers/motionSensors.js";
+import { navigateTo } from "../helpers/navigateTo.js";
 import Thingy from "../lib/Thingy.js";
 import { Loader } from "./Loader.js";
 
@@ -78,6 +79,9 @@ export function ConectionButton(btnConexion){
 
             //apagar todos los sensores
             //await device.temperature.stop();
+            /*await device.temperature.stop();
+            await device.humidity.stop();
+            await device.gas.stop();*/
             await led(device,blueLed);
             const state=await device.disconnect();
             if(state===true){
@@ -93,7 +97,7 @@ export function ConectionButton(btnConexion){
                         
                     });
                 });
-                
+                navigateTo("/");
                 localStorage.setItem('error', 'off');
                 $error.classList.remove("is-active");
                 $loader.forEach((el)=>{el.style.display="none"});

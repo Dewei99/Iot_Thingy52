@@ -380,7 +380,7 @@ article header{
 
 .main article{
 
-  width: 95%;
+  width: 91%;
   /*height: 75vh;*/
   padding: 1rem;
   margin-right: auto;
@@ -580,7 +580,7 @@ article header{
 .realTimeDataPanel{
   position: absolute;
   top: 20px;
-  right: 70px;
+  right: 90px;
 
 }
 
@@ -844,6 +844,9 @@ div.alarm{
   transform: rotate(0deg);
 
 }
+.dataPanel .panelHeader{
+  position: relative;
+}
 .panelHeader img.is-active{
   transform: rotate(90deg);
 }
@@ -852,6 +855,39 @@ div.alarm{
   cursor: pointer;
   border:medium solid rgb(96, 225, 248, 1);
   /*transform: rotate(90deg);*/
+}
+
+.panelHeader button{
+  cursor: pointer;
+}
+
+.panelHeader .confirmacion{
+  position: absolute;
+  text-align: center;
+  right:2px;
+  top:10px;
+  z-index: 999;
+  border:medium solid rgba(6, 30, 247);
+  background-color: rgb(212, 241, 243);
+  border-radius: 0.4rem;
+  display: none;
+  padding: 5px;
+  width:17rem;
+}
+.panelHeader .confirmacion h2{
+ /* margin-left: 2rem;*/
+  display:inline;
+  /*margin-bottom: 2rem;*/
+}
+.panelHeader .confirmacion button{
+  margin-top: 1rem;
+}
+.panelHeader .confirmacion .deleteBtn{
+  background-color: red;
+  cursor: pointer;
+}
+.panelHeader .confirmacion.is-active{
+  display: block;
 }
 
 .canvasChart canvas{

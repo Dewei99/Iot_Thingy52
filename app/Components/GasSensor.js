@@ -105,7 +105,7 @@ export function GasSensor(thingy, boton){
                 );
                 setTimeout(async function(){
                     iftttCO2=true;
-                },60000);
+                },300000);
             }
         }else{
             localStorage.setItem('gasWarning', 'off');
@@ -144,7 +144,7 @@ export function GasSensor(thingy, boton){
                 );
                 setTimeout(async function(){
                     iftttCOV=true;
-                },60000);
+                },300000);
             }  
         }else{
             localStorage.setItem('gasWarning', 'off');
@@ -220,7 +220,7 @@ export function GasSensor(thingy, boton){
                 localStorage.setItem('shareGas', 'off');
                 ledController(thingy);
                 $shareButton.removeAttribute("data-active");
-                getAjax("/realTimeData",function(data){
+                getAjax("/remote",function(data){
                     data.forEach(el => {
                         if(el.sensor==="CO2 (ppm)"){
                             getAjax(`/deleteShare/${el._id}`,
@@ -290,7 +290,7 @@ export function GasSensor(thingy, boton){
                 function(data){ console.log(data);
                 },  function(error){ console.log(error); });
                 setTimeout(function(){
-                    getAjax("/realTimeData",function(data){
+                    getAjax("/remote",function(data){
                         data.forEach(el => {
                             if(el.sensor==="CO2 (ppm)"){
                                 id_CO2=el._id;
@@ -308,7 +308,7 @@ export function GasSensor(thingy, boton){
             }else if(shareButton===true){
                 shareButton=false;
                 $shareButton.removeAttribute("data-active");
-                getAjax("/realTimeData",function(data){
+                getAjax("/remote",function(data){
                     data.forEach(el => {
                         if(el.sensor==="CO2 (ppm)"){
                             getAjax(`/deleteShare/${el._id}`,

@@ -106,7 +106,7 @@ export function App(){
 
     $form.addEventListener("submit", (e)=>{
         localStorage.setItem('error', 'off');
-        e.preventDefault;
+        //e.preventDefault;
         getAjax("/user",
         function(data){
             console.log(data);

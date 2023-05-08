@@ -155,7 +155,7 @@ app.get("/database",async (request,response)=>{
 
 });
 
-app.get("/realTimeData",async (request,response)=>{
+app.get("/remote",async (request,response)=>{
     try {
         console.log("hola /databases");
         //response.sendFile(path.resolve(__dirname,"views","index.html"));
@@ -227,6 +227,7 @@ app.get('/deleteShare/:id',realTimeDataController.borrarRTD);
 //enviar información de usuario al cliente
 app.get('/user',  function(req, res) {
     if(req.isAuthenticated()){
+        console.log(req.user);
         res.json(req.user);
     }
 });

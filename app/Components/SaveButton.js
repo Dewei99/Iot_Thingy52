@@ -4,7 +4,7 @@ export function SaveButton(name){
     $message=d.createElement("div");
     $div.classList.add("savePanel");
     $button.classList.add(name);
-    $button.innerHTML="Save";
+    $button.innerHTML="Guardar";
     $message.classList.add("message");
     $div.appendChild($button);
     $div.appendChild($message);

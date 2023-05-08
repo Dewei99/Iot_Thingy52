@@ -4,7 +4,7 @@ export function RealTimeDataButton(name){
     $message=d.createElement("div");
     $div.classList.add("realTimeDataPanel");
     $button.classList.add(name);
-    $button.innerHTML="Share Data";
+    $button.innerHTML="Modo Remoto";
     $message.classList.add("message");
     $div.appendChild($button);
     $div.appendChild($message);

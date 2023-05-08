@@ -10,7 +10,7 @@ export function LogIn(){
     <input type="text" name="username" id="user" placeholder="Username"><br><br>
     <label for="password">Password:</label><br>
     <input type="password" name="password" id="password" placeholder="Password"><br><br>
-    <input type="submit" value="Enviar"><br>
+    <input type="submit" value="SIGN IN"><br>
     </form>
     <span class="error">Contraseña o nombre de usuario incorrecto"</span>
     `;

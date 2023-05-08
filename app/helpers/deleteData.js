@@ -10,7 +10,23 @@ export function deleteData(){
     const $error=d.querySelector(".dataBaseError");
     //$deleteMessage.innerHTML="Eliminado correctamente";
     $dataBase.addEventListener("mouseup",(e)=>{
+        let confirmacion;
         console.log(e.target.getAttribute("class"));
+        //abrir ventana de confirmación de eliminar
+        if (e.target.getAttribute("class")=="eliminar"){
+            let element = e.target;
+            
+            let parent =element.parentElement;
+            confirmacion= parent.querySelector(".confirmacion");
+            confirmacion.classList.add("is-active"); 
+        };
+
+        //cancelar proceso de eliminación
+        if (e.target.getAttribute("class")=="cancelar"){
+            let element = e.target;
+            element.parentElement.classList.remove("is-active"); 
+            
+        };
         if(e.target.getAttribute("class")=="deleteBtn"){
             let delete_id=e.target.getAttribute("data-delete");
             console.log(e.target.getAttribute("data-delete"));
@@ -23,6 +39,7 @@ export function deleteData(){
                             $deleteMessage.classList.remove("is-active");
                             getAjax("/database",function(data){
                                 let html=``;
+                                console.log($error.style.display);
                                 if(!data.length){
                                     $error.style.display="block";
                                 }else{
@@ -35,8 +52,14 @@ export function deleteData(){
                                     <div class="dataPanel" >
                                         <div class="panelHeader">
                                             <img src="/assets/flecha.png" alt="flecha" data-class="arrow" data-id="${el._id}"/>
-                                            <h2>${el.sensor} &nbsp;&nbsp;&nbsp;&nbsp; ${el.date}<h2>
-                                            <button type="button" class="deleteBtn" data-delete="${el._id}">Delete</button>
+                                            <h2>${el.sensor} &nbsp;&nbsp;&nbsp;&nbsp; ${el.date}</h2>
+                                            <button type="button" class="deleteBtn" data-delete="${el._id}">Borrar</button>
+                                            <div class="confirmacion">
+                                                <h2>¿Estás seguro?</h2><br>
+                                                <button type="button" class="deleteBtn" data-delete="${el._id}">Aceptar</button>
+                                                &nbsp;
+                                            <button type="button" class="cancelar" data-cancelar">Cancelar</button>
+                                        </div>
                                         </div>
                                         <div class="resultados">
                                             Media=${media}&nbsp;&nbsp;&nbsp; Valor Máx=${valorMax}&nbsp;&nbsp;&nbsp; Valor Mín=${valorMin}&nbsp;&nbsp;&nbsp;Tiempo Lectura=${tiempo}
@@ -44,7 +67,7 @@ export function deleteData(){
                                         <div class="canvasChart">
                                             <canvas id="${el._id}"></canvas>
                                         </div>
-                                       
+                                    
                                     </div>
                                     `;
                                     
@@ -62,8 +85,11 @@ export function deleteData(){
                     }
                 }
             )
+            
+            //cerrar ventana
+            let element = e.target;
+            element.parentElement.classList.remove("is-active");
         };
-
         if(e.target.getAttribute("data-class")=="arrow"){
             let element = e.target;//d.querySelector("img");
             console.log(element);

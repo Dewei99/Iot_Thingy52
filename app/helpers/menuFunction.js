@@ -1,3 +1,5 @@
+import { router } from "./router.js";
+
 export function menuFunction(panelBtn, panel){
     const d=document;
     
@@ -5,6 +7,8 @@ export function menuFunction(panelBtn, panel){
         if(e.target.matches(panelBtn)||e.target.matches(`${panelBtn} *`)||e.target.matches('.sensorsLink')){
             d.querySelector(panel).classList.toggle("is-active");
             console.log("menu");
+            history.pushState(null, null, "/sensors");
+
         }
     
     });
