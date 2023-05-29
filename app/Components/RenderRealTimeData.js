@@ -1,26 +1,28 @@
-//import { average } from "../helpers/average.js";
-import { getAjax } from "../helpers/getAjax.js";
-import { updateData } from "../helpers/updateData.js";
-//import { readTime } from "../helpers/readTime.js";
-import { CreateChart } from "./CreateChart.js";
 
+import { getAjax } from "../helpers/getAjax.js";
+import { CreateChart } from "./CreateChart.js";
+//función encargado de renderizar los datos guardados en la base de datos
+//los datos pertenecen a los sensores que tiene el modo remoto activado
 export function RenderRealTimeData(){
-    let arrayCharts=[];
     const d=document,$dataBase=d.querySelector(".realTimeData"),$userMenu=d.querySelector(".userMenu"),
     $dataBaseTitle= d.createElement("div"),$dataBaseContent= d.createElement("div"),$error= d.createElement("div");
     $dataBaseContent.classList.add("realTimeDataContent");
     $dataBaseTitle.classList.add("realTimeDataTitle");
     $error.classList.add("realTimeDataError");
     $dataBaseTitle.innerHTML=`<u><b>Datos en Tiempo Real</b></u>`;
+    //mostrar error en caso de no hay datos guardados en la base de datos
     $error.innerHTML=`No se está compartiendo datos`;
     $error.style.display="block";
     $dataBase.appendChild($dataBaseTitle);
     $dataBase.appendChild($error);
     $dataBase.appendChild($dataBaseContent);
     let shareTemperature, shareHumidity, shareGas;
+    //esperar un evento click del ratón
     $userMenu.addEventListener("click", e => {
+        //si se pulsa el botón de modo remoto
         if (e.target.matches(".realTimeDataLink")) {
             console.log("estoy en realTimeData");
+            //enviar petición por Ajax al lado del servidor para obtener los datos del modo remoto de la base de datos 
             getAjax("/remote",function(data){
                 let html=``;
                 if(!data.length){
@@ -28,10 +30,8 @@ export function RenderRealTimeData(){
                 }else{
                     $error.style.display="none";
                 }
-                arrayCharts=[];
+                //una vez obtenido los datos se renderizan en la aplicación 
                 data.forEach(el => {
-                    /*let media=average(el.data_y),tiempo=readTime(el.data_x),
-                    valorMax=Math.max(...el.data_y),valorMin=Math.min(...el.data_y);*/
                     html+=`
                     <div class="dataPanel">
                         <div class="panelHeader">
@@ -45,53 +45,39 @@ export function RenderRealTimeData(){
                     
                 });
                 d.querySelector(".realTimeDataContent").innerHTML=html;
-
+                //crear las gráficas
                 data.forEach(el =>{
                     let $chart=CreateChart(`${el._id}`,`${el.sensor}`,el.data_x,el.data_y);
-                    setInterval(function(){
+                    let interval=setInterval(function(){
                         shareTemperature=localStorage.getItem('shareTemperature');
                         shareHumidity=localStorage.getItem('shareHumidity');
                         shareGas=localStorage.getItem('shareGas');
-
+                        //hacer peticion al lado de servidor para obtener los datos del modo remoto actualizados 
                         getAjax(`/findOne/${el._id}`,function(el){
-                            //let $chart=d.getElementById(el._id);
-                          //arrayCharts.forEach(el)
-                        console.log($chart);
-                        $chart.data.datasets.forEach((dataset) => {
-                            if(dataset.data.length < el.data_x.length){
-                                let resto=el.data_x.length-dataset.data.length;
-                                for (let i = el.data_x.length-resto; i < el.data_x.length; i++) {
-                                    dataset.data.push(`${el.data_y[i]}`);
-                                    $chart.data.labels.push(`${el.data_x[i]}`);
-                                    $chart.update();
-                                }
-                            }
-                        });    
-                        });
-
-                        /*if((shareTemperature=='on'||shareHumidity=='on'||shareGas=='on')){
-                            getAjax(`/findOne/${el._id}`,function(el){
-                                    //let $chart=d.getElementById(el._id);
-                                  //arrayCharts.forEach(el)
-                                console.log($chart);
-                                $chart.data.datasets.forEach((dataset) => {
-                                    if(dataset.data.length < el.data_x.length){
-                                        let resto=el.data_x.length-dataset.data.length;
-                                        for (let i = el.data_x.length-resto; i < el.data_x.length; i++) {
-                                            dataset.data.push(`${el.data_y[i]}`);
-                                            $chart.data.labels.push(`${el.data_x[i]}`);
-                                            $chart.update();
-                                        }
+                            console.log($chart);
+                            //actualizar la gráfica
+                            $chart.data.datasets.forEach((dataset) => {
+                                if(dataset.data.length < el.data_x.length){
+                                    let resto=el.data_x.length-dataset.data.length;
+                                    for (let i = el.data_x.length-resto; i < el.data_x.length; i++) {
+                                        dataset.data.push(`${el.data_y[i]}`);
+                                        $chart.data.labels.push(`${el.data_x[i]}`);
+                                        $chart.update();
                                     }
-                                });    
-                            });
-                            console.log($chart.data.datasets);
-                            console.log($chart.data.labels);
-                        }*/
+                                }
+                            });    
+                        },function(error){
+                            //mostrar error de petición
+                            console.log(error);
+                            //cancelar la función de setInterval
+                            clearInterval(interval);
+                        });
                     }, 2000);
-                    //arrayCharts.push($chart);
                 }
                 )
+            },function(error){
+                //mostrar error de petición
+                console.log(error);
             });
 
         }

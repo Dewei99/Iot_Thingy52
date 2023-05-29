@@ -81,7 +81,43 @@ html{
   .profileHeader .username{
     font-size: 0.65rem;
   }
+  .battery{
+    width: 15vw;
+  }
+  .battery span{
+    font-size:0.7rem;
+    margin-left: 0px;
+  }
+  div .battery .fa.fa-battery {
+    font-size: 1rem;
+  }
+  header .thingyHeader img {
+    display:none;
+  }
+  header .thingyHeader .title {
+    display:none;
+  }
+  .profileHeader img{
+    display:none;
+  }
+  .profileHeader .username{
+    display:none;
+  }
+  .header .profileHeader .username{
+    display: none;
+  }
+  .thingyHeader .panel-btn{
+    width:8vw;
+    height: auto;
+  }
+  .main .loginPanel{
+    width:90vw;
+    height: 50vh;
+    top: 20%;
+    left: 5%;
+  }
 }
+
 body{
   min-height: 100%;
   position: absolute;

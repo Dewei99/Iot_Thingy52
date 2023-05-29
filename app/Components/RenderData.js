@@ -2,9 +2,8 @@ import { average } from "../helpers/average.js";
 import { getAjax } from "../helpers/getAjax.js";
 import { readTime } from "../helpers/readTime.js";
 import { CreateChart } from "./CreateChart.js";
-
+//función encargado de renderizar los datos guardados de la base de datos
 export function RenderData(){
-    
     const d=document,$dataBase=d.querySelector(".dataBase"),$userMenu=d.querySelector(".userMenu"),
     $dataBaseTitle= d.createElement("div"),$dataBaseContent= d.createElement("div"),$error= d.createElement("div");
     $dataBaseContent.classList.add("dataBaseContent");
@@ -15,9 +14,12 @@ export function RenderData(){
     $dataBase.appendChild($dataBaseTitle);
     $dataBase.appendChild($error);
     $dataBase.appendChild($dataBaseContent);
+    //esperar un evento click del ratón
     $userMenu.addEventListener("click", e => {
+        //si se pulsa el botón de base de datos
         if (e.target.matches(".databaseLink")) {
             console.log("estoy en database");
+            //enviar petición por Ajax al lado del servidor para obtener los datos de la base de datos 
             getAjax("/database",function(data){
                 let html=``;
                 if(!data.length){
@@ -25,8 +27,8 @@ export function RenderData(){
                 }else{
                     $error.style.display="none";
                 }
+                //una vez obtenido los datos se renderizan en la aplicación 
                 data.forEach(el => {
-                    //console.log(el.data_y);
                     let media=average(el.data_y),tiempo=readTime(el.data_x),
                     valorMax=Math.max(...el.data_y),valorMin=Math.min(...el.data_y);
                     html+=`
@@ -56,10 +58,14 @@ export function RenderData(){
                 d.querySelector(".dataBaseContent").innerHTML=html;
 
                 data.forEach(el =>{
+                    //crear las gráficas
                     let $chart=CreateChart(`${el._id}`,`${el.sensor}`,el.data_x,el.data_y);
                    
                 }
                 )
+            },function(error){
+                //mostrar error de petición
+                console.log(error);
             });
         }
     });

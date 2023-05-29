@@ -1,17 +1,19 @@
+//Función encargado de renderizar la gráfica
 export function CreateChart(contenedor,tipo,data_x=[],data_y=[]){
 
 let $grafica;
 
-
-//window.onload= function(){
-
 const crear=()=>{
 return new Chart(document.getElementById(contenedor),{
+    //tipo de gráfica: línea
     type: 'line',
+    //estructura de datos de la gráfica
     data: {
-        labels: data_x,//[],
+        //eje x
+        labels: data_x,
         datasets: [{ 
-            data: data_y,//[],
+            //eje y
+            data: data_y,
             label: tipo,
             borderColor: "#3e95cd",
             fill: false
@@ -37,9 +39,7 @@ return new Chart(document.getElementById(contenedor),{
 });
 
 }
-
 $grafica= crear();
 console.log(`crear chart: ${$grafica}`);
-//console.log(`mostrar data: ${$grafica.data.datasets.data}`);
 return $grafica;
 }

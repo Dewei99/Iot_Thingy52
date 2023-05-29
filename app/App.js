@@ -22,7 +22,6 @@ import { getAjax } from "./helpers/getAjax.js";
 import { RenderData } from "./Components/RenderData.js";
 import { deleteData } from "./helpers/deleteData.js";
 import { DeleteMessage } from "./Components/DeleteMessage.js";
-import { Microphone } from "./Components/Microphone.js";
 import { RenderRealTimeData } from "./Components/RenderRealTimeData.js";
 
 export function App(){
@@ -110,6 +109,9 @@ export function App(){
         getAjax("/user",
         function(data){
             console.log(data);
+        },function(error){
+            console.log(error);
+            localStorage.setItem('error', 'on');
         }
         );
     });

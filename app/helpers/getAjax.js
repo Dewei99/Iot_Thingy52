@@ -1,4 +1,4 @@
-export function getAjax(url='',callback){
+export function getAjax(url='',callback,cbError){
     const $error=document.querySelector(".error");
     
     fetch(url, {
@@ -19,9 +19,10 @@ export function getAjax(url='',callback){
           callback(data);
         })
         .catch(function (error) {
-          localStorage.setItem('error', 'on');
+          cbError(error);
+          /*localStorage.setItem('error', 'on');
           //$error.classList.add("is-active");
           console.error(`Fetch problem: ${error.message}`);
-          console.log(error);
+          console.log(error);*/
         });
 }

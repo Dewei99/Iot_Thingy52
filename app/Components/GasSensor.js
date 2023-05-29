@@ -8,6 +8,7 @@ import { postAjax } from "../helpers/postAjax.js";
 import { RealTimeDataButton } from "./RealTimeDataButton.js";
 import { getAjax } from "../helpers/getAjax.js";
 
+//función encargado de renderizar un panel que muestra la gráfica de los datos del sensor de gas enviados por el dispositivo thingy 52
 export function GasSensor(thingy, boton){
     const d=document,$article=d.createElement("article"),$titleCO2 = d.createElement("div"),
     $titleCOV = d.createElement("div"),$CO2 = d.createElement("canvas"),$COV = d.createElement("canvas"),$boton=d.querySelector(boton);
@@ -24,30 +25,35 @@ export function GasSensor(thingy, boton){
     $article.appendChild($CO2);
     $article.appendChild($titleCOV);
     $article.appendChild($COV);
+    //Renderizar botón de guardar datos
     $article.appendChild(SaveButton("save-gas"));
+    //Renderizar botón de activar el modo remoto
     $article.appendChild(RealTimeDataButton("share-gas"));
     localStorage.setItem('gasWarning', 'off');
 
     //funcion para actualizar los datos de las gráficas
     function logData(data) {
         console.log(data);
+        //Actualizar datos de CO2
         dataCO2_y.push(data.detail.eCO2.value);
         dataCO2_x.push(time());
+        //Renderizar datos del sensor CO2
         $titleCO2.innerHTML = `
         <header>CO2</header>
         CO2: ${data.detail.eCO2.value} ${data.detail.eCO2.unit}`;
-
+        //Actualizar datos de COV
         dataCOV_y.push(data.detail.TVOC.value);
         dataCOV_x.push(time());
+        //Renderizar datos del sensor COV
         $titleCOV.innerHTML = `
         <header>COV</header>
         COV: ${data.detail.TVOC.value} ${data.detail.TVOC.unit}`;
-
+        //actualizar gráfica
         updateData($chartCO2, data.detail.eCO2.value);
         updateData($chartCOV, data.detail.TVOC.value);
         
         
-        //actualizar datos compartidos
+        //actualizar datos compartidos del modo remoto
         if(shareButton===true){
             console.log("actualizando datos gas");
             let objeto_CO2={
@@ -62,6 +68,7 @@ export function GasSensor(thingy, boton){
                 date:date(),
                 data_x: dataCOV_x,
                 data_y: dataCOV_y};
+            //enviar nuevos datos actualizados a la base de datos
             postAjax("/update", JSON.stringify(objeto_CO2), 
                 function(data){
                     console.log(data.message);
@@ -77,12 +84,15 @@ export function GasSensor(thingy, boton){
                 console.log(errorMessage);
         });
         }
-        if(data.detail.eCO2.value>=800){
+        //activación de alerta cuando se supera un valor límite
+        if(data.detail.eCO2.value>=1000){
+            //Renderizar datos del sensor CO2
             $titleCO2.innerHTML = `
             <header>CO2</header>
             CO2: ${data.detail.eCO2.value} ${data.detail.eCO2.unit} (Alto)`;
             localStorage.setItem('gasWarning', 'on');
             $article.classList.add("warning");
+            //Modificar color de led RGB del dispositivo
             if(high===true){
                 ledController(thingy);
                 high=false;
@@ -93,8 +103,9 @@ export function GasSensor(thingy, boton){
                 iftttCO2=false;
                 let objeto={event: "CO2",
                     alert:"elevada",
-                    value:"más de 800 ppm"    
+                    value:"más de 1000 ppm"    
                 };
+                //enviar datos al lado de servidor
                 postAjax("/ifttt",
                     JSON.stringify(objeto),
                     function(data){
@@ -103,37 +114,44 @@ export function GasSensor(thingy, boton){
                          console.log(error);
                     }
                 );
+                //esperar 5 min para volver a enviar un correo
                 setTimeout(async function(){
                     iftttCO2=true;
                 },300000);
             }
         }else{
+            //desactivación de alerta
             localStorage.setItem('gasWarning', 'off');
             $article.classList.remove("warning");
+            //Modificar color de led RGB del dispositivo
             if(normal===true){
                 ledController(thingy);
                 high=true;
                 normal=false;
             }
         }
-
+        //activación de alerta cuando se supera un valor límite
         if(data.detail.TVOC.value>=500){
+            //Renderizar datos del sensor COV
             $titleCOV.innerHTML = `
             <header>COV</header>
             COV: ${data.detail.TVOC.value} ${data.detail.TVOC.unit} (Alto)`;
             localStorage.setItem('gasWarning', 'on');
             $article.classList.add("warning");
+            //Modificar color de led RGB del dispositivo
             if(high===true){
                 ledController(thingy);
                 high=false;
                 normal=true;
             }
+            //enviar un correo de alerta
             if(iftttCOV===true){
                 iftttCOV=false;
                 let objeto={event: "COV",
                     alert:"elevada",
                     value:"más de 500 ppb"    
                 };
+                //enviar datos al lado de servidor
                 postAjax("/ifttt",
                     JSON.stringify(objeto),
                     function(data){
@@ -142,6 +160,7 @@ export function GasSensor(thingy, boton){
                          console.log(error);
                     }
                 );
+                //esperar 5 min para volver a enviar un correo
                 setTimeout(async function(){
                     iftttCOV=true;
                 },300000);
@@ -150,6 +169,7 @@ export function GasSensor(thingy, boton){
             localStorage.setItem('gasWarning', 'off');
             $article.classList.remove("warning");
             if(normal===true){
+                //cambiar color de led RGB del dispositivo Thingy 52
                 ledController(thingy);
                 high=true;
                 normal=false;
@@ -157,7 +177,7 @@ export function GasSensor(thingy, boton){
         }
     }
 
-
+    //empezar la lectura del sensor de gas
     async function start_Gas(device) {
         try{
             let bool=await device.gas.start();
@@ -176,11 +196,11 @@ export function GasSensor(thingy, boton){
             $titleCO2.innerHTML=`No está conectado al Thingy:52`;
         }
     }
-
+    //parada de la lectura del sensor de gas
     async function stop_Gas(device) {
-
         try{
             let bool=await device.gas.stop();
+            localStorage.setItem('gasWarning', 'off');
             $article.classList.remove("is-active");
             console.log("estoy en la función stop");
             console.log(bool);
@@ -194,14 +214,13 @@ export function GasSensor(thingy, boton){
         }
     }
 
+    //esperar evento click del ratón
     d.addEventListener("click", async function(e){
         const $shareButton=d.querySelector(".share-gas");
           //activar sensor de gas
         if(e.target.matches(boton)||e.target.matches(`${boton} *`)){
 
             if(estado===0){
-                console.log("hola");
-
                 //crear gráficas
                 $chartCO2=CreateChart("chart-CO2","CO2 (ppm)");
                 $chartCOV=CreateChart("chart-COV","COV (ppb)");
@@ -211,15 +230,18 @@ export function GasSensor(thingy, boton){
 
                 console.log(`existe chart: ${$chartCO2}`);
                 $article.classList.toggle("is-active");
+                //empezar lectura del sensor de gas
                 start_Gas(thingy);
 
-                
             }else if(estado===1){
                 $article.classList.toggle("is-active");
+                //parar lectura del sensor de gas
                 stop_Gas(thingy);
                 localStorage.setItem('shareGas', 'off');
+                //actualizar el color del led RGB
                 ledController(thingy);
                 $shareButton.removeAttribute("data-active");
+                //asegurar que no se comparta datos del modo remoto cuando se desactiva el sensor
                 getAjax("/remote",function(data){
                     data.forEach(el => {
                         if(el.sensor==="CO2 (ppm)"){
@@ -228,6 +250,8 @@ export function GasSensor(thingy, boton){
                                 if(data.success==true){
                                     console.log("dejar de compartir CO2");
                                 }
+                            },function(error){
+                                console.log(error);
                             });
                         }
                         if(el.sensor==="COV (ppb)"){
@@ -236,9 +260,13 @@ export function GasSensor(thingy, boton){
                                 if(data.success==true){
                                     console.log("dejar de compartir COV");
                                 }
+                            },function(error){
+                                console.log(error);
                             });
                         }
                     });
+                },function(error){
+                    console.log(error);
                 });
                 localStorage.setItem('shareGas', 'off');
                 
@@ -246,14 +274,14 @@ export function GasSensor(thingy, boton){
                 console.log("error");
             }          
         }
-        
+        //pulsado el boton de modo remoto se produce la activación de modo remoto 
         if(e.target.getAttribute("class")==="share-gas"){
             console.log(shareButton);
             if(shareButton===false){
                 shareButton=true;
                 console.log(`shareButton: ${shareButton}`);
                 $shareButton.setAttribute("data-active", "true");
-
+                //estructura de datos que se va a enviar al lado del servidor
                 let objeto_CO2={
                     id:id_CO2,
                     sensor: "CO2 (ppm)",
@@ -266,6 +294,7 @@ export function GasSensor(thingy, boton){
                     date:date(),
                     data_x: dataCOV_x,
                     data_y: dataCOV_y};
+                //enviar datos al lado del servidor, y desde el lado del servidor enviarlo a la base de datos
                 postAjax("/share", JSON.stringify(objeto_CO2), 
                 function(data){
                     const d=document,$panel=d.querySelector(".share-gas"),
@@ -286,6 +315,7 @@ export function GasSensor(thingy, boton){
                         $newMessage.classList.remove("error"); 
                     },3000);
                 });
+                //enviar datos al lado del servidor
                 postAjax("/share", JSON.stringify(objeto_COV), 
                 function(data){ console.log(data);
                 },  function(error){ console.log(error); });
@@ -298,16 +328,19 @@ export function GasSensor(thingy, boton){
                                 id_COV=el._id;
                             }
                         });
+                    },function(error){
+                        console.log(error);
                     })
                     setTimeout(function(){
                         shareButton=true;
                         localStorage.setItem('shareGas', 'on');
                     },500);
-                },1000);
-                    
-            }else if(shareButton===true){
+                },1000);}
+                //cuando el botón de modo remoto está desactivado
+                else if(shareButton===true){
                 shareButton=false;
                 $shareButton.removeAttribute("data-active");
+                //parar de compartir datos a la base de datos
                 getAjax("/remote",function(data){
                     data.forEach(el => {
                         if(el.sensor==="CO2 (ppm)"){
@@ -316,6 +349,8 @@ export function GasSensor(thingy, boton){
                                 if(data.success==true){
                                     console.log("dejar de compartir CO2");
                                 }
+                            },function(error){
+                                console.log(error);
                             });
                         }
 
@@ -325,14 +360,18 @@ export function GasSensor(thingy, boton){
                                 if(data.success==true){
                                     console.log("dejar de compartir COV");
                                 }
+                            },function(error){
+                                console.log(error);
                             });
                         }
                     });
+                },function(error){
+                    console.log(error);
                 });
                 localStorage.setItem('shareGas', 'off');
             }
         }
-
+        //pulsado el botón guardar, se guarda los datos recibidos del dispositivo thingy 52
         if(e.target.getAttribute("class")=="save-gas"){
             let objetoCO2={
                 sensor: "CO2 (ppm)",
@@ -345,6 +384,7 @@ export function GasSensor(thingy, boton){
                 data_x: dataCOV_x,
                 data_y: dataCOV_y};    
             console.log(date());
+            //enviar los datos de CO2 que se van a guardar en la base de datos al lado del servidor
             postAjax("/save", JSON.stringify(objetoCO2), 
                 function(data){
                     const d=document,$panel=d.querySelector(".save-gas"),
@@ -366,6 +406,7 @@ export function GasSensor(thingy, boton){
                     },3000);
                     
             });
+            //enviar los datos de COV que se van a guardar en la base de datos al lado del servidor
             postAjax("/save", JSON.stringify(objetoCOV), 
             function(data){
                 console.log(data);
@@ -373,7 +414,7 @@ export function GasSensor(thingy, boton){
                 console.log(error);
             });
         }
-
+        //evitar la propagación del mismo evento (en este caso el click de ratón) al ser llamado
         e.stopPropagation();
 
     });

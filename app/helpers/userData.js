@@ -6,6 +6,8 @@ export function userData(){
     function(data){
         const d=document,$username=d.querySelector(".username");
         $username.innerHTML=`${data.name}`;
+    },function(error){
+        console.log(error);
     }
     );
 }

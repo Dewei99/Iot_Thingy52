@@ -87,9 +87,13 @@ export async function router(){
                                 if(data.success==true){
                                     console.log("dejar de compartir datos");
                                 }
+                        },function(error){
+                            console.log(error);
                         });
                         localStorage.setItem('error', 'off');            
                     });
+                },function(error){
+                    console.log(error);
                 });
             }
             localStorage.setItem('error', 'off');

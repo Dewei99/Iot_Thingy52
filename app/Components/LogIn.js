@@ -1,6 +1,5 @@
-
+//función que renderiza la ventana de login
 export function LogIn(){
-
     const $login = document.createElement("div")
     $login.classList.add("loginPanel");
     $login.innerHTML = `
@@ -14,8 +13,5 @@ export function LogIn(){
     </form>
     <span class="error">Contraseña o nombre de usuario incorrecto"</span>
     `;
-    
-
-    //$login.after(Loader());
     return $login;
 }

@@ -7,7 +7,7 @@ import { time } from "../helpers/time.js";
 import { date } from "../helpers/date.js";
 import { RealTimeDataButton } from "./RealTimeDataButton.js";
 import { getAjax } from "../helpers/getAjax.js";
-
+//función encargado de renderizar un panel que muestra la gráfica de los datos del sensor de humedad enviados por el dispositivo thingy 52
 export function Humidity(thingy, boton){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $humedad = d.createElement("canvas"),$boton=d.querySelector(boton);
@@ -19,16 +19,21 @@ export function Humidity(thingy, boton){
 
     $article.appendChild($title);
     $article.appendChild($humedad);
+    //Renderizar botón de guardar datos
     $article.appendChild(SaveButton("save-humidity"));
+    //Renderizar botón de activar el modo remoto
     $article.appendChild(RealTimeDataButton("share-humidity"));
     localStorage.setItem('humidityWarning', 'off');
 
+    //funcion para actualizar los datos de las gráficas
     function logData(data) {
-
+        //Renderizar datos del sensor humedad
         $title.innerHTML = `
         <header>Humedad</header>
         Humedad: ${data.detail.value} ${data.detail.unit}`;
+        //actualizar gráfica
         updateData($chart, data.detail.value);
+        //Actualizar datos de humedad
         data_y.push(data.detail.value);
         data_x.push(time());
         
@@ -42,6 +47,7 @@ export function Humidity(thingy, boton){
                 date:date(),
                 data_x: data_x,
                 data_y: data_y};
+            //enviar nuevos datos actualizados a la base de datos
             postAjax("/update", JSON.stringify(objeto), 
                 function(data){
                     console.log(data.message);
@@ -50,13 +56,16 @@ export function Humidity(thingy, boton){
                     console.log(errorMessage);
             });
         }
+        //activación de alerta cuando se supera un valor límite
         if(data.detail.value>=65){
+            //Renderizar datos del sensor humedad
             $title.innerHTML = `
             <header>Humedad</header>
             Humedad: ${data.detail.value} ${data.detail.unit} (Alto)`;
             updateData($chart, data.detail.value);
             localStorage.setItem('humidityWarning', 'on');
             $article.classList.add("warning");
+            //Modificar color de led RGB del dispositivo
             if(high===true){
                 ledController(thingy);
                 high=false;
@@ -69,6 +78,7 @@ export function Humidity(thingy, boton){
                     alert:"elevada",
                     value:"más de 65%"    
                 };
+                //enviar datos al lado de servidor
                 postAjax("/ifttt",
                     JSON.stringify(objeto),
                         function(data){
@@ -77,14 +87,17 @@ export function Humidity(thingy, boton){
                       console.log(error);
                     }
                     );
+                //esperar 5 min para volver a enviar un correo
                 setTimeout(async function(){
                     ifttt=true;
                 },300000);
             }
 
         }else{
+            //desactivación de alerta
             localStorage.setItem('humidityWarning', 'off');
             $article.classList.remove("warning");
+            //Modificar color de led RGB del dispositivo
             if(normal===true){
                 ledController(thingy);
                 high=true;
@@ -93,7 +106,7 @@ export function Humidity(thingy, boton){
         }
     }
 
-
+    //empezar la lectura del sensor de humedad
     async function start_Humedad(device) {
         try{
             let bool=await device.humidity.start();
@@ -112,11 +125,11 @@ export function Humidity(thingy, boton){
             $title.innerHTML=`No está conectado al Thingy:52`;
         }
     }
-
+    //parada de la lectura del sensor de humedad
     async function stop_Humedad(device) {
-        //await thingy.connect();
         try{
             let bool=await device.humidity.stop();
+            localStorage.setItem('humidityWarning', 'off');
             $article.classList.remove("is-active");
             console.log("estoy en la función stop");
             console.log(bool);
@@ -129,28 +142,28 @@ export function Humidity(thingy, boton){
             $title.innerHTML=`Error en la desconexion`;
         }
     }
-
+    //esperar evento click del ratón
     d.addEventListener("click", async function(e){
         const $shareButton=d.querySelector(".share-humidity");
-        
         //activar sensor de humedad
         if(e.target.matches(boton)||e.target.matches(`${boton} *`)){
 
             if(estado===0){
+                //crear gráficas
                 $chart=CreateChart("chart-humedad","Humedad (%)");
                 console.log($chart);
-
-                console.log(`existe chart: ${$chart}`);
                 $article.classList.toggle("is-active");
+                //empezar lectura del sensor de humedad
                 start_Humedad(thingy);
-
-                
             }else if(estado===1){
                 $article.classList.toggle("is-active");
+                //parar lectura del sensor de humedad
                 stop_Humedad(thingy);
                 localStorage.setItem('humidityWarning', 'off');
+                //actualizar el color del led RGB
                 ledController(thingy);
                 $shareButton.removeAttribute("data-active");
+                //asegurar que no se comparta datos del modo remoto cuando se desactiva el sensor
                 getAjax("/remote",function(data){
                     data.forEach(el => {
                         if(el.sensor==="Humedad (%)"){
@@ -162,6 +175,8 @@ export function Humidity(thingy, boton){
                             });
                         }
                     });
+                },function(error){
+                    console.log(error);
                 });
                 localStorage.setItem('shareHumidity', 'off');
 
@@ -170,19 +185,20 @@ export function Humidity(thingy, boton){
             }          
         }   
 
-        //modo real time data
+        //pulsado el boton de modo remoto se produce la activación de modo remoto 
         if(e.target.getAttribute("class")==="share-humidity"){
             console.log(shareButton);
             if(shareButton===false){
                 shareButton=true;
                 console.log(`shareButton: ${shareButton}`);
                 $shareButton.setAttribute("data-active", "true");
-
+                //estructura de datos que se va a enviar al lado del servidor
                 let objeto={
                     sensor: "Humedad (%)",
                     date:date(),
                     data_x: data_x,
                     data_y: data_y};
+                //enviar datos al lado del servidor, y desde el lado del servidor enviarlo a la base de datos
                 postAjax("/share", JSON.stringify(objeto), 
                 function(data){
                     const d=document,$panel=d.querySelector(".share-humidity"),
@@ -210,15 +226,19 @@ export function Humidity(thingy, boton){
                                 id=el._id;
                             }
                         });
+                    },function(error){
+                        console.log(error);
                     })
                     setTimeout(function(){
                         shareButton=true;
                         localStorage.setItem('shareHumidity', 'on');
                     },500);
                 },1000);
+            //cuando el botón de modo remoto está desactivado
             }else if(shareButton===true){
                 shareButton=false;
                 $shareButton.removeAttribute("data-active");
+                //parar de compartir datos a la base de datos
                 getAjax("/remote",function(data){
                     data.forEach(el => {
                         if(el.sensor==="Humedad (%)"){
@@ -227,14 +247,18 @@ export function Humidity(thingy, boton){
                                 if(data.success==true){
                                     console.log("dejar de compartir datos de humedad");
                                 }
+                            },function(error){
+                                console.log(error);
                             });
                         }
                     });
+                },function(error){
+                    console.log(error);
                 });
                 localStorage.setItem('shareHumidity', 'off');
             }
         }
-
+        //pulsado el botón guardar, se guarda los datos recibidos del dispositivo thingy 52
         if(e.target.getAttribute("class")=="save-humidity"){
             let objeto={
                 sensor: "Humedad (%)",
@@ -242,6 +266,7 @@ export function Humidity(thingy, boton){
                 data_x: data_x,
                 data_y: data_y};
             console.log(date());
+            //enviar los datos de humedad que se van a guardar en la base de datos al lado del servidor
             postAjax("/save", JSON.stringify(objeto), 
                 function(data){
                     const d=document,$panel=d.querySelector(".save-humidity"),
@@ -265,6 +290,7 @@ export function Humidity(thingy, boton){
             }
             )
         }
+        //evitar la propagación del mismo evento (en este caso el click de ratón) al ser llamado
         e.stopPropagation();
     });
     

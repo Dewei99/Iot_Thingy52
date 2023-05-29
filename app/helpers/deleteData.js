@@ -78,11 +78,15 @@ export function deleteData(){
                                     CreateChart(`${el._id}`,`${el.sensor}`,el.data_x,el.data_y);
                                 }
                                 )
+                            },function(error){
+                                console.log(error);
                             }); 
                         },2500);
                         console.log("volver a renderizar datos");
 
                     }
+                },function(error){
+                    console.log(error);
                 }
             )
             
