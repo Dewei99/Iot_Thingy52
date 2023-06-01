@@ -1,5 +1,5 @@
 import { ledController } from "./ledController.js";
-
+//se encarga de enviar el audio de alarma al dispositivo
 export async function playAudio(thingy, wav8Array) {
     try {
       let speakerStatusReady = true;
@@ -10,28 +10,29 @@ export async function playAudio(thingy, wav8Array) {
 
         switch(speakerStatus) {
           case 0:
-            //Finished
+            //Terminado
             speakerStatusReady = true;
             break;
           case 1: 
-            // Buffer warning
+            //Advertencia de búfer
             speakerStatusReady = false;
             break;
           case 16:
-            //Packet disregarded
+            //Paquete ignorado
             speakerStatusReady = false;
             break;
           default:
             speakerStatusReady = true;
         }
       }
+      //obtener el estado del altavoz del dispositivo thingy 52
       thingy.addEventListener("speakerstatus", myLogger);
 
       let alarm,audioState;
       let index = 0;  
       let t0 = 0;
       let t1 = 0;
-      let packetSize = 28;
+      let packetSize = 28;//envío de paquetes de audio de 28 bytes
       //let packetSize = 273;
       //let packetSize = 20;
       let packets = 0;
@@ -39,20 +40,22 @@ export async function playAudio(thingy, wav8Array) {
       let retries = 0;
       //let speakerStatusReady = true;
       function writeSoundPCMBatch(resolve, reject){
+        //obtener el estado de alarma de la aplicación
         alarm=localStorage.getItem('alarm');
         localStorage.setItem('audioState', 'on');
         /*audioState=localStorage.getItem('audioState');
         console.log(audioState);*/
         console.log(alarm);
+        //si el estado de alarma está activado se envía el audio de alarma al dispositivo thingy 52
         if(alarm=='on'){
         
-        // Can write max 273 Bytes (MTU) at a time to the characteristic.
-        // Writing with maximum data payload might result in Thingy speaker buffer filling up and packets will be dropped.
-        // Sending 160 Byte batches has proved to be reliable.
+        // Puede escribir un máximo de 273 bytes (MTU) a la vez en la característica.
+        // Escribir con la carga de datos máxima puede provocar que el búfer de los altavoces Thingy se llene y los paquetes se descarten
+        // El envío de paquetes de 28 bytes ha demostrado ser fiable.
 
           if(speakerStatusReady == false){    
-        // Do a sanity check in case notifications have stopped whilst whe are retrying or we might en up in an endless loop of retries.
-        // If there are 10 retries in a row it probably means notifications have stopped.
+        // Realice una verificación en caso de que las notificaciones del estado del altavoz se hayan detenido mientras se están reintentando o podríamos terminar en un ciclo interminable de reintentos.
+        // Si hay 10 reintentos seguidos, probablemente signifique que las notificaciones se han detenido.
         //console.log('Retries = ' + retries);
             if((retries > 0) && (retries % 10) == 0){
               thingy.speakerstatus.start()
@@ -66,33 +69,33 @@ export async function playAudio(thingy, wav8Array) {
             else{
               retries++;
             }
-            // Delay execution by 10ms if Thingy audio buffer is almost full
+            //Retrasa la ejecución en 10 ms si el búfer de audio de Thingy está casi lleno
             timer = setTimeout(function(){writeSoundPCMBatch(resolve, reject);}, 10); 
           }
       
-          // write 160 Byte chunks of 8-bit audio data to Thingy
+          //escribir paquetes de 23 bytes de datos de audio de 8 bits en Thingy
           else{  
               if(index + packetSize < wav8Array.length) {
                 thingy.speakerdata.write({mode: 2, data: wav8Array.slice(index, index + packetSize)})
                 .then(() => {
                   index += packetSize;
                   packets++;
-                  // There is possibly a bug in Chrome that leads to the notification callback not firing. Happens irregularly.
-                  // Restart notifications every 20 packets to make sure notifications are running.
-                  // This does not add an audible delay to the aduio transmission.
+                  // Es posible que haya un error en Chrome que hace que la devolución de llamada de notificación no se active. Ocurre de forma irregular.
+                  // Reinicie las notificaciones cada 20 paquetes para asegurarse de que se estén ejecutando.
+                  // Esto no agrega un retraso audible a la transmisión de audio.
                   if(packets % 20 == 0){
                     thingy.speakerstatus.start();
                                  
                   }
-                  // reset retries on successful write
+                  //restablecer reintentos en escritura exitosa
                   retries = 0;
-                  // Repeat
+                  // Repetir
                   writeSoundPCMBatch(resolve, reject);              
                 })
                 .catch(error => console.log(error));
               }
               else{
-               // Send the last bytes
+               //Enviar los últimos bytes
                 if(index < wav8Array.length){
                  thingy.speakerdata.write({mode: 2, data: wav8Array.slice(index, wav8Array.length - 1)})
                   .then(() => {

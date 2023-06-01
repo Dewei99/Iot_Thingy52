@@ -1,3 +1,4 @@
+//función encargado de obtener la hora actual
 export function time(){
     //la función addZero añade un zero delante si el valor de hora, minuto o segundo sea menor que 10 (0X)
     function addZero(i) {

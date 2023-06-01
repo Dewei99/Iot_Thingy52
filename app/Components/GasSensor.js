@@ -181,6 +181,7 @@ export function GasSensor(thingy, boton){
     async function start_Gas(device) {
         try{
             let bool=await device.gas.start();
+            //espera de evento, que es recibir datos del sensor del dispositivo
             let servicio=await device.addEventListener("gas", logData);
             $boton.classList.add("is-active");
             console.log("estoy en la función start");

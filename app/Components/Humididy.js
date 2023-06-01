@@ -110,6 +110,7 @@ export function Humidity(thingy, boton){
     async function start_Humedad(device) {
         try{
             let bool=await device.humidity.start();
+            //espera de evento, que es recibir datos del sensor del dispositivo
             let servicio=await device.addEventListener("humidity", logData);
             $boton.classList.add("is-active");
             console.log("estoy en la función start");

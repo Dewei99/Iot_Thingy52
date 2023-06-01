@@ -1,7 +1,7 @@
 
 import { getAjax } from "./getAjax.js";
 import { userData } from "./userData.js";
-
+//función encargado de modificar las vistas de la aplicación dependiendo de la ruta o url 
 export async function router(){
     const d=document,$error=d.querySelector(".error"),
     $sensores=d.querySelector(".sensores"),
@@ -11,6 +11,7 @@ export async function router(){
     $logIn=d.querySelector(".logInButton"),$logOut=d.querySelector(".logOutButton"),
     $realTimeData=d.querySelector(".realTimeData");
     const routes = [
+        //vista inicio
         { path: "/", view: /*`/`*/ ()=>{
             $sensores.style.display="block";
             $panel_btn.style.visibility="visible";
@@ -28,6 +29,7 @@ export async function router(){
             localStorage.setItem('error', 'off');
             $error.classList.remove("is-active");
         }},
+        //vista login
         { path: "/login", view:/*`/login`*/ ()=>{
             $sensores.style.display="none";
             $panel_btn.style.visibility="hidden";
@@ -43,6 +45,7 @@ export async function router(){
             console.log($loginPanel.style.display);
         }},
         //{ path: "/posts/:id", view: PostView },
+        //vista base de datos
         { path: "/database", view:/*`/database`*/ ()=>{
             $sensores.style.display="none";
             $panel_btn.style.visibility="hidden";
@@ -61,6 +64,7 @@ export async function router(){
             localStorage.setItem('error', 'off');
             $error.classList.remove("is-active");
         } },
+        //cerra sesión
         { path: "/signout", view:/*`/database`*/ ()=>{
             $sensores.style.display="none";
             $panel_btn.style.visibility="hidden";
@@ -99,6 +103,7 @@ export async function router(){
             localStorage.setItem('error', 'off');
             location.reload();
         } },
+        //vista sensores
         { path: "/sensors", view: /*`/`*/ ()=>{
             $sensores.style.display="block";
             $panel_btn.style.visibility="visible";
@@ -116,6 +121,7 @@ export async function router(){
             localStorage.setItem('error', 'off');
             $error.classList.remove("is-active");
         }},
+        //vista modo remoto
         { path: "/remote", view:/*`/realTimeData`*/ ()=>{
             $sensores.style.display="none";
             $panel_btn.style.visibility="hidden";
@@ -152,7 +158,4 @@ export async function router(){
         };
     }
     match.route.view();
-    //console.log(match.route.view());
-    //console.log(match.route.result);
-    //document.querySelector(".main").innerHTML=match.route.view;
 }

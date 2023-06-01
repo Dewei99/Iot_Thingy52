@@ -1,10 +1,11 @@
+//petición por ajax para solicitar datos al servidor
 export function getAjax(url='',callback,cbError){
     const $error=document.querySelector(".error");
-    
+    //utilizar api de fetch para la solicitud asíncrona
     fetch(url, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json",//formato json
         }
       })
         .then(function (response) {
@@ -13,16 +14,13 @@ export function getAjax(url='',callback,cbError){
           }
           return response.json();
         })
+        //función callback
         .then(function (data) {
           localStorage.setItem('error', 'off');
-          //$error.classList.remove("is-active");
           callback(data);
         })
+        //función error
         .catch(function (error) {
           cbError(error);
-          /*localStorage.setItem('error', 'on');
-          //$error.classList.add("is-active");
-          console.error(`Fetch problem: ${error.message}`);
-          console.log(error);*/
         });
 }

@@ -1,5 +1,5 @@
 import { time } from "./time.js";
-
+//función que retorna la fecha actual
 export function date(){
     //la función addZero añade un zero delante si el valor de hora, minuto o segundo sea menor que 10 (0X)
     function addZero(i) {

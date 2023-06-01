@@ -1,8 +1,7 @@
 const Sensor = require('../models/sensor.js');
+//Controlador utilizado para crear y eliminar datos
 //crear
 module.exports.crear = (req, res)=>{
-    //console.log(req.body)
-    //console.log(req);
     const sensor = new Sensor({
         sensor: req.body.sensor,
         date: req.body.date,
@@ -11,11 +10,13 @@ module.exports.crear = (req, res)=>{
     })
     sensor.save(function(error,sensor){
         if(error){
+            //enviar mensaje de error al lado de cliente
             return res.status(500).json({
                 message: 'Error al guardar datos',
                 status:501
             })
         }else{
+            //enviar mensaje al lado de cliente
             return res.json({ message: 'guardado correctamente' });
         }
     })
@@ -25,11 +26,13 @@ module.exports.borrar = (req, res)=>{
     const id = req.params.id;
     Sensor.findByIdAndRemove(id, (error, alumno)=>{
         if(error){
+            //enviar mensaje de error al lado de cliente
             return res.status(500).json({
                 message: 'Error al eliminar datos',
                 status:501
             })
         }else{
+            //enviar datos al lado de cliente
             return res.json({success:true});
         }
     })

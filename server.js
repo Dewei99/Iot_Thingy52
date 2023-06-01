@@ -1,6 +1,4 @@
-/*import { dirname,join } from "path";
-import express from "express";
-import { fileURLToPath } from "url";*/
+
 const express = require('express');
 const path = require('path');
 const passport=require('passport');
@@ -23,23 +21,16 @@ const app = express();
 //para poder recibir correctamente los datos enviado en el lado del cliente 
 app.use(express.json());
 
-// static files
-//app.use("/app",express.static(path.resolve(__dirname,"app")));
-//app.use("/app",express.static(path.join(__dirname, "app")));
+// static files que se envía al lado del cliente junto con el archivo html
 app.use(express.static("app"));
-//app.use(express.static(__dirname + '/app'));
 
 //Conexion a base de datos
 const uri=`mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.ftd5eru.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;//url de conexion
 
-/*mongoose.connect(uri,
-    {useNewUrlParser:true, useUnifiedTopology:true}
-).then(()=>console.log("Base de datos conectada"))
-.catch(e=>console.log(e));*/
-
+//usar modelo y controlador para la interacción con MongoDB
 const Sensor = require('./models/sensor');
 const sensorController = require('./controllers/sensorController');
-
+//usar modelo y controlador para la interacción con MongoDB
 const RealTimeData = require('./models/realTimeData');
 const realTimeDataController = require('./controllers/realTimeDataController');
 
@@ -53,12 +44,6 @@ app.use(session({
     resave:true, //definir comportamiento de las sesiones,true(guardar aunque no se modifique la sesion)
     saveUninitialized: true 
 }));
-
-
-//const __dirname = dirname(fileURLToPath(import.meta.url));
-//asociar motor de plantilla a express, en concreto ejs
-//app.set('view engine','hbs');//asignar un nombre de la configuración al valor
-//app.set("views", __dirname + "/views");
 
 //middleware
 app.use(passport.initialize());
@@ -99,37 +84,33 @@ passport.deserializeUser(function(id,done){
     done(null,{id:1,name:"Upm"});//null=no hubo error
 });
 
-//para todas las direcciones
-/*app.get("/*",async(request,response,next)=>{
-    response.sendFile(path.resolve(__dirname,"views","index.html"));
-});*/
-
-
+//ruta de vista de inicio
 app.get("/",(req,res,next)=>{
     console.log("hola /");
     console.log('Cookies: ', req.cookies);
-    //console.log(document.cookie);
-    //res.sendFile(path.resolve(__dirname,"views","index.html"));
     if(req.isAuthenticated()){
         console.log("conectado usuario");
         //res.sendFile(path.resolve(__dirname,"views","index.html"));
+        //enviar archivo html al lado del cliente
         res.sendFile(path.resolve(__dirname,"index.html"));
        // res.sendFile(path.resolve(__dirname,"app","index.html"));
         console.log(req.user);
     }else{
+        //redirigir a inicio de sesión
         res.redirect("/login");
     }
-
 }
 );
+
+//ruta de inicio de sesión
 app.get("/login",(req,res)=>{
     console.log("hola /login");
-    //res.send("hola");
     //ressendFile(path.resolve(__dirname,"views","index.html"));
+    //enviar archivo html al lado del cliente
     res.sendFile(path.resolve(__dirname,"index.html"));
     //res.sendFile(path.resolve(__dirname,"app","index.html"));
 });
-
+//solitar todos los datos guardados en la base de datos
 app.get("/database",async (request,response)=>{
     try {
         console.log("hola /databases");
@@ -139,13 +120,11 @@ app.get("/database",async (request,response)=>{
         }else{
             response.redirect("/login");
         }
-        
+        //autentificación de usuario
         if(request.isAuthenticated()){
+            //buscar datos guardados en la base de datos
             const arraySensores = await Sensor.find();
-            /*console.log("DataBase:");
-            console.log(arraySensores);
-            console.log(arraySensores[0]._id);
-            console.log(arraySensores[0]._id.toString());*/
+            //enviar datos al lado de cliente
             response.json(arraySensores);
         }
 
@@ -155,39 +134,29 @@ app.get("/database",async (request,response)=>{
 
 });
 
+//solitar datos de sensores de modo remoto guardado en la base de datos
 app.get("/remote",async (request,response)=>{
     try {
         console.log("hola /databases");
-        //response.sendFile(path.resolve(__dirname,"views","index.html"));
         if(request.isAuthenticated()){
             console.log("conectado usuario");
         }else{
             response.redirect("/login");
         }
-        
+        //autentificación de usuario
         if(request.isAuthenticated()){
+            //buscar datos guardados en la base de datos
             const arraySensores = await RealTimeData.find();
+            //enviar datos al lado de cliente
             response.json(arraySensores);
-           /* RealTimeData.findById('6424331a869da38302988e6f',function (err, result) {
-                if (err) return console.error(err)
-                try {
-                    console.log(result);           
-                } catch (error) {
-                    console.log("error getting results");
-                    console.log(error);
-                } 
-            });*/
         }
-
     } catch (error) {
         console.log(error);
     }
-
 });
 
 app.post("/login",
     //Recibir credenciales e iniciar seseón
-
     passport.authenticate('local',{
         //successRedirect:"/",
         failureRedirect:"/login"
@@ -203,17 +172,10 @@ app.post("/login",
 //borrar datos de la base de datos
 app.get('/delete/:id',
     sensorController.borrar
-    /* console.log(req.params.id);
-    res.json({success:true});*/
 );
 
 //guardar datos a la base de datos
-app.post('/save',  sensorController.crear/*function(req, res) {
-    //res.json({ message: 'hey' });
-    console.log(req);
-    res.status(400).end();
-    console.log("estoy en /save");
-}*/);
+app.post('/save',  sensorController.crear);
 
 //compartir datos
 app.post('/share',  realTimeDataController.crearRTD);
@@ -228,6 +190,7 @@ app.get('/deleteShare/:id',realTimeDataController.borrarRTD);
 app.get('/user',  function(req, res) {
     if(req.isAuthenticated()){
         console.log(req.user);
+        //enviar datos al lado de cliente
         res.json(req.user);
     }
 });
@@ -255,6 +218,7 @@ app.post('/ifttt',(req, response)=>{
     ])
     .then(res => {
         console.log(res);
+        //enviar mensaje al lado de cliente
         response.json({ message: 'enviado aviso correctamente' }); })
     .catch(err => {console.error(err);
         response.status(500).json({
@@ -264,5 +228,5 @@ app.post('/ifttt',(req, response)=>{
     });
 
 });
-
+//
 app.listen(process.env.PORT||3000,()=>console.log("Server started"));

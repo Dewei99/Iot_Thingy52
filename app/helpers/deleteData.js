@@ -3,12 +3,11 @@ import { CreateChart } from "../Components/CreateChart.js";
 import { average } from "./average.js";
 import { getAjax } from "./getAjax.js";
 import { readTime } from "./readTime.js";
-
+//función que realiza el proceso de eliminación de datos de la base de datos
 export function deleteData(){
     const d=document,$dataBase=d.querySelector(".dataBase"),
     $deleteMessage=d.querySelector(".deleteMessage");
     const $error=d.querySelector(".dataBaseError");
-    //$deleteMessage.innerHTML="Eliminado correctamente";
     $dataBase.addEventListener("mouseup",(e)=>{
         let confirmacion;
         console.log(e.target.getAttribute("class"));
@@ -25,16 +24,17 @@ export function deleteData(){
         if (e.target.getAttribute("class")=="cancelar"){
             let element = e.target;
             element.parentElement.classList.remove("is-active"); 
-            
         };
+        //esperar evento click del ratón al botón eliminar
         if(e.target.getAttribute("class")=="deleteBtn"){
             let delete_id=e.target.getAttribute("data-delete");
             console.log(e.target.getAttribute("data-delete"));
+            //petición al lado del sevidor para eliminar datos de la base de datos
             getAjax(`/delete/${delete_id}`,
                 function(data){
                     if(data.success==true){
-                        
-                        $deleteMessage.classList.add("is-active"); 
+                        $deleteMessage.classList.add("is-active");
+                        //volver a renderizar los datos guardados en la base de datos
                         setTimeout(function(){
                             $deleteMessage.classList.remove("is-active");
                             getAjax("/database",function(data){
@@ -94,20 +94,16 @@ export function deleteData(){
             let element = e.target;
             element.parentElement.classList.remove("is-active");
         };
+        //desplegar o cerrar la gráfica
         if(e.target.getAttribute("data-class")=="arrow"){
             let element = e.target;//d.querySelector("img");
             console.log(element);
             element.classList.toggle("is-active");
-            //let $panelData=d.getElementsByClassName(e.target.getAttribute("data-id"));
             let $panelData=d.getElementById(`${e.target.getAttribute("data-id")}`);
-            //let $panelData=d.querySelector(".63d57b8f5cc4c6255fdc3609");
             console.log($panelData.parentElement);
             $panelData.parentElement.classList.toggle("is-active");
- 
-           // $panelData.style.display="none";
         };
-       
-        
+       //evitar la propagación del mismo evento (en este caso el click de ratón) al ser llamado
         e.stopPropagation();
     })
 

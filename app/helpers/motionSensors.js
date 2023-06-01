@@ -2,7 +2,7 @@ import { fetchWavFile } from "./fetchWavFile.js";
 import { ledController } from "./ledController.js";
 import { playAudio } from "./playAudio.js";
 import { postAjax } from "./postAjax.js";
-
+//función encargado de activar el sensor de movimiento y la alarma
 export async function motionSensors(device,wavFile){
     try{
         const d=document,$screen=d.querySelector(".alarm"),$panelAlarm=d.querySelector(".panelAlarm");
@@ -17,14 +17,14 @@ export async function motionSensors(device,wavFile){
 
         let bool=true,audioState;
         localStorage.setItem('audioState', 'off');
-
+        //obtener valores del sensor de movimiento (giroscopio)
         async function logRawData(data) {
 
             audioState=localStorage.getItem('audioState');
             console.log(audioState);
+            //se activa la alarma al superar los siguientes valores (velocidad angular)
             if(data.detail.gyroscope.x>1.2||data.detail.gyroscope.y>1.2||data.detail.gyroscope.z>1.2){
-                //almacenar datos en localstorage del navegador
-                //localStorage.setItem('alarm', 'on');
+
                 if(audioState=='off'){
                     console.log(`fuera de if, bool:${bool}`);
                     //enviar un correo avisando que la alarma se ha activado
@@ -34,6 +34,7 @@ export async function motionSensors(device,wavFile){
                         alert:"null",
                         value:"null"    
                     };
+                    //envío de petición al lado del servidor
                         postAjax("/ifttt",
                             JSON.stringify(objeto),
                             function(data){
@@ -42,6 +43,7 @@ export async function motionSensors(device,wavFile){
                                 console.log(error);
                             }
                         );
+                        //se envía correo cada 1 min
                         setTimeout(async function(){
                            ifttt=true;
                         },60000);
@@ -96,6 +98,7 @@ export async function motionSensors(device,wavFile){
 
     
         await device.rawdata.start();
+        //espera de evento, que es recibir datos del dispositivo
         let servicio=await device.addEventListener("rawdata", logRawData);
 
 

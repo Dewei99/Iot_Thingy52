@@ -1,3 +1,4 @@
+//función encargado de obtener el tiempo de lectura del sensor
 export function readTime(array_x){
 
     // guardar primer item en una variable

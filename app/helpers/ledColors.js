@@ -1,3 +1,4 @@
+//definir las posibles configuraciones del Led RGB del dispositivo Thingy 52
 const blueLed = {
     mode: "breathe",//"breathe"
     color: 4,//blue

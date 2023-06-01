@@ -144,6 +144,7 @@ export function Temperature(thingy, boton){
     async function start_Temperatura(device) {
         try{
             let bool=await device.temperature.start();
+            //espera de evento, que es recibir datos del sensor del dispositivo
             let servicio=await device.addEventListener("temperature", logData);
             $boton.classList.add("is-active");
             console.log("estoy en la función start");
