@@ -28,6 +28,8 @@ export function App(){
     $main = d.querySelector(".main"), $header = d.querySelector(".header"),
     $footer=d.querySelector(".footer"),$aside=d.querySelector(".panelMenu"),$asideAlarm=d.querySelector(".panelAlarm"), 
     $sensores = d.createElement("div"),$thingyHeader = d.createElement("div"),$dataBase = d.createElement("div"),$realTimeData = d.createElement("div");
+    //definir valores límites para la activación de alerta
+    let limiteTemperatura={max:38,min:10},limiteHumedad=65,limiteCO2=1000,limiteCOV=500;
     //guardar variables en el almacenamiento local del navegador
     localStorage.setItem('shareTemperature', 'off');
     localStorage.setItem('shareHumidity', 'off');
@@ -62,9 +64,9 @@ export function App(){
     $asideAlarm.appendChild(AlarmScreen());
     console.log(thingy);
     //renderizar los componentes que pertenece a la vista de sensores
-    $sensores.appendChild(Temperature(thingy,".btn-temperature"));
-    $sensores.appendChild(Humidity(thingy,".btn-humidity"));
-    $sensores.appendChild(GasSensor(thingy,".btn-gas"));
+    $sensores.appendChild(Temperature(thingy,".btn-temperature",limiteTemperatura));
+    $sensores.appendChild(Humidity(thingy,".btn-humidity",limiteHumedad));
+    $sensores.appendChild(GasSensor(thingy,".btn-gas",limiteCO2,limiteCOV));
 
     //renderizarlos en el elemento main de html
     $main.appendChild($sensores);

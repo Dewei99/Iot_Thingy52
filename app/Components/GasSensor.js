@@ -9,7 +9,7 @@ import { RealTimeDataButton } from "./RealTimeDataButton.js";
 import { getAjax } from "../helpers/getAjax.js";
 
 //función encargado de renderizar un panel que muestra la gráfica de los datos del sensor de gas enviados por el dispositivo thingy 52
-export function GasSensor(thingy, boton){
+export function GasSensor(thingy, boton,limiteCO2,limiteCOV){
     const d=document,$article=d.createElement("article"),$titleCO2 = d.createElement("div"),
     $titleCOV = d.createElement("div"),$CO2 = d.createElement("canvas"),$COV = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,high=true,normal=true,dataCO2_x=[],dataCO2_y=[],dataCOV_x=[],dataCOV_y=[];
@@ -85,7 +85,7 @@ export function GasSensor(thingy, boton){
         });
         }
         //activación de alerta cuando se supera un valor límite
-        if(data.detail.eCO2.value>=1000){
+        if(data.detail.eCO2.value>=limiteCO2/*1000*/){
             //Renderizar datos del sensor CO2
             $titleCO2.innerHTML = `
             <header>CO2</header>
@@ -131,7 +131,7 @@ export function GasSensor(thingy, boton){
             }
         }
         //activación de alerta cuando se supera un valor límite
-        if(data.detail.TVOC.value>=500){
+        if(data.detail.TVOC.value>=limiteCOV/*500*/){
             //Renderizar datos del sensor COV
             $titleCOV.innerHTML = `
             <header>COV</header>

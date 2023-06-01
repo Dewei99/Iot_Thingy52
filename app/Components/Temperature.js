@@ -8,7 +8,7 @@ import { CreateChart } from "./CreateChart.js";
 import { RealTimeDataButton } from "./RealTimeDataButton.js";
 import { SaveButton } from "./SaveButton.js";
 //función encargado de renderizar un panel que muestra la gráfica de los datos del sensor de temperatura enviados por el dispositivo thingy 52
-export function Temperature(thingy, boton){
+export function Temperature(thingy, boton, limiteTemperatura){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $temperatura = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,data_x=[],data_y=[];
@@ -58,7 +58,7 @@ export function Temperature(thingy, boton){
             });
         }
         //activación de alerta cuando se supera un valor límite
-        if(data.detail.value>=38){
+        if(data.detail.value>=limiteTemperatura.max/*38*/){
             //Renderizar datos del sensor temperatura
             $title.innerHTML = `
             <header>Temperatura</header>
@@ -93,7 +93,7 @@ export function Temperature(thingy, boton){
                 },300000);
             }
         //activación de alerta cuando se baja de un valor límite
-        }else if (data.detail.value<=10){
+        }else if (data.detail.value<=limiteTemperatura.min/*10*/){
             //Renderizar datos del sensor temperatura
             $title.innerHTML = `
             <header>Temperatura</header>

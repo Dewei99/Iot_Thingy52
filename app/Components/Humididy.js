@@ -8,7 +8,7 @@ import { date } from "../helpers/date.js";
 import { RealTimeDataButton } from "./RealTimeDataButton.js";
 import { getAjax } from "../helpers/getAjax.js";
 //función encargado de renderizar un panel que muestra la gráfica de los datos del sensor de humedad enviados por el dispositivo thingy 52
-export function Humidity(thingy, boton){
+export function Humidity(thingy, boton,limiteHumedad){
     const d=document,$article=d.createElement("article"),$title = d.createElement("div"),
     $humedad = d.createElement("canvas"),$boton=d.querySelector(boton);
     let estado=0,data_x=[],data_y=[];
@@ -57,7 +57,7 @@ export function Humidity(thingy, boton){
             });
         }
         //activación de alerta cuando se supera un valor límite
-        if(data.detail.value>=65){
+        if(data.detail.value>=limiteHumedad/*65*/){
             //Renderizar datos del sensor humedad
             $title.innerHTML = `
             <header>Humedad</header>
