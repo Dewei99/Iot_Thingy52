@@ -228,5 +228,5 @@ app.post('/ifttt',(req, response)=>{
     });
 
 });
-//
+//se indica el puerto a la que está conectado
 app.listen(process.env.PORT||3000,()=>console.log("Server started"));
