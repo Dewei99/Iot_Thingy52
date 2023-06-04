@@ -6,7 +6,8 @@ module.exports.crear = (req, res)=>{
         sensor: req.body.sensor,
         date: req.body.date,
         data_x:req.body.data_x,
-        data_y: req.body.data_y
+        data_y: req.body.data_y,
+        user_id: req.user.id
     })
     sensor.save(function(error,sensor){
         if(error){

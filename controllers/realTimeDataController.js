@@ -6,7 +6,8 @@ module.exports.crearRTD = (req, res)=>{
         sensor: req.body.sensor,
         date: req.body.date,
         data_x:req.body.data_x,
-        data_y: req.body.data_y
+        data_y: req.body.data_y,
+        user_id: req.user.id
     })
     realTimeData.save(function(error,sensor){
         if(error){
@@ -29,8 +30,9 @@ module.exports.editarRTD = (req,res)=>{
     const date =  req.body.date;
     const data_x = req.body.data_x;
     const data_y = req.body.data_y;
+    const user_id= req.user.id;
     RealTimeData.findByIdAndUpdate(_id,{
-    sensor, date, data_x, data_y}, {new: true}, (error, sensor)=>{
+    sensor, date, data_x, data_y,user_id}, {new: true}, (error, sensor)=>{
         if(error){
             //enviar mensaje de error al lado de cliente
             return res.status(500).json({

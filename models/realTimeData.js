@@ -6,7 +6,8 @@ const realTimeDataSchema = new Schema({
   sensor:  String,
   date: String,
   data_x: Array,
-  data_y: Array
+  data_y: Array,
+  user_id: Number
 }, { collection: 'realTimeData', versionKey: false });
 
 // Crear el modelo

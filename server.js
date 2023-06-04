@@ -62,11 +62,17 @@ passport.use(new PassportLocal(function(username,passWord,done){
         ).then(()=>console.log("Base de datos conectada"))
         .catch(e=>console.log(e));
 
-
         return done(null,{id:1,name:"Upm"});
         //1º argunto: error
         //2º argunto: usuario
         //3º argunto: opciones
+    }
+    if(username===process.env.USER2&& passWord===process.env.PASSWORD2){
+        mongoose.connect(uri,
+            {useNewUrlParser:true, useUnifiedTopology:true}
+        ).then(()=>console.log("Base de datos conectada"))
+        .catch(e=>console.log(e));
+        return done(null,{id:2,name:"Dewei"});
     }
     //en caso de que no se cumpla lo anterior
     done(null,false);
@@ -123,7 +129,7 @@ app.get("/database",async (request,response)=>{
         //autentificación de usuario
         if(request.isAuthenticated()){
             //buscar datos guardados en la base de datos
-            const arraySensores = await Sensor.find();
+            const arraySensores = await Sensor.find({ user_id: request.user.id }).exec();;
             //enviar datos al lado de cliente
             response.json(arraySensores);
         }
@@ -146,7 +152,7 @@ app.get("/remote",async (request,response)=>{
         //autentificación de usuario
         if(request.isAuthenticated()){
             //buscar datos guardados en la base de datos
-            const arraySensores = await RealTimeData.find();
+            const arraySensores = await RealTimeData.find({ user_id: request.user.id }).exec();;
             //enviar datos al lado de cliente
             response.json(arraySensores);
         }
