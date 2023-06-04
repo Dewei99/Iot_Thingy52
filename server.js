@@ -41,7 +41,7 @@ app.use(cookieParser('mi secreto'));
 //Configuración de la sesión
 app.use(session({
     secret:'mi secreto',
-    resave:true, //definir comportamiento de las sesiones,true(guardar aunque no se modifique la sesion)
+    resave:false, //definir comportamiento de las sesiones,true(guardar aunque no se modifique la sesion)
     saveUninitialized: true 
 }));
 
@@ -67,7 +67,7 @@ passport.use(new PassportLocal(function(username,passWord,done){
         //2º argunto: usuario
         //3º argunto: opciones
     }
-    if(username===process.env.USER2&& passWord===process.env.PASSWORD2){
+    else if(username===process.env.USER2&& passWord===process.env.PASSWORD2){
         mongoose.connect(uri,
             {useNewUrlParser:true, useUnifiedTopology:true}
         ).then(()=>console.log("Base de datos conectada"))
@@ -83,11 +83,23 @@ passport.use(new PassportLocal(function(username,passWord,done){
 //Serialización:
 passport.serializeUser(function(user,done){
     done(null,user.id);//null=no hubo error
+    // Passport pasará el usuario_autenticado a serializeUser como "usuario"
+    // Este es el objeto USER de done() de la anterior función
+    // Ahora se adjunta usando done (null, user.id) para vincular este usuario a req.session.passport.user = {id: user.id},
+    // para que esté vinculado al objeto de la sesión
 });
 
 //deserializar
 passport.deserializeUser(function(id,done){
-    done(null,{id:1,name:"Upm"});//null=no hubo error
+    if (id===1){
+        done(null,{id:1,name:"Upm"});//null=no hubo error
+    }else if(id===2){
+        done(null,{id:2,name:"Dewei"});//null=no hubo error
+    }
+    // Esta es la identificación que se guarda en req.session.passport.{ usuario: "id"} durante la serialización
+    // se use la identificación para encontrar al usuario en la base de datos y obtener el objeto de usuario con los detalles del usuario, pero en este caso no lo vamos a hacer,
+    // simplemente pasamos los datos de usuario en el done() del deserializador.
+    // este datos de usuario se adjunta a "req.user" y se puede usar en cualquier parte de la aplicación.
 });
 
 //ruta de vista de inicio
