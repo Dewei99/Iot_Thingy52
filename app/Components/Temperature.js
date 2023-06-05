@@ -74,7 +74,8 @@ export function Temperature(thingy, boton, limiteTemperatura){
             //enviar un correo de alerta
             if(ifttt===true){
                 ifttt=false;
-                let objeto={event: "Temperatura",
+                let objeto={event: "sensor",
+                    sensor:"Temperatura",
                     alert:"elevada",
                     value:"más de 38º"    
                 };
@@ -109,7 +110,8 @@ export function Temperature(thingy, boton, limiteTemperatura){
             //enviar un correo de alerta
             if(ifttt===true){
                 ifttt=false;
-                let objeto={event: "Temperatura",
+                let objeto={event: "sensor",
+                    sensor:"Temperatura",
                     alert:"baja",
                     value:"menos de 10º"    
                 };

@@ -101,7 +101,8 @@ export function GasSensor(thingy, boton,limiteCO2,limiteCOV){
             //enviar un correo de alerta
             if(iftttCO2===true){
                 iftttCO2=false;
-                let objeto={event: "CO2",
+                let objeto={event: "sensor",
+                    sensor:"CO2",
                     alert:"elevada",
                     value:"más de 1000 ppm"    
                 };
@@ -147,7 +148,8 @@ export function GasSensor(thingy, boton,limiteCO2,limiteCOV){
             //enviar un correo de alerta
             if(iftttCOV===true){
                 iftttCOV=false;
-                let objeto={event: "COV",
+                let objeto={event: "sensor",
+                    sensor:"COV",
                     alert:"elevada",
                     value:"más de 500 ppb"    
                 };

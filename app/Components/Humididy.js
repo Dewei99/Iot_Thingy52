@@ -74,7 +74,8 @@ export function Humidity(thingy, boton,limiteHumedad){
             //enviar un correo de alerta
             if(ifttt===true){
                 ifttt=false;
-                let objeto={event: "Humedad",
+                let objeto={event: "sensor",
+                    sensor:"Humedad",
                     alert:"elevada",
                     value:"más de 65%"    
                 };

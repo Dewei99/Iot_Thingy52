@@ -228,9 +228,10 @@ app.get('/signout',  function(req, res, next) {
 });
 
 app.post('/ifttt',(req, response)=>{
+    console.log(req.body);
     //IFTTT
     ifttt.post(req.body.event, [
-        req.body.event,
+        req.body.sensor,
         req.body.alert,
         req.body.value
     ])
