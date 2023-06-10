@@ -77,7 +77,7 @@ export function Temperature(thingy, boton, limiteTemperatura){
                 let objeto={event: "sensor",
                     sensor:"Temperatura",
                     alert:"elevada",
-                    value:"más de 38º"    
+                    value:`más de ${limiteTemperatura}º`    
                 };
                 //enviar datos al lado de servidor
                 postAjax("/ifttt",

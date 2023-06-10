@@ -104,7 +104,7 @@ export function GasSensor(thingy, boton,limiteCO2,limiteCOV){
                 let objeto={event: "sensor",
                     sensor:"CO2",
                     alert:"elevada",
-                    value:"más de 1000 ppm"    
+                    value:`más de ${limiteCO2} ppm`    
                 };
                 //enviar datos al lado de servidor
                 postAjax("/ifttt",
@@ -151,7 +151,7 @@ export function GasSensor(thingy, boton,limiteCO2,limiteCOV){
                 let objeto={event: "sensor",
                     sensor:"COV",
                     alert:"elevada",
-                    value:"más de 500 ppb"    
+                    value:`más de ${limiteCOV} ppb`    
                 };
                 //enviar datos al lado de servidor
                 postAjax("/ifttt",

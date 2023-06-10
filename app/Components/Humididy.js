@@ -77,7 +77,7 @@ export function Humidity(thingy, boton,limiteHumedad){
                 let objeto={event: "sensor",
                     sensor:"Humedad",
                     alert:"elevada",
-                    value:"más de 65%"    
+                    value:`más de ${limiteHumedad}%`  
                 };
                 //enviar datos al lado de servidor
                 postAjax("/ifttt",
