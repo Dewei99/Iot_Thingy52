@@ -29,7 +29,7 @@ export function App(){
     $footer=d.querySelector(".footer"),$aside=d.querySelector(".panelMenu"),$asideAlarm=d.querySelector(".panelAlarm"), 
     $sensores = d.createElement("div"),$thingyHeader = d.createElement("div"),$dataBase = d.createElement("div"),$realTimeData = d.createElement("div");
     //definir valores límites para la activación de alerta
-    let limiteTemperatura={max:38,min:10},limiteHumedad=65,limiteCO2=1000,limiteCOV=500;
+    let limiteTemperatura={max:32,min:5},limiteHumedad=65,limiteCO2=1000,limiteCOV=600;
     //guardar variables en el almacenamiento local del navegador
     localStorage.setItem('shareTemperature', 'off');
     localStorage.setItem('shareHumidity', 'off');
