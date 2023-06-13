@@ -28,6 +28,8 @@ Para realizar este proyecto se ha utilizado la librería de Nordic thingy 52, ac
 [libreria Thingy 52](https://github.com/NordicPlayground/Nordic-Thingy52-Thingyjs)
 ## Render
 En la realización de este proyecto se ha desplegado la aplicación en Render. Pueden utilizar otras plataformas de servicios en la nube como Heroku. Tengan en cuenta que en el archivo `server.js` tendrá que modificar las variables de entorno como el nombre de usuario `process.env.USER`, la contraseña de usuario `process.env.PASSWORD` y el puerto a la que está conectado `process.env.PORT`.
+Si quiere probar la aplicación web con el servidor local de Visual Studio Code, introduzca lo siguiente en la línea de comandos de VS Code para ejecutar la aplicación en el navegador:
+`node server.js`
 ## Base de datos MongoDB
 Se a utilizado la base de datos MongoDB para guardar los datos. Tenga en cuenta que tendrá que modificar en el archivo `server.js` la `uri` para poder conectarse a su base de datos. La uri es el identificador uniforme de recursos.
 ## IFTTT
