@@ -1,3 +1,4 @@
+/*Se define las propiedades personalizadas*/
 :root{
   --background-gradient: linear-gradient(rgb(46, 132, 243),rgb(38, 183, 241,0.2));
   --shadow-color: 0.4rem 0.6rem 0.4rem rgb(28, 115, 230);
@@ -8,8 +9,7 @@
   --warning-border:medium solid rgb(233, 128, 7);
 }
 
-
-
+/*Estilos que se heredan en los elementos hijos*/
 html, body {
   box-sizing: border-box; /*La caja empieza a contar desde el borde*/
   scroll-behavior: smooth;
@@ -21,6 +21,8 @@ html, body {
 html{
   height: 100%;
 }
+
+/*añadir diseño responsivo, cambia los estilos dependiendo en ancho del navegador*/
 @media screen and (max-width:800px){
   .thingyHeader .title{
     font-size: 1.1rem;
@@ -149,11 +151,12 @@ body {
   flex-direction: column;
 
 }
+
 .panelMenu{
   position: relative;
   z-index: 0;
 }
-
+/*Dar estilo a la cabecera de la aplicación*/
 .header{
   z-index: 1000;
   position: sticky;
@@ -228,16 +231,15 @@ main h2 {
   display: none;
 }
 
+/*Definir el estilo de la sección de batería*/
 .battery{
-  
   display: flex;
   align-items: center;
   height:100%;
   max-width:100%;
   width:auto;
 }
-
-
+/*Definir como va a ser el icono de la batería*/
 .fa{
   max-height:100%;
   height: auto;
@@ -258,15 +260,14 @@ header span{
   font-size: 1.6rem;
 }
 
-.panel-btn {
- 
+/*Dar estilo al botón del menú*/
+.panel-btn { 
   z-index: 999;
   /*width: 4rem;
   height: 4rem;*/
   /*height: 100%;
   border-radius: 50%;
   padding: 0.5rem;*/
-
   margin-right: 0.3rem;
   width: 4rem;
   height: 100%;
@@ -278,7 +279,7 @@ header span{
 
 }
 
-
+/*Dar estilo al menú de sensores*/
 .panelMenu {
   position: fixed;
   z-index: 998;
@@ -312,7 +313,6 @@ header span{
   visibility: visible;
 }
 
-
 .menu {
   /*width: inherit;*/
   width: 100%;
@@ -325,7 +325,7 @@ header span{
   
 }
 
-
+/*Añadir estilos adicionales a los botones del menú*/
 .menu button{
   height:4rem;
   border-radius: 1rem;
