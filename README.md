@@ -16,7 +16,7 @@ Iot_Thingy52
 ~~~
 - app: estarán los archivos estáticos(css, javascripts, imágenes,etc). Esta carpetá estática se cargará en el lado del cliente o navegador
 - assets: estarán las imágenes y audios
-- Components: se guardan los diferentes componentes que se can a renderizar en la interfaz de usuario
+- Components: se guardan los diferentes componentes que se van a renderizar en la interfaz de usuario
 - helpers: códigos auxiliares que se dedica a resolver tareas particulares. 
 - lib: uso de librería de Nordic Thingy 52
 - stylesCSS: archivos que dan estilos al documento html
