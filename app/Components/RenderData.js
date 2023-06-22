@@ -2,13 +2,14 @@ import { average } from "../helpers/average.js";
 import { getAjax } from "../helpers/getAjax.js";
 import { readTime } from "../helpers/readTime.js";
 import { CreateChart } from "./CreateChart.js";
-//función encargado de renderizar los datos guardados de la base de datos
+//función encargado de renderizar los datos guardados en la base de datos
 export function RenderData(){
     const d=document,$dataBase=d.querySelector(".dataBase"),$userMenu=d.querySelector(".userMenu"),
     $dataBaseTitle= d.createElement("div"),$dataBaseContent= d.createElement("div"),$error= d.createElement("div");
     $dataBaseContent.classList.add("dataBaseContent");
     $dataBaseTitle.classList.add("dataBaseTitle");
     $error.classList.add("dataBaseError");
+    //mostrar error en caso de no hay datos guardados en la base de datos
     $error.innerHTML=`No hay datos guardados en mongoDB`;
     $dataBaseTitle.innerHTML=`<u><b>Base de Datos</b></u>`;
     $dataBase.appendChild($dataBaseTitle);
