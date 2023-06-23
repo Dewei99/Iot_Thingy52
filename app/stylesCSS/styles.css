@@ -225,6 +225,7 @@ main h2 {
   
 }
 
+/*añadir estilo al icono de carga*/
 .loader{
   height:100%;
   padding:2px;
@@ -306,13 +307,14 @@ header span{
   /* De la izquierda */
   transform: translate(-100%, 0);
 }
-
+/*añadir animación al panel de menú*/
 .panelMenu.is-active {
   transform: translate(0, 0);
   opacity: 1;
   visibility: visible;
 }
 
+/*añadir flexbox al menú*/
 .menu {
   /*width: inherit;*/
   width: 100%;
@@ -342,18 +344,19 @@ header span{
   margin-bottom: 1rem;
 }
 
+/*Cambio de propiedad del botón al poner el puntero del ratón encima del botón*/
 .menu button:hover {
   font-weight: bold;
   color: rgb(18, 18, 99);
   background-color: rgb(225, 241, 130);
 }
 
-
+/*añadir estilo al botón de conexión*/
 button.conectar{
   margin-bottom: 8rem;
   position: relative;
 }
-
+/*añadir estilo al icono de carga del botón de conexión*/
 .conectar .loader{
   position: absolute;
   height: 8px;
@@ -361,39 +364,24 @@ button.conectar{
   bottom: 15%;
   height: 70%;
 }
-
+/*cambio de color de botón de conexión*/
 button.conectar.is-active{
   background-color: red;
 }
-
-/*
-button.btn-temperatura{
-  margin-bottom: 2rem;
-  position: relative;
-}*/
-
+/*cambio de color de botón de temperatura*/
 button.btn-temperature.is-active{
   background-color: red;
 }
-/*
-button.btn-humedad{
-  margin-bottom: 2rem;
-  position: relative;
-}*/
-
+/*cambio de color de botón de humedad*/
 button.btn-humidity.is-active{
   background-color: red;
 }
-
+/*cambio de color de botón de gas*/
 button.btn-gas.is-active{
   background-color: red;
 }
 
-button.btn-microphone.is-active{
-  background-color: red;
-}
-
-
+/*cambio de color de botón de alarma*/
 button.btn-alarm1.is-active{
   background-color: red;
 }
@@ -407,13 +395,12 @@ button.btn-alarm1.is-active{
   z-index: 0;
 }
 
-
-
 article header{
   font-size:1.5rem;
   color: red;
 }
 
+/*dar estilo a paneles donde aparecerá la gráfica*/
 .main article{
 
   width: 91%;
@@ -427,7 +414,7 @@ article header{
   background-color:white;
   margin-top: 1.7rem;
 }
-
+/*propiedades del panel de temperatura*/
 .temperatura{
   display: block;
   position: relative;
@@ -439,7 +426,7 @@ article header{
   transition: opacity 0.5s ease, height 0.6s ease, visibility 0.5s ease;
   /*color:red;*/
 }
-
+/*visualizar panel de temperatura*/
 .temperatura.is-active{
   opacity: 1;
   visibility:visible;
@@ -447,61 +434,24 @@ article header{
   margin-top: 1rem;
   /*display: none;*/
 }
-
+/*cambiar color del border de panel de temperatura*/
 .temperatura.warning{
   box-shadow: var(--warning-shadow-color);
   border: var(--warning-border);
 }
 
-
+/*color de título del panel de temperatura*/
 .temperatura .title{
   color: inherit;
 }
-
+/*propiedades de la gráfica del panel de temperatura*/
 #chart-temperatura{
   max-width: 100%;
   height:auto;
   max-height: 90%;
   width:90%;
 }
-.microphone{
-  display: block;
-  position: relative;
-  opacity: 0;
-  padding:0;
-  margin:0;
-  visibility: hidden;
-  height: 0vh;
-  transition: opacity 0.5s ease, height 0.6s ease, visibility 0.5s ease;
-  /*color:red;*/
-}
-
-.microphone.is-active{
-  opacity: 1;
-  visibility:visible;
-  height: 650px;
-  margin-top: 1rem;
-  /*display: none;*/
-}
-
-.microphone.warning{
-  box-shadow: var(--warning-shadow-color);
-  border: var(--warning-border);
-}
-
-
-.microphone.title{
-  color: inherit;
-}
-
-
-#chart-microphone{
-  max-width: 100%;
-  height:auto;
-  max-height: 90%;
-  width:90%;
-}
-
+/*propiedades del panel de humedad*/
 .humedad{
   display: block;
   position: relative;
@@ -512,11 +462,11 @@ article header{
   margin:0;
   transition:  opacity 0.5s ease, height 0.6s ease, visibility 0.5s ease;
 }
-
+/*margen de título del panel de humedad*/
 .humedad .title{
   margin-bottom: 1.5rem;
 }
-
+/*visualizar panel de humedad*/
 .humedad.is-active{
   opacity: 1;
   visibility:visible;
@@ -524,12 +474,12 @@ article header{
   margin-top: 1rem;
   /*display: none;*/
 }
-
+/*cambiar color del border de panel de humedad*/
 .humedad.warning{
   box-shadow: var(--warning-shadow-color);
   border: var(--warning-border);
 }
-
+/*propiedades de la gráfica del panel de humedad*/
 #chart-humedad{
   max-width: 100%;
   /*height:auto;*/
@@ -537,7 +487,7 @@ article header{
   height:auto;
   width:90%;
 }
-
+/*propiedades del panel de gas*/
 .gas{
   display: block;
   position: relative;
@@ -552,6 +502,7 @@ article header{
 .gas div{
   margin-bottom: 1.5rem;
 }
+/*visualizar panel de gas*/
 .gas.is-active{
   opacity: 1;
   visibility:visible;
@@ -559,12 +510,12 @@ article header{
   margin-top: 1rem;
   /*display: none;*/
 }
-
+/*cambiar color del border de panel de gas*/
 .gas.warning{
   box-shadow: var(--warning-shadow-color);
   border: var(--warning-border);
 }
-
+/*propiedades de la gráfica de CO2*/
 #chart-C02{
   max-width: 100%;
   /*height:auto;*/
@@ -572,6 +523,7 @@ article header{
   height:500px;
   width:90%;
 }
+/*propiedades de la gráfica de COV*/
 #chart-C0V{
   max-width: 100%;
   /*height:auto;*/
@@ -579,7 +531,7 @@ article header{
   height:500px;
   width:90%;
 }
-
+/*posición del panel del botón de guardar*/
 .savePanel{
   position: absolute;
   top: 20px;
@@ -587,14 +539,14 @@ article header{
 
 }
 
-
+/*mensaje del panel del botón de guardar*/
 .savePanel .message{
   margin-top: 0.6rem;
   padding: 0.3rem;
   display:none;
   color:black;
 }
-
+/*visualizar mensaje de éxito de guardado de datos*/
 .savePanel .message.success{
   border:thin solid black;
   background-image:linear-gradient(rgb(99, 192, 247),rgb(214, 238, 252));
@@ -604,7 +556,7 @@ article header{
   right: 20px;
   border-radius: 0.6rem;
 }
-
+/*visualizar mensaje de error*/
 .savePanel .message.error{
   border:thin solid red;
   background-image:linear-gradient(rgb(243, 42, 42),rgb(243, 156, 156));
@@ -612,26 +564,26 @@ article header{
   display: block;
   color:white;
 }
-
+/*posición del panel del botón de modo remoto*/
 .realTimeDataPanel{
   position: absolute;
   top: 20px;
   right: 90px;
 
 }
-
+/*propiedades de botón de modo remoto una vez pulsado*/
 .realTimeDataPanel button[data-active="true"]{
   background-color: yellow;
   border-color: thin solid black;
 }
-
+/*visualizar mensaje botón de modo remoto*/
 .realTimeDataPanel .message{
   margin-top: 0.6rem;
   padding: 0.3rem;
   display:none;
   color:black;
 }
-
+/*mensaje de éxito de activación de modo remoto*/
 .realTimeDataPanel .message.success{
   border:thin solid black;
   background-image:linear-gradient(rgb(99, 192, 247),rgb(214, 238, 252));
@@ -641,7 +593,7 @@ article header{
   right: 20px;
   border-radius: 0.6rem;
 }
-
+/*mensaje de error del modo remoto*/
 .realTimeDataPanel .message.error{
   border:thin solid red;
   background-image:linear-gradient(rgb(243, 42, 42),rgb(243, 156, 156));
@@ -651,7 +603,6 @@ article header{
 }
 
 /*Para baterias*/
-
 .blue-color {
   color:blue;
 }
@@ -671,7 +622,7 @@ color:yellow;
 .red-color {
   color:red;
 }
-
+/*propiedades de la ventana de alarma*/
 .panelAlarm{
   height:100%;
   width:100%;
@@ -680,11 +631,11 @@ color:yellow;
   z-index: 1;
   visibility: hidden;
 }
-
+/*visualizar ventana de alarma*/
 .panelAlarm.is-active{
   visibility: visible;
 }
-
+/*añadir flexbox para los componentes de la ventana de alarma*/
 div.alarm{
   position: fixed;
   display: flex;
@@ -706,7 +657,7 @@ div.alarm{
   visibility: hidden;
   transition: opacity 0.5s ease, height 0.6s ease, visibility 0.5s ease;
 }
-
+/*visualizar ventana de alarma*/
 .alarm.is-active{
   opacity: 1;
   visibility:visible;
@@ -714,7 +665,7 @@ div.alarm{
   /*margin-top: 1rem;*/
   /*display: none;*/
 }
-
+/*propiedad de titilo de la ventana de alarma*/
 .alarm h2{
   /*padding-left: 1rem;*/
   margin-bottom: 1rem;
@@ -723,7 +674,7 @@ div.alarm{
   color: red;
   background-color: inherit;
 }
-
+/*propiedades de la ventana de inicio de sesión*/
 .loginPanel{
   position: fixed;
   display: flex;
@@ -752,6 +703,7 @@ div.alarm{
 .profileHeader > div{
   padding-right: 1rem;
 }
+/*propiedades del boton de login y logout*/
 .nav__link{
   border:thin solid rgb(17, 0, 255);
   background-color: blue;
@@ -761,21 +713,25 @@ div.alarm{
   color:white;
   text-decoration:none;
 }
-
+/*cambiar propiedades del botón al poner encima el puntero del rotón*/
 .nav__link:hover{
   border:medium solid rgb(17, 0, 255);
   background-color: yellow;
   color:black;
 }
+/*botón login oculto*/
 .logInButton{
   display:none;
 }
+/*botón login visible*/
 .logInButton.is-active{
   display:block;
 }
+/*botón logout oculto*/
 .logOutButton{
   display:none;
 }
+/*botón logout visible*/
 .logOutButton.is-active{
   display:block;
 }
@@ -783,11 +739,13 @@ div.alarm{
   border:thin solid red;
   background-color: rgb(255, 0, 0);
 }
+/*cambiar propiedades del botón logout al poner encima el puntero del rotón*/
 .logOutButton .nav__link:hover{
   display:block;
   border:thick solid rgb(66, 1, 1);
   background-color: rgb(160, 2, 2);
 }
+/*propiedades del mensaje de error de inicio de sensión*/
 .error{
   margin-top: 0.8rem;
   padding: 0.3rem;
@@ -797,11 +755,11 @@ div.alarm{
   display:none;
   max-width: 50%;
 }
-
+/*visualizar mensaje de error de inicio de sensión*/
 .error.is-active{
   display:block;
 }
-
+/*propiedades de menú de cabecera*/
 .userMenu{
   display:none;
   border:medium solid rgb(17, 0, 255);
@@ -809,13 +767,14 @@ div.alarm{
   border-radius: 0.5rem;
   height: 90%;
 }
-
+/*visualizar menú de cabecera*/
 .userMenu.is-active{
   display:flex;
   margin-right: 0.8rem;
   align-items: center;
   flex-grow: 1;
 }
+/*propiedades de cada "botón" del menú de cabecera*/
 .userMenu a{
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -826,16 +785,17 @@ div.alarm{
   text-decoration:none;
 
 }
+/*propiedades de cada "botón" del menú de cabecera al poner el puntero encima*/
 .userMenu a:hover{
   color:white;
   background-color: grey;
 }
-
+/*líneas verticales que separan los botones*/
 .vertical{
   border-left: medium solid black;
   height: 100%;
 }
-
+/*propiedades de la sección dónde se consulta los datos de la base de datos*/
 .dataPanel{
   width: 95%;
   /*height: 75vh;*/
@@ -848,6 +808,7 @@ div.alarm{
   background-color:white;
   margin-top: 1.7rem;
 }
+/*propiedades del mensaje de eliminar correctamente los datos de la base de datos*/
 .deleteMessage{
   border: thin solid rgba(57, 250, 9, 0.7);
   background-image:linear-gradient(rgba(57, 250, 9, 1),rgba(205, 243, 195, 1));
@@ -860,17 +821,17 @@ div.alarm{
   right:30%;
   display:none;
 }
-
+/*visualizar mensaje*/
 .deleteMessage.is-active{
   display:block;
 }
-
+/*propiedades de la cabecera del panel de base de datos*/
 .panelHeader{
   display:flex;
   justify-content: space-between;
   align-items: center;
 }
-
+/*propiedades de la flecha del panel de base de datos*/
 .panelHeader img{
   height:24px;
   padding: 2px;
@@ -883,20 +844,22 @@ div.alarm{
 .dataPanel .panelHeader{
   position: relative;
 }
+/*rotar la flecha del panel de base de datos*/
 .panelHeader img.is-active{
   transform: rotate(90deg);
 }
+/*cambiar propiedades de la flecha del panel de base de datos al poner encima el puntero del ratón*/
 .panelHeader img:hover{
   
   cursor: pointer;
   border:medium solid rgb(96, 225, 248, 1);
   /*transform: rotate(90deg);*/
 }
-
+/*botón de eliminar del panel de base de datos*/
 .panelHeader button{
   cursor: pointer;
 }
-
+/*propiedades de ventana de confirmación de eliminar datos*/
 .panelHeader .confirmacion{
   position: absolute;
   text-align: center;
@@ -910,22 +873,26 @@ div.alarm{
   padding: 5px;
   width:17rem;
 }
+/*propiedades del texto de ventana de confirmación de eliminar datos*/
 .panelHeader .confirmacion h2{
  /* margin-left: 2rem;*/
   display:inline;
   /*margin-bottom: 2rem;*/
 }
+/*propiedades del botón cancelar de ventana de confirmación de eliminar datos*/
 .panelHeader .confirmacion button{
   margin-top: 1rem;
 }
+/*propiedades del botón eliminar de ventana de confirmación de eliminar datos*/
 .panelHeader .confirmacion .deleteBtn{
   background-color: red;
   cursor: pointer;
 }
+/*visualizar ventana de confirmación de eliminar datos*/
 .panelHeader .confirmacion.is-active{
   display: block;
 }
-
+/*propiedades de la gráfica del panel de base de datos*/
 .canvasChart canvas{
   max-width: 90%;
   /*height:auto;*/
@@ -933,15 +900,15 @@ div.alarm{
   height:auto;
   width:85%;
 }
-
+/*ocultar gráfica del panel de base de datos*/
 div.canvasChart{
   display:none;
 }
-
+/*visualizar gráfica del panel de base de datos*/
 div.canvasChart.is-active{
   display:block;
 }
-
+/*propiedades de la gráfica del panel de modo remoto*/
 .canvasChartRTD canvas{
   max-width: 90%;
   /*height:auto;*/
@@ -949,35 +916,35 @@ div.canvasChart.is-active{
   height:auto;
   width:85%;
 }
-
+/*visualizar gráfica del panel de modo remoto*/
 div.canvasChartRTD{
   display:block;
 }
-
+/*datos de la gráfica del panel de base de datos*/
 .resultados{
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
-
+/*título de la sección de base de datos*/
 .dataBaseTitle{
   font-size: 2rem;
   margin-top: 0.8rem;
   margin-left: 2rem;
 }
-
+/*título de la sección de modo remoto*/
 .realTimeDataTitle{
   font-size: 2rem;
   margin-top: 0.8rem;
   margin-left: 2rem;
 }
-
+/*mensaje de error de la sección de modo remoto*/
 .realTimeDataError{
   background-color: white;
   border-radius: 0.5rem;
   margin-left: 2rem;
   padding: 0.4rem;
 }
-
+/*mensaje de error de la sección de base de datos*/
 .dataBaseError{
   background-color: white;
   border-radius: 0.5rem;
