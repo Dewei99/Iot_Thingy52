@@ -76,6 +76,7 @@ export async function router(){
             $logIn.classList.add("is-active");
             $logOut.classList.remove("is-active");
             $userMenu.classList.remove("is-active");
+            d.querySelector(".panelMenu").classList.remove("is-active");
             console.log("estoy en /database");
             console.log($loginPanel.style.display);
             userData();
