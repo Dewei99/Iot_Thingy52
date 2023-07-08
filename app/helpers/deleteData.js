@@ -53,7 +53,7 @@ export function deleteData(){
                                         <div class="panelHeader">
                                             <img src="/assets/flecha.png" alt="flecha" data-class="arrow" data-id="${el._id}"/>
                                             <h2>${el.sensor} &nbsp;&nbsp;&nbsp;&nbsp; ${el.date}</h2>
-                                            <button type="button" class="deleteBtn" data-delete="${el._id}">Borrar</button>
+                                            <button type="button" class="eliminar" data-delete="${el._id}">Borrar</button>
                                             <div class="confirmacion">
                                                 <h2>¿Estás seguro?</h2><br>
                                                 <button type="button" class="deleteBtn" data-delete="${el._id}">Aceptar</button>
